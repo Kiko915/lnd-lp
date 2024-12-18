@@ -72,18 +72,30 @@ import logo from '../assets/lndliliw-emblem-primary-shadow.webp';
             <div>
                 <h3 class="font-semibold text-lg mb-4">Stay Updated</h3>
                 <p class="text-gray-300 mb-4">Subscribe to our newsletter for updates and announcements.</p>
-                <form class="space-y-3">
-                    <input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        class="w-full px-4 py-2 rounded-lg bg-[#1a4570] border border-[#2a5580] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FDC83D] focus:border-transparent"
-                    >
+                <form id="newsletter-form" class="space-y-3">
+                    <div class="relative">
+                        <input 
+                            type="email" 
+                            id="newsletter-email"
+                            name="email"
+                            placeholder="Enter your email" 
+                            class="w-full px-4 py-2 rounded-lg bg-[#1a4570] border border-[#2a5580] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FDC83D] focus:border-transparent"
+                            required
+                        >
+                        <span id="email-error" class="hidden absolute -bottom-6 left-0 text-xs text-red-400"></span>
+                    </div>
                     <button 
                         type="submit" 
-                        class="w-full px-4 py-2 bg-[#FDC83D] text-[#205488] font-semibold rounded-lg hover:bg-[#ffd666] transition-colors"
+                        id="newsletter-submit"
+                        class="w-full px-4 py-2 bg-[#FDC83D] text-[#205488] font-semibold rounded-lg hover:bg-[#ffd666] transition-colors flex items-center justify-center"
                     >
-                        Subscribe
+                        <span>Subscribe</span>
+                        <div id="submit-spinner" class="hidden ml-2 w-4 h-4 border-2 border-[#205488] border-t-transparent rounded-full animate-spin"></div>
                     </button>
+                    <!-- Success Message -->
+                    <div id="success-message" class="hidden text-sm text-green-400 text-center">
+                        Thank you for subscribing!
+                    </div>
                 </form>
             </div>
         </div>
@@ -104,3 +116,99 @@ import logo from '../assets/lndliliw-emblem-primary-shadow.webp';
         </div>
     </div>
 </footer> 
+
+<script>
+    function setupNewsletterForm() {
+        const form = document.getElementById('newsletter-form') as HTMLFormElement;
+        const emailInput = document.getElementById('newsletter-email') as HTMLInputElement;
+        const emailError = document.getElementById('email-error');
+        const submitButton = document.getElementById('newsletter-submit') as HTMLButtonElement;
+        const submitSpinner = document.getElementById('submit-spinner');
+        const successMessage = document.getElementById('success-message');
+
+        if (!form || !emailInput || !emailError || !submitButton || !submitSpinner || !successMessage) return;
+
+        function validateEmail(email: string): boolean {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showError(message: string) {
+            if (!emailError) return;
+            emailError.textContent = message;
+            emailError.classList.remove('hidden');
+            emailInput.classList.add('border-red-400');
+        }
+
+        function hideError() {
+            if (!emailError) return;
+            emailError.classList.add('hidden');
+            emailInput.classList.remove('border-red-400');
+        }
+
+        function setLoading(isLoading: boolean) {
+            if (!submitButton || !submitSpinner || !emailInput) return;
+            submitButton.disabled = isLoading;
+            submitSpinner.classList.toggle('hidden', !isLoading);
+            emailInput.disabled = isLoading;
+        }
+
+        async function handleSubmit(e: Event) {
+            e.preventDefault();
+            hideError();
+
+            const email = emailInput.value.trim();
+
+            // Validate email
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to subscribe');
+                }
+
+                // Show success message
+                if (!successMessage) return;
+                successMessage.classList.remove('hidden');
+                form.reset();
+
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage?.classList.add('hidden');
+                }, 5000);
+
+            } catch (error) {
+                showError(error instanceof Error ? error.message : 'Failed to subscribe. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Event listeners
+        form.addEventListener('submit', handleSubmit);
+        emailInput.addEventListener('input', hideError);
+    }
+
+    // Setup form on page load and after transitions
+    document.addEventListener('astro:page-load', setupNewsletterForm);
+</script> 

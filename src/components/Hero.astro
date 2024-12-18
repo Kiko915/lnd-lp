@@ -27,7 +27,6 @@ const carouselItems = [
         description: "Discover the joy of serving God through our vibrant community of altar servers.",
         buttons: [
             { text: "Our Gallery", href: "/gallery", style: "primary" },
-            { text: "Join Now", href: "/join", style: "secondary" }
         ]
     }
 ];
@@ -47,6 +46,7 @@ const carouselItems = [
                         class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
                     />
                     <div class="absolute inset-0 bg-[#205488]/60 mix-blend-multiply"></div>
+                    <div class="vignette absolute inset-0"></div>
                 </div>
 
                 <!-- Content -->
@@ -114,6 +114,16 @@ const carouselItems = [
     .carousel-slide p,
     .carousel-slide div {
         @apply opacity-0 translate-y-8;
+    }
+
+    .vignette {
+        background: radial-gradient(
+            circle,
+            transparent 40%,
+            rgba(0, 0, 0, 0.4) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
     }
 </style>
 
