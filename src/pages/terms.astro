@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Terms & Conditions | Lingkod Ng Dambana">
+    <Navbar lightBg={true} />
+    <main class="pt-20 bg-slate-50 slide-in">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl md:text-4xl font-bold text-[#205488] mb-4">Terms and Conditions</h1>
+                    <p class="text-slate-500">Last updated: December 17, 2024</p>
+                </div>
+
+                <!-- Content -->
+                <div class="prose prose-slate max-w-none">
+                    <p class="lead text-lg text-slate-600 mb-8">
+                        Please read these terms and conditions carefully before using Our Service.
+                    </p>
+
+                    <div class="space-y-12">
+                        <!-- Interpretation Section -->
+                        <section>
+                            <h2 class="text-2xl font-bold text-[#205488] mb-4">Interpretation and Definitions</h2>
+                            <div class="bg-slate-50 rounded-xl p-6 space-y-4">
+                                <h3 class="text-xl font-semibold text-[#205488]">Interpretation</h3>
+                                <p class="text-slate-600">
+                                    The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- Definitions Section -->
+                        <section>
+                            <h3 class="text-xl font-semibold text-[#205488] mb-4">Definitions</h3>
+                            <div class="grid gap-4">
+                                <div class="bg-white rounded-lg p-6 border border-slate-100">
+                                    <h4 class="font-semibold text-[#205488] mb-2">Company</h4>
+                                    <p class="text-slate-600">
+                                        refers to Lingkod Ng Dambana - Liliw, Laguna, Pag-Asa Street, Liliw, Laguna, Philippines.
+                                    </p>
+                                </div>
+                                <div class="bg-white rounded-lg p-6 border border-slate-100">
+                                    <h4 class="font-semibold text-[#205488] mb-2">Service</h4>
+                                    <p class="text-slate-600">
+                                        refers to the Website.
+                                    </p>
+                                </div>
+                                <div class="bg-white rounded-lg p-6 border border-slate-100">
+                                    <h4 class="font-semibold text-[#205488] mb-2">Website</h4>
+                                    <p class="text-slate-600">
+                                        refers to Lingkod Ng Dambana - Liliw, Laguna, accessible from 
+                                        <a href="https://lndliliw.netlify.app" class="text-[#205488] hover:text-[#FDC83D] transition-colors">
+                                            https://lndliliw.netlify.app
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Acknowledgment Section -->
+                        <section class="bg-slate-50 rounded-xl p-6">
+                            <h2 class="text-2xl font-bold text-[#205488] mb-4">Acknowledgment</h2>
+                            <div class="space-y-4 text-slate-600">
+                                <p>
+                                    These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.
+                                </p>
+                                <p>
+                                    Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.
+                                </p>
+                            </div>
+                        </section>
+
+                        <!-- Contact Section -->
+                        <section class="bg-[#205488] text-white rounded-xl p-8">
+                            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+                            <p class="mb-4">If you have any questions about these Terms and Conditions, You can contact us:</p>
+                            <div class="flex items-center space-x-2 text-[#FDC83D]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                </svg>
+                                <a href="mailto:contact@lndliliw.com" class="hover:text-white transition-colors">contact@lndliliw.com</a>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <Footer />
+</Layout>
+
+<style>
+    .lead {
+        font-size: 1.125rem;
+        line-height: 1.75;
+    }
+</style>

@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-astro';
+import logo from '../assets/lndliliw-emblem-primary-shadow.webp';
+---
+
+<footer class="bg-[#205488] text-white">
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- Brand Section -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-3">
+                    <Image 
+                        src={logo} 
+                        alt="LND Logo" 
+                        class="h-12 w-auto brightness-0 invert"
+                        width={48}
+                        height={48}
+                    />
+                    <div>
+                        <h3 class="font-bold text-lg">Lingkod Ng Dambana</h3>
+                        <p class="text-sm text-gray-300">Liliw, Laguna</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 text-sm">
+                    Serving the altar with reverence, discipline, and faith.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="https://web.facebook.com/LND.LILIW" target="_blank" class="hover:text-[#FDC83D] transition-colors">
+                        <Facebook size={20} />
+                    </a>
+                    <a href="https://www.instagram.com/lndliliw" target="_blank" class="hover:text-[#FDC83D] transition-colors">
+                        <Instagram size={20} />
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Quick Links</h3>
+                <ul class="space-y-3">
+                    <li><a href="/" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Home</a></li>
+                    <li><a href="/about" class="text-gray-300 hover:text-[#FDC83D] transition-colors">About Us</a></li>
+                    <li><a href="/events" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Events</a></li>
+                    <li><a href="/news" class="text-gray-300 hover:text-[#FDC83D] transition-colors">News</a></li>
+                    <li><a href="/gallery" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Gallery</a></li>
+                    <li><a href="/join" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Join Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Contact Us</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start space-x-3">
+                        <MapPin size={20} class="flex-shrink-0 text-[#FDC83D]" />
+                        <span class="text-gray-300">St. John the Baptist Parish Church, Liliw, Laguna</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <Phone size={20} class="flex-shrink-0 text-[#FDC83D]" />
+                        <span class="text-gray-300">+63 927 340 1548</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <Mail size={20} class="flex-shrink-0 text-[#FDC83D]" />
+                        <span class="text-gray-300">contact@lndliliw.com</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Stay Updated</h3>
+                <p class="text-gray-300 mb-4">Subscribe to our newsletter for updates and announcements.</p>
+                <form class="space-y-3">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        class="w-full px-4 py-2 rounded-lg bg-[#1a4570] border border-[#2a5580] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FDC83D] focus:border-transparent"
+                    >
+                    <button 
+                        type="submit" 
+                        class="w-full px-4 py-2 bg-[#FDC83D] text-[#205488] font-semibold rounded-lg hover:bg-[#ffd666] transition-colors"
+                    >
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-[#2a5580] bg-[#1a4570]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-300 text-sm">
+                    © {new Date().getFullYear()} Lingkod Ng Dambana. All rights reserved.
+                </p>
+                <div class="flex space-x-6 text-sm">
+                    <a href="/privacy-policy" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Privacy Policy</a>
+                    <a href="/terms" class="text-gray-300 hover:text-[#FDC83D] transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> 

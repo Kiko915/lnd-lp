@@ -1,4 +1,7 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+import { ArrowUp } from 'lucide-astro';
+import Preloader from '../components/Preloader.astro';
 const { title } = Astro.props;
 
 interface Props {
@@ -7,7 +10,7 @@ interface Props {
 ---
 
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -18,9 +21,153 @@ interface Props {
 		<meta name="apple-mobile-web-app-title" content="Lingkod Ng Dambana | Liliw, Laguna" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 		<title>{title || "Lingkod Ng Dambana | Liliw, Laguna"}</title>
+		<ClientRouter />
 	</head>
-	<body class="h-full m-0 font-sans antialiased bg-gradient-to-br from-slate-50 to-white text-slate-900">
+	<body class="h-full m-0 font-poppins antialiased bg-white text-slate-900">
+		<Preloader />
 		<slot />
+
+		<!-- Back to Top Button -->
+		<button
+			id="back-to-top"
+			class="fixed bottom-6 right-6 p-2 bg-[#205488] text-white rounded-full shadow-lg cursor-pointer opacity-0 translate-y-8 transition-all duration-300 hover:bg-[#1a4570] focus:outline-none focus:ring-2 focus:ring-[#FDC83D] group z-50"
+			aria-label="Back to top"
+		>
+			<ArrowUp class="w-5 h-5 transition-transform group-hover:-translate-y-1" />
+		</button>
 	</body>
 </html>
+
+<style is:global>
+	:root {
+		--color-primary: #FDC83D;
+		--color-secondary: #205488;
+	}
+
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+
+	@layer base {
+		html {
+			font-family: 'Poppins', system-ui, sans-serif;
+		}
+	}
+
+	@layer components {
+		.btn-primary {
+			@apply px-6 py-3 bg-[#FDC83D] text-[#205488] font-semibold rounded-lg 
+				   transition-all duration-300 hover:bg-[#205488] hover:text-white;
+		}
+		.btn-secondary {
+			@apply px-6 py-3 bg-[#205488] text-white font-semibold rounded-lg 
+				   transition-all duration-300 hover:bg-[#FDC83D] hover:text-[#205488];
+		}
+		.section-title {
+			@apply text-3xl md:text-4xl font-bold text-[#205488] mb-4;
+		}
+		.section-subtitle {
+			@apply text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto;
+		}
+	}
+
+	/* View Transitions */
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none;
+		mix-blend-mode: normal;
+	}
+
+	/* Fade transition */
+	.fade-in {
+		view-transition-name: fade;
+	}
+
+	::view-transition-old(fade) {
+		animation: fade-out 0.5s ease-out both;
+	}
+
+	::view-transition-new(fade) {
+		animation: fade-in 0.5s ease-out both;
+	}
+
+	@keyframes fade-in {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@keyframes fade-out {
+		from { opacity: 1; }
+		to { opacity: 0; }
+	}
+
+	/* Slide transition */
+	.slide-in {
+		view-transition-name: slide;
+	}
+
+	::view-transition-old(slide) {
+		animation: slide-out 0.5s ease-out both;
+	}
+
+	::view-transition-new(slide) {
+		animation: slide-in 0.5s ease-out both;
+	}
+
+	@keyframes slide-in {
+		from { transform: translateX(100%); }
+		to { transform: translateX(0); }
+	}
+
+	@keyframes slide-out {
+		from { transform: translateX(0); }
+		to { transform: translateX(-100%); }
+	}
+
+	/* Back to Top Button Styles */
+	#back-to-top.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+</style>
+
+<script>
+	// Re-run scroll handler after view transitions
+	document.addEventListener('astro:page-load', () => {
+		const navbar = document.getElementById('navbar');
+		const backToTopButton = document.getElementById('back-to-top');
+		
+		const handleScroll = () => {
+			// Navbar scroll behavior
+			if (navbar && !navbar.classList.contains('navbar-light')) {
+				if (window.scrollY > 0) {
+					navbar.classList.add('navbar-scrolled');
+				} else {
+					navbar.classList.remove('navbar-scrolled');
+				}
+			}
+
+			// Back to top button visibility
+			if (backToTopButton) {
+				if (window.scrollY > 300) {
+					backToTopButton.classList.add('visible');
+				} else {
+					backToTopButton.classList.remove('visible');
+				}
+			}
+		};
+
+		// Back to top button click handler
+		backToTopButton?.addEventListener('click', () => {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
+		});
+
+		window.addEventListener('scroll', handleScroll);
+		handleScroll(); // Initial check
+	});
+</script>
