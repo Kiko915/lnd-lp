@@ -29,7 +29,7 @@ const COLLECTION_ID = import.meta.env.PUBLIC_APPWRITE_COLLECTION_ID;
 async function sendWelcomeEmail(email: string) {
     try {
         await mg.messages.create(import.meta.env.MAILGUN_DOMAIN, {
-            from: `Mailgun Sandbox <postmaster@${import.meta.env.MAILGUN_DOMAIN}>`,
+            from: `LND Newsletter <postmaster@${import.meta.env.MAILGUN_DOMAIN}>`,
             to: email,
             subject: 'Welcome to LND Newsletter!',
             template: 'welcome-newsletter',

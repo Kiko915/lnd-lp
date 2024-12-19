@@ -15,6 +15,14 @@ const menuItems = [
     { href: "/gallery", text: "Gallery" },
     { href: "/contact", text: "Contact" },
 ];
+
+// Function to check if a link is active
+const isActive = (href: string) => {
+    if (href === '/') {
+        return currentPath === href;
+    }
+    return currentPath === href || currentPath.startsWith(`${href}/`);
+};
 ---
 
 <nav class={`fixed w-full z-40 transition-all duration-300 ${forceLight || lightBg ? 'navbar-light' : 'navbar-transparent'}`} id="navbar" transition:persist>
@@ -42,7 +50,13 @@ const menuItems = [
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-1">
                 {menuItems.map(item => (
-                    <a href={item.href} class="nav-link">{item.text}</a>
+                    <a 
+                        href={item.href} 
+                        class={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+                        aria-current={isActive(item.href) ? "page" : undefined}
+                    >
+                        {item.text}
+                    </a>
                 ))}
                 <a href="/join" class="ml-4 inline-flex items-center px-4 py-2 border-2 border-[#FDC83D] bg-[#FDC83D] text-[#205488] font-semibold rounded-lg transition-all duration-300 hover:bg-transparent hover:scale-105">
                     Join Now
@@ -107,6 +121,10 @@ const menuItems = [
         @apply text-slate-600 hover:text-[#205488] hover:bg-slate-50/50;
     }
 
+    .navbar-light .nav-link.active {
+        @apply text-[#205488] bg-slate-50/50 after:w-full;
+    }
+
     .navbar-light span {
         @apply text-[#205488] first:text-[#205488] last:text-slate-500;
     }
@@ -122,6 +140,10 @@ const menuItems = [
 
     .navbar-transparent .nav-link {
         @apply text-white hover:text-white hover:bg-white/10;
+    }
+
+    .navbar-transparent .nav-link.active {
+        @apply text-white bg-white/10 after:w-full;
     }
 
     .navbar-transparent span {
@@ -159,6 +181,10 @@ const menuItems = [
 
     .mobile-nav-link {
         @apply block px-4 py-3 text-slate-600 font-medium rounded-lg hover:text-[#205488] hover:bg-slate-50/50 transition-colors;
+    }
+
+    .mobile-nav-link.active {
+        @apply text-[#205488] bg-slate-50/50;
     }
 
     /* Active state */
@@ -212,20 +238,38 @@ const menuItems = [
         const mobileMenu = document.querySelector('.mobile-menu');
         const backdrop = document.querySelector('.mobile-menu .bg-black\\/50');
 
+        // Function to update active states
+        function updateActiveStates() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                const isActive = href === '/' 
+                    ? currentPath === href
+                    : currentPath === href || currentPath.startsWith(`${href}/`);
+                
+                if (isActive) {
+                    link.classList.add('active');
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                }
+            });
+        }
+
         // Function to update navbar based on current path
         function updateNavbarBackground() {
             const currentPath = window.location.pathname;
             const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
             
-            // Reset all classes first
             navbar?.classList.remove('navbar-light', 'navbar-transparent', 'navbar-scrolled');
             
-            // Apply the appropriate class based on the path
             if (shouldBeLight) {
                 navbar?.classList.add('navbar-light');
             } else {
                 navbar?.classList.add('navbar-transparent');
-                // Check scroll position and add scrolled class if needed
                 if (window.scrollY > 20) {
                     navbar?.classList.add('navbar-scrolled');
                 }
@@ -237,30 +281,34 @@ const menuItems = [
             const currentPath = window.location.pathname;
             const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
             
-            if (!shouldBeLight) {
+            if (!shouldBeLight && navbar) {
                 if (window.scrollY > 20) {
-                    navbar?.classList.add('navbar-scrolled');
+                    navbar.classList.add('navbar-scrolled');
                 } else {
-                    navbar?.classList.remove('navbar-scrolled');
+                    navbar.classList.remove('navbar-scrolled');
                 }
             }
         }
-
-        // Update navbar on page load and navigation
-        updateNavbarBackground();
-        document.addEventListener('astro:after-swap', updateNavbarBackground);
-        window.addEventListener('scroll', handleScroll);
 
         function toggleMenu() {
             mobileMenu?.classList.toggle('open');
             document.body.classList.toggle('overflow-hidden');
         }
 
-        // Toggle menu on button click
+        // Initial updates
+        updateActiveStates();
+        updateNavbarBackground();
+
+        // Update on navigation
+        document.addEventListener('astro:after-swap', () => {
+            updateActiveStates();
+            updateNavbarBackground();
+        });
+
+        // Event listeners
+        window.addEventListener('scroll', handleScroll);
         menuToggle?.addEventListener('click', toggleMenu);
         closeButton?.addEventListener('click', toggleMenu);
-
-        // Close menu when clicking backdrop
         backdrop?.addEventListener('click', toggleMenu);
 
         // Close menu on escape key
@@ -273,7 +321,10 @@ const menuItems = [
         // Cleanup event listeners
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('astro:after-swap', updateNavbarBackground);
+            document.removeEventListener('astro:after-swap', () => {
+                updateActiveStates();
+                updateNavbarBackground();
+            });
         };
     });
 </script> 

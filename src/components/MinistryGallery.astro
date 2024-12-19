@@ -1,0 +1,132 @@
+---
+import { Image as ImageIcon } from 'lucide-astro';
+
+const galleryImages = [
+    {
+        src: "placeholder",
+        alt: "Altar Servers during Mass",
+        category: "Liturgical Service"
+    },
+    {
+        src: "placeholder",
+        alt: "Community Outreach Program",
+        category: "Community Service"
+    },
+    {
+        src: "placeholder",
+        alt: "Formation Session",
+        category: "Formation"
+    },
+    {
+        src: "placeholder",
+        alt: "Parish Procession",
+        category: "Events"
+    },
+    {
+        src: "placeholder",
+        alt: "Easter Sunday Mass",
+        category: "Liturgical Service"
+    },
+    {
+        src: "placeholder",
+        alt: "Ministry Gathering",
+        category: "Fellowship"
+    }
+];
+---
+
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-[#205488] mb-4">
+            Our Ministry in Action
+        </h2>
+        <div class="w-20 h-1 bg-yellow-400 mx-auto mb-4 rounded-full"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            Glimpses of our service, fellowship, and community engagement.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {galleryImages.map((image, index) => (
+            <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item">
+                {image.src === "placeholder" ? (
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                        <ImageIcon class="w-12 h-12 text-gray-400" />
+                    </div>
+                ) : (
+                    <img
+                        src={image.src}
+                        alt={image.alt}
+                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    />
+                )}
+                <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
+                            {image.category}
+                        </span>
+                        <h3 class="text-white text-lg font-semibold">
+                            {image.alt}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+
+    <div class="text-center mt-12">
+        <a href="/gallery" class="inline-flex items-center px-6 py-3 rounded-full bg-[#205488] text-white hover:bg-[#205488]/90 transition-all duration-300 group">
+            View Full Gallery
+            <span class="ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    .gallery-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .gallery-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Add transition delays for staggered effect */
+    .gallery-item:nth-child(2) { transition-delay: 0.1s; }
+    .gallery-item:nth-child(3) { transition-delay: 0.2s; }
+    .gallery-item:nth-child(4) { transition-delay: 0.3s; }
+    .gallery-item:nth-child(5) { transition-delay: 0.4s; }
+    .gallery-item:nth-child(6) { transition-delay: 0.5s; }
+
+    /* Make items visible by default if reduced motion is preferred */
+    @media (prefers-reduced-motion: reduce) {
+        .gallery-item {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    function initializeGallery() {
+        // First, remove any existing visible classes
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.classList.remove('visible');
+        });
+
+        // Force a reflow
+        document.body.offsetHeight;
+
+        // Then add visible class to trigger animation
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.classList.add('visible');
+        });
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('astro:page-load', initializeGallery);
+</script> 

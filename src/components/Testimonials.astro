@@ -1,0 +1,200 @@
+---
+import { Quote } from 'lucide-astro';
+
+const testimonials = [
+    {
+        name: "Luvin Reign Tunay",
+        role: "Senior Altar Server/LND Auditor",
+        quote: "Being part of LND has deepened my faith and understanding of the liturgy. The formation program has been transformative for my spiritual journey.",
+        image: "placeholder",
+        years: "Serving for 10 years"
+    },
+    {
+        name: "Maria Clara Reyes",
+        role: "Youth Coordinator",
+        quote: "The sense of community and dedication I've found in LND is incredible. It's more than just serving at Mass; it's about growing together in faith.",
+        image: "placeholder",
+        years: "Serving for 3 years"
+    },
+    {
+        name: "Miguel Dela Cruz",
+        role: "Junior Altar Server",
+        quote: "Starting as a new server was intimidating, but the mentorship and support from senior servers made the journey enjoyable and meaningful.",
+        image: "placeholder",
+        years: "Serving for 1 year"
+    }
+];
+---
+
+<section class="py-20 bg-gradient-to-b from-white to-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#205488] mb-4">
+                Voices of Our Members
+            </h2>
+            <div class="w-20 h-1 bg-yellow-400 mx-auto mb-4 rounded-full"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Hear from our dedicated altar servers about their experiences and spiritual journey with LND.
+            </p>
+        </div>
+
+        <!-- Testimonial Carousel -->
+        <div class="testimonial-carousel relative max-w-4xl mx-auto">
+            <div class="overflow-hidden">
+                <div class="flex transition-transform duration-500 ease-out" id="testimonial-slider">
+                    {testimonials.map((testimonial, index) => (
+                        <div class="w-full flex-shrink-0 px-4">
+                            <div class="testimonial-card bg-white rounded-3xl shadow-lg p-8 md:p-12">
+                                <Quote class="w-12 h-12 text-yellow-400/30 mb-6" />
+                                
+                                <blockquote class="mb-8">
+                                    <p class="text-gray-700 text-lg md:text-xl leading-relaxed italic">
+                                        "{testimonial.quote}"
+                                    </p>
+                                </blockquote>
+
+                                <div class="flex items-center">
+                                    <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-100 mr-4 flex items-center justify-center border-2 border-yellow-400/20">
+                                        {testimonial.image === "placeholder" ? (
+                                            <div class="w-8 h-8 text-gray-400">👤</div>
+                                        ) : (
+                                            <img 
+                                                src={testimonial.image} 
+                                                alt={testimonial.name}
+                                                class="w-full h-full object-cover"
+                                            />
+                                        )}
+                                    </div>
+                                    <div>
+                                        <div class="text-lg font-semibold text-[#205488]">
+                                            {testimonial.name}
+                                        </div>
+                                        <div class="text-gray-500 text-sm">
+                                            {testimonial.role}
+                                        </div>
+                                        <div class="text-yellow-500 text-sm font-medium mt-0.5">
+                                            {testimonial.years}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="flex justify-center mt-8 gap-3" id="testimonial-dots">
+                {testimonials.map((_, index) => (
+                    <button
+                        class={`h-1.5 rounded-full transition-all duration-300 ${
+                            index === 0 ? 'bg-yellow-400 w-8' : 'bg-gray-300 w-4'
+                        } hover:bg-yellow-400/50`}
+                        data-index={index}
+                        aria-label={`Go to testimonial ${index + 1}`}
+                    />
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .testimonial-card {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function setupTestimonialCarousel() {
+        const slider = document.getElementById('testimonial-slider');
+        const dots = document.getElementById('testimonial-dots');
+        const dotsButtons = dots?.querySelectorAll('button');
+        let currentSlide = 0;
+        let isAnimating = false;
+
+        function updateSlider(index: number) {
+            if (!slider || isAnimating) return;
+            isAnimating = true;
+
+            // Update slider position
+            const slideWidth = slider.children[0].getBoundingClientRect().width;
+            slider.style.transform = `translateX(-${slideWidth * index}px)`;
+
+            // Update dots
+            dotsButtons?.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('bg-yellow-400', 'w-8');
+                    dot.classList.remove('bg-gray-300', 'w-4');
+                } else {
+                    dot.classList.remove('bg-yellow-400', 'w-8');
+                    dot.classList.add('bg-gray-300', 'w-4');
+                }
+            });
+
+            currentSlide = index;
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+        }
+
+        // Add click handlers to dots
+        dotsButtons?.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateSlider(index);
+            });
+        });
+
+        // Auto advance slides
+        let autoAdvanceInterval: NodeJS.Timeout;
+
+        function startAutoAdvance() {
+            autoAdvanceInterval = setInterval(() => {
+                const nextSlide = (currentSlide + 1) % (dotsButtons?.length || 1);
+                updateSlider(nextSlide);
+            }, 5000);
+        }
+
+        function stopAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearInterval(autoAdvanceInterval);
+            }
+        }
+
+        // Start auto-advance and handle hover
+        startAutoAdvance();
+        slider?.parentElement?.addEventListener('mouseenter', stopAutoAdvance);
+        slider?.parentElement?.addEventListener('mouseleave', startAutoAdvance);
+
+        // Handle window resize
+        let resizeTimeout: NodeJS.Timeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateSlider(currentSlide);
+            }, 100);
+        });
+
+        // Clean up on page unload
+        return () => {
+            stopAutoAdvance();
+            clearTimeout(resizeTimeout);
+        };
+    }
+
+    // Setup carousel on page load
+    document.addEventListener('astro:page-load', setupTestimonialCarousel);
+</script> 
