@@ -231,12 +231,42 @@ const isActive = (href: string) => {
 </style>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
-        const navbar = document.getElementById('navbar');
-        const menuToggle = document.getElementById('menu-toggle');
-        const closeButton = document.querySelector('.close-menu');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const backdrop = document.querySelector('.mobile-menu .bg-black\\/50');
+    interface NavbarElements {
+        navbar: HTMLElement | null;
+        menuToggle: HTMLElement | null;
+        closeButton: HTMLElement | null;
+        mobileMenu: HTMLElement | null;
+        backdrop: HTMLElement | null;
+        mobileLinks: NodeListOf<Element>;
+    }
+
+    function getNavbarElements(): NavbarElements {
+        return {
+            navbar: document.getElementById('navbar'),
+            menuToggle: document.getElementById('menu-toggle'),
+            closeButton: document.querySelector('.close-menu'),
+            mobileMenu: document.querySelector('.mobile-menu'),
+            backdrop: document.querySelector('.mobile-menu .bg-black\\/50'),
+            mobileLinks: document.querySelectorAll('.mobile-nav-link')
+        };
+    }
+
+    function initializeNavbar() {
+        const elements = getNavbarElements();
+
+        function toggleMenu() {
+            if (elements.mobileMenu) {
+                elements.mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('overflow-hidden');
+            }
+        }
+
+        function closeMenu() {
+            if (elements.mobileMenu) {
+                elements.mobileMenu.classList.remove('open');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
 
         // Function to update active states
         function updateActiveStates() {
@@ -264,14 +294,14 @@ const isActive = (href: string) => {
             const currentPath = window.location.pathname;
             const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
             
-            navbar?.classList.remove('navbar-light', 'navbar-transparent', 'navbar-scrolled');
+            elements.navbar?.classList.remove('navbar-light', 'navbar-transparent', 'navbar-scrolled');
             
             if (shouldBeLight) {
-                navbar?.classList.add('navbar-light');
+                elements.navbar?.classList.add('navbar-light');
             } else {
-                navbar?.classList.add('navbar-transparent');
+                elements.navbar?.classList.add('navbar-transparent');
                 if (window.scrollY > 20) {
-                    navbar?.classList.add('navbar-scrolled');
+                    elements.navbar?.classList.add('navbar-scrolled');
                 }
             }
         }
@@ -281,50 +311,74 @@ const isActive = (href: string) => {
             const currentPath = window.location.pathname;
             const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
             
-            if (!shouldBeLight && navbar) {
+            if (!shouldBeLight && elements.navbar) {
                 if (window.scrollY > 20) {
-                    navbar.classList.add('navbar-scrolled');
+                    elements.navbar.classList.add('navbar-scrolled');
                 } else {
-                    navbar.classList.remove('navbar-scrolled');
+                    elements.navbar.classList.remove('navbar-scrolled');
                 }
             }
         }
 
-        function toggleMenu() {
-            mobileMenu?.classList.toggle('open');
-            document.body.classList.toggle('overflow-hidden');
+        // Event listeners
+        window.addEventListener('scroll', handleScroll);
+
+        // Menu toggle button - Direct click handler
+        const menuToggleButton = document.getElementById('menu-toggle');
+        if (menuToggleButton) {
+            // Remove old event listeners by cloning
+            const newMenuToggle = menuToggleButton.cloneNode(true);
+            menuToggleButton.parentNode?.replaceChild(newMenuToggle, menuToggleButton);
+            
+            // Add new event listener
+            newMenuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleMenu();
+            });
         }
+
+        // Close button
+        if (elements.closeButton) {
+            elements.closeButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeMenu();
+            });
+        }
+
+        // Backdrop
+        if (elements.backdrop) {
+            elements.backdrop.addEventListener('click', closeMenu);
+        }
+
+        // Mobile menu links
+        elements.mobileLinks.forEach(link => {
+            if (link instanceof HTMLElement) {
+                link.addEventListener('click', closeMenu);
+            }
+        });
+
+        // Escape key handler
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && elements.mobileMenu?.classList.contains('open')) {
+                closeMenu();
+            }
+        };
+        document.addEventListener('keydown', handleKeydown);
 
         // Initial updates
         updateActiveStates();
         updateNavbarBackground();
 
-        // Update on navigation
-        document.addEventListener('astro:after-swap', () => {
+        // Navigation handler
+        const handleNavigation = () => {
             updateActiveStates();
             updateNavbarBackground();
-        });
-
-        // Event listeners
-        window.addEventListener('scroll', handleScroll);
-        menuToggle?.addEventListener('click', toggleMenu);
-        closeButton?.addEventListener('click', toggleMenu);
-        backdrop?.addEventListener('click', toggleMenu);
-
-        // Close menu on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenu?.classList.contains('open')) {
-                toggleMenu();
-            }
-        });
-
-        // Cleanup event listeners
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('astro:after-swap', () => {
-                updateActiveStates();
-                updateNavbarBackground();
-            });
+            closeMenu();
         };
-    });
+        document.addEventListener('astro:after-swap', handleNavigation);
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('astro:page-load', initializeNavbar);
+</script> 
 </script> 

@@ -1,0 +1,566 @@
+---
+import { Image as ImageIcon } from 'lucide-astro';
+import Layout from '../layouts/Layout.astro';
+
+interface FacebookImage {
+    id: string;
+    source: string;
+    created_time: string;
+    caption?: string;
+    album?: string;
+}
+
+// This will be replaced with Facebook data
+const defaultImages = [
+    {
+        src: "placeholder",
+        alt: "Altar Servers during Mass",
+        category: "Liturgical Service",
+        description: "Our dedicated altar servers assisting during the Holy Mass"
+    },
+    // ... other default images
+];
+
+// Function to format date
+function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+---
+
+<Layout title="Gallery | LND Ministry">
+    <main class="bg-gray-50">
+        <!-- Hero Section -->
+        <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+                {/* Gradient Overlay */}
+                <div class="absolute inset-0 bg-gradient-to-b from-[#205488]/50 via-[#205488]/30 to-[#205488]"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-4xl mx-auto">
+                    <span class="inline-block text-yellow-400 text-lg md:text-xl font-medium mb-4 animate-fade-in tracking-wide">
+                        Our Visual Journey
+                    </span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 animate-fade-in leading-tight">
+                        Ministry <span class="text-yellow-400">Gallery</span>
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto animate-fade-in-up leading-relaxed">
+                        Explore moments of faith, service, and community through our visual journey of dedication and worship.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="py-20 -mt-10">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Loading State -->
+                <div id="loading-state" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#205488]"></div>
+                    <p class="mt-4 text-gray-600">Loading gallery...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error-state" class="hidden text-center py-12">
+                    <p class="text-red-500">Failed to load images. Please try again later.</p>
+                    <button 
+                        onclick="loadGalleryImages()"
+                        class="mt-4 px-4 py-2 bg-[#205488] text-white rounded-lg hover:bg-[#205488]/90 transition-colors"
+                    >
+                        Retry
+                    </button>
+                </div>
+
+                <!-- Gallery Content -->
+                <div id="gallery-content" class="hidden">
+                    <!-- Category Filter -->
+                    <div class="flex flex-wrap justify-center gap-3 mb-8" id="category-filters">
+                        <button 
+                            class="px-4 py-2 rounded-full bg-[#205488] text-white hover:bg-[#205488]/90 transition-all duration-300 active"
+                            data-category="all"
+                        >
+                            All
+                        </button>
+                    </div>
+
+                    <!-- Gallery Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+        <button id="close-lightbox" class="absolute top-4 right-4 text-white hover:text-yellow-400 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        
+        <!-- Navigation Buttons -->
+        <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-yellow-400 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-yellow-400 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <!-- Image Container -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <img id="lightbox-image" src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain">
+        </div>
+
+        <!-- Caption -->
+        <div id="lightbox-caption" class="absolute bottom-0 left-0 right-0 text-white bg-black/50 backdrop-blur-sm transition-all duration-300 cursor-pointer md:cursor-default">
+            <div class="p-6 max-h-[30vh] md:max-h-none overflow-y-auto">
+                <p class="text-lg font-semibold mb-2 line-clamp-2 md:line-clamp-none"></p>
+                <p class="text-sm text-gray-300"></p>
+            </div>
+            <button class="absolute top-2 right-2 text-white/70 hover:text-white md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .pattern-grid {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
+
+    .logo-pattern {
+        background-image: url('../assets/logo-pattern.png');
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .gallery-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .gallery-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Add transition delays for staggered effect */
+    .gallery-item:nth-child(2) { transition-delay: 0.1s; }
+    .gallery-item:nth-child(3) { transition-delay: 0.2s; }
+    .gallery-item:nth-child(4) { transition-delay: 0.3s; }
+    .gallery-item:nth-child(5) { transition-delay: 0.4s; }
+    .gallery-item:nth-child(6) { transition-delay: 0.5s; }
+
+    button.active {
+        @apply bg-[#205488] text-white;
+    }
+
+    /* Make items visible by default if reduced motion is preferred */
+    @media (prefers-reduced-motion: reduce) {
+        .gallery-item {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+
+    /* Lightbox animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+        from { 
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to { 
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    #lightbox.active {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    #lightbox-image {
+        animation: zoomIn 0.3s ease-out forwards;
+    }
+
+    .skeleton-loader {
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    /* Mobile caption styles */
+    #lightbox-caption.expanded {
+        height: auto;
+        max-height: 70vh;
+    }
+
+    #lightbox-caption.expanded .line-clamp-2 {
+        -webkit-line-clamp: unset;
+    }
+
+    #lightbox-caption.expanded svg {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script>
+    interface FacebookImage {
+        id: string;
+        source: string;
+        created_time: string;
+        caption?: string;
+        album?: string;
+    }
+
+    async function loadGalleryImages() {
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const galleryContent = document.getElementById('gallery-content');
+        const categoryFilters = document.getElementById('category-filters');
+        const galleryGrid = document.getElementById('gallery-grid');
+
+        if (!loadingState || !errorState || !galleryContent || !categoryFilters || !galleryGrid) return;
+
+        // Show loading state
+        loadingState.classList.remove('hidden');
+        errorState.classList.add('hidden');
+        galleryContent.classList.add('hidden');
+
+        try {
+            const response = await fetch('/api/facebook-images');
+            if (!response.ok) throw new Error('Failed to fetch images');
+            
+            const data = await response.json();
+            console.log('API Response:', data); // Debug log
+
+            if (!data.success) throw new Error(data.error);
+
+            // Clear existing filters and grid
+            categoryFilters.innerHTML = `
+                <button 
+                    class="px-4 py-2 rounded-full bg-[#205488] text-white hover:bg-[#205488]/90 transition-all duration-300 active"
+                    data-category="all"
+                >
+                    All
+                </button>
+            `;
+
+            // Add category filters
+            const categories = Object.keys(data.images);
+            console.log('Categories:', categories); // Debug log
+
+            categories.forEach(category => {
+                categoryFilters.innerHTML += `
+                    <button 
+                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-300"
+                        data-category="${category}"
+                    >
+                        ${category}
+                    </button>
+                `;
+            });
+
+            // Add images to grid
+            galleryGrid.innerHTML = '';
+            Object.entries(data.images as Record<string, FacebookImage[]>).forEach(([category, images]) => {
+                images.forEach((image: FacebookImage) => {
+                    const date = new Date(image.created_time).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    galleryGrid.innerHTML += `
+                        <div 
+                            class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item bg-gray-100"
+                            data-category="${category}"
+                        >
+                            <div class="skeleton-loader absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 animate-pulse"></div>
+                            <img
+                                data-src="${image.source}"
+                                alt="${image.caption || 'Gallery Image'}"
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-0"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                    <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
+                                        ${category}
+                                    </span>
+                                    ${image.caption ? `
+                                        <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
+                                            ${image.caption}
+                                        </h3>
+                                    ` : ''}
+                                    <p class="text-gray-100 text-sm">
+                                        ${date}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            // Show gallery content
+            loadingState.classList.add('hidden');
+            galleryContent.classList.remove('hidden');
+
+            // Initialize intersection observer for lazy loading
+            initializeLazyLoading();
+
+            // Initialize gallery items animation
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.classList.add('visible');
+            });
+
+            // Initialize filter functionality
+            initializeFilters();
+
+        } catch (error) {
+            console.error('Error loading gallery:', error);
+            loadingState.classList.add('hidden');
+            errorState.classList.remove('hidden');
+        }
+    }
+
+    function initializeFilters() {
+        const filterButtons = document.querySelectorAll<HTMLButtonElement>('#category-filters button');
+        const galleryItems = document.querySelectorAll<HTMLDivElement>('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                
+                // Update active button state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter items
+                galleryItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (category === 'all' || category === itemCategory) {
+                        item.style.display = 'block';
+                        setTimeout(() => item.classList.add('visible'), 10);
+                    } else {
+                        item.classList.remove('visible');
+                        setTimeout(() => item.style.display = 'none', 300);
+                    }
+                });
+            });
+        });
+    }
+
+    // Load gallery images when the page loads
+    document.addEventListener('astro:page-load', loadGalleryImages);
+
+    // Lightbox functionality
+    let currentImageIndex = 0;
+    let galleryImages: HTMLElement[] = [];
+
+    function initializeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeButton = document.getElementById('close-lightbox');
+        const prevButton = document.getElementById('prev-image');
+        const nextButton = document.getElementById('next-image');
+
+        if (!lightbox || !lightboxImage || !lightboxCaption || !closeButton || !prevButton || !nextButton) return;
+
+        // Update gallery images array
+        galleryImages = Array.from(document.querySelectorAll('.gallery-item'));
+
+        // Add click event to gallery items
+        galleryImages.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentImageIndex = index;
+                showImage(index);
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close lightbox
+        closeButton.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Navigation
+        prevButton.addEventListener('click', showPreviousImage);
+        nextButton.addEventListener('click', showNextImage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('hidden')) {
+                switch (e.key) {
+                    case 'Escape':
+                        closeLightbox();
+                        break;
+                    case 'ArrowLeft':
+                        showPreviousImage();
+                        break;
+                    case 'ArrowRight':
+                        showNextImage();
+                        break;
+                }
+            }
+        });
+
+        // Add caption expand functionality for mobile
+        if (lightboxCaption) {
+            lightboxCaption.addEventListener('click', (e) => {
+                // Only toggle on mobile devices
+                if (window.innerWidth < 768) {
+                    lightboxCaption.classList.toggle('expanded');
+                }
+            });
+        }
+    }
+
+    function showImage(index: number) {
+        const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const item = galleryImages[index];
+        
+        if (!lightboxImage || !lightboxCaption || !item) return;
+
+        const img = item.querySelector('img');
+        const caption = item.querySelector('h3');
+        const date = item.querySelector('p:last-child');
+
+        if (img) {
+            lightboxImage.src = img.dataset.src || img.src;
+            lightboxImage.alt = img.alt;
+        }
+
+        const captionText = lightboxCaption.querySelector('p:first-child');
+        const dateText = lightboxCaption.querySelector('p:last-child');
+        
+        if (captionText && dateText) {
+            captionText.textContent = caption?.textContent || '';
+            dateText.textContent = date?.textContent || '';
+        }
+
+        // Reset caption expanded state when showing new image
+        lightboxCaption.classList.remove('expanded');
+    }
+
+    function showPreviousImage() {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        showImage(currentImageIndex);
+    }
+
+    function showNextImage() {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        showImage(currentImageIndex);
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function initializeLazyLoading() {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target as HTMLImageElement;
+                    const container = img.parentElement;
+                    const skeleton = container?.querySelector('.skeleton-loader');
+                    
+                    // Load the actual image
+                    img.src = img.dataset.src || '';
+                    
+                    // Handle image load event
+                    img.onload = () => {
+                        img.classList.remove('opacity-0');
+                        skeleton?.remove();
+                    };
+
+                    // Stop observing after loading
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '50px',
+            threshold: 0.1
+        });
+
+        // Start observing all gallery images
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+
+    // Initialize lightbox after gallery images are loaded
+    document.addEventListener('astro:page-load', () => {
+        loadGalleryImages().then(() => {
+            initializeLightbox();
+        });
+    });
+</script> 

@@ -2,6 +2,9 @@
 import { ClientRouter } from 'astro:transitions';
 import { ArrowUp } from 'lucide-astro';
 import Preloader from '../components/Preloader.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
 const { title } = Astro.props;
 
 interface Props {
@@ -27,7 +30,9 @@ interface Props {
 	</head>
 	<body class="h-full m-0 font-poppins antialiased bg-white text-slate-900">
 		<Preloader />
+		<Navbar lightBg={true} />
 		<slot />
+		<Footer />
 
 		<!-- Back to Top Button -->
 		<button

@@ -39,7 +39,6 @@ const contactInfo = [
 ---
 
 <Layout title="Contact Us | Lingkod Ng Dambana">
-    <Navbar />
     <main class="bg-gray-50">
         <!-- Hero Section -->
         <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
@@ -152,7 +151,11 @@ const contactInfo = [
                                     <label class="block text-gray-700 mb-2 font-medium" for="message">Message</label>
                                     <textarea id="message" name="message" rows="5" 
                                               class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-yellow-400 focus:ring-4 focus:ring-yellow-400/20 transition-all duration-300 bg-gray-50/50"
+                                              maxlength="1000"
                                               required></textarea>
+                                    <div class="mt-1 text-sm text-gray-500 flex justify-end">
+                                        <span id="char-count">0</span>/1000 characters
+                                    </div>
                                 </div>
                                 <button type="submit" 
                                         class="w-full bg-[#205488] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#205488]/90 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#205488]/20">
@@ -195,7 +198,6 @@ const contactInfo = [
             </div>
         </section>
     </main>
-    <Footer />
 </Layout>
 
 <style>
@@ -275,13 +277,97 @@ const contactInfo = [
 </style>
 
 <script>
-    // Form submission handling
-    const form = document.getElementById('contact-form');
+    import Swal from 'sweetalert2';
     
-    form?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        // You can use fetch or any other method to send the data
-        console.log('Form submitted');
+    // Character counter
+    const messageTextarea = document.getElementById('message') as HTMLTextAreaElement;
+    const charCount = document.getElementById('char-count');
+
+    if (messageTextarea && charCount) {
+        messageTextarea.addEventListener('input', () => {
+            const count = messageTextarea.value.length;
+            charCount.textContent = count.toString();
+            
+            // Visual feedback as user approaches limit
+            if (count > 950) {
+                charCount.className = 'text-red-600';
+            } else if (count > 900) {
+                charCount.className = 'text-yellow-600';
+            } else {
+                charCount.className = '';
+            }
+        });
+    }
+
+    // Toast configuration
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
     });
+
+    // Form submission handling
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+            if (!submitButton) return;
+
+            const originalButtonText = submitButton.textContent || 'Send Message';
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError("Oops, we haven't got JSON!");
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await Toast.fire({
+                        icon: 'success',
+                        title: 'Thank you for your message! We will get back to you soon.'
+                    });
+                    form.reset();
+                } else {
+                    throw new Error(result.error || 'Failed to send message');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                await Toast.fire({
+                    icon: 'error',
+                    title: 'Sorry, there was an error sending your message. Please try again later.'
+                });
+            } finally {
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        });
+    }
 </script> 

@@ -34,7 +34,7 @@ const metrics = [
                         </div>
                     </div>
                     <div class="mt-8">
-                        <div class="text-4xl font-bold text-white mb-2 counter">
+                        <div class="text-4xl font-bold text-white mb-2 counter opacity-100 transform-none md:opacity-0 md:transform md:translate-y-10">
                             {metric.value}
                         </div>
                         <h3 class="text-xl font-semibold text-yellow-400 mb-2">
@@ -52,16 +52,18 @@ const metrics = [
 
 <style>
     /* Add subtle floating animation to metrics */
-    .group {
-        animation: float 6s ease-in-out infinite;
-    }
-    
-    .group:nth-child(2) {
-        animation-delay: 1s;
-    }
-    
-    .group:nth-child(3) {
-        animation-delay: 2s;
+    @media (min-width: 768px) {
+        .group {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .group:nth-child(2) {
+            animation-delay: 1s;
+        }
+        
+        .group:nth-child(3) {
+            animation-delay: 2s;
+        }
     }
     
     @keyframes float {
@@ -74,33 +76,44 @@ const metrics = [
     }
 
     /* Counter animation styles */
-    .counter {
-        opacity: 0;
-        transform: translateY(10px);
-        transition: all 0.6s ease-out;
-    }
+    @media (min-width: 768px) {
+        .counter {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s ease-out;
+        }
 
-    .counter.visible {
-        opacity: 1;
-        transform: translateY(0);
+        .counter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
 <script>
-    // Counter animation when in view
-    const counters = document.querySelectorAll('.counter');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+    function initializeCounters() {
+        // Counter animation when in view
+        const counters = document.querySelectorAll('.counter');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
         });
-    }, {
-        threshold: 0.1
-    });
 
-    counters.forEach(counter => {
-        observer.observe(counter);
-    });
+        counters.forEach(counter => {
+            // Make sure counters are visible on mobile by default
+            if (window.innerWidth < 768) {
+                counter.classList.add('visible');
+            }
+            observer.observe(counter);
+        });
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('astro:page-load', initializeCounters);
 </script> 

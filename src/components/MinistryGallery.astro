@@ -1,38 +1,94 @@
 ---
 import { Image as ImageIcon } from 'lucide-astro';
 
-const galleryImages = [
+interface FacebookImage {
+    id: string;
+    source: string;
+    created_time: string;
+    caption?: string;
+    album?: string;
+}
+
+interface GalleryImage {
+    src: string;
+    alt: string;
+    category: string;
+    date: string;
+}
+
+// Fetch the latest images
+const apiUrl = new URL('/api/facebook-images', Astro.url);
+const response = await fetch(apiUrl);
+let galleryImages: GalleryImage[] = [];
+
+if (response.ok) {
+    const data = await response.json();
+    if (data.success && data.images) {
+        // Flatten all images from different albums into a single array
+        const allImages = (Object.values(data.images as Record<string, FacebookImage[]>)
+            .flat() as FacebookImage[])
+            .sort((a, b) => 
+                new Date(b.created_time).getTime() - new Date(a.created_time).getTime()
+            )
+            .slice(0, 6); // Get only the 6 latest images
+
+        galleryImages = allImages.map((image: FacebookImage) => ({
+            src: image.source,
+            alt: image.caption || "Ministry Gallery Image",
+            category: image.album || "Ministry Events",
+            date: new Date(image.created_time).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+        }));
+    }
+}
+
+// Fallback images if fetch fails or not enough images
+const fallbackImages: GalleryImage[] = [
     {
         src: "placeholder",
         alt: "Altar Servers during Mass",
-        category: "Liturgical Service"
+        category: "Liturgical Service",
+        date: new Date().toLocaleDateString()
     },
     {
         src: "placeholder",
         alt: "Community Outreach Program",
-        category: "Community Service"
+        category: "Community Service",
+        date: new Date().toLocaleDateString()
     },
     {
         src: "placeholder",
         alt: "Formation Session",
-        category: "Formation"
+        category: "Formation",
+        date: new Date().toLocaleDateString()
     },
     {
         src: "placeholder",
         alt: "Parish Procession",
-        category: "Events"
+        category: "Events",
+        date: new Date().toLocaleDateString()
     },
     {
         src: "placeholder",
         alt: "Easter Sunday Mass",
-        category: "Liturgical Service"
+        category: "Liturgical Service",
+        date: new Date().toLocaleDateString()
     },
     {
         src: "placeholder",
         alt: "Ministry Gathering",
-        category: "Fellowship"
+        category: "Fellowship",
+        date: new Date().toLocaleDateString()
     }
 ];
+
+// Use fetched images or fallback if needed
+if (galleryImages.length < 6) {
+    galleryImages = [...galleryImages, ...fallbackImages.slice(galleryImages.length)].slice(0, 6);
+}
 ---
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,6 +114,7 @@ const galleryImages = [
                         src={image.src}
                         alt={image.alt}
                         class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
                     />
                 )}
                 <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -65,9 +122,12 @@ const galleryImages = [
                         <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
                             {image.category}
                         </span>
-                        <h3 class="text-white text-lg font-semibold">
+                        <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
                             {image.alt}
                         </h3>
+                        <p class="text-gray-100 text-sm">
+                            {image.date}
+                        </p>
                     </div>
                 </div>
             </div>
