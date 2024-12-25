@@ -1,12 +1,23 @@
 ---
 import { Quote } from 'lucide-astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import luvin from '../assets/luvin.png';
 
-const testimonials = [
+interface Testimonial {
+    name: string;
+    role: string;
+    quote: string;
+    image: ImageMetadata | "placeholder";
+    years: string;
+}
+
+const testimonials: Testimonial[] = [
     {
         name: "Luvin Reign Tunay",
         role: "Senior Altar Server/LND Auditor",
         quote: "Being part of LND has deepened my faith and understanding of the liturgy. The formation program has been transformative for my spiritual journey.",
-        image: "placeholder",
+        image: luvin,
         years: "Serving for 10 years"
     },
     {
@@ -58,10 +69,13 @@ const testimonials = [
                                         {testimonial.image === "placeholder" ? (
                                             <div class="w-8 h-8 text-gray-400">👤</div>
                                         ) : (
-                                            <img 
-                                                src={testimonial.image} 
+                                            <Image 
+                                                src={testimonial.image as ImageMetadata}
                                                 alt={testimonial.name}
                                                 class="w-full h-full object-cover"
+                                                width={56}
+                                                height={56}
+                                                quality={80}
                                             />
                                         )}
                                     </div>

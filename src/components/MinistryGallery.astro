@@ -16,36 +16,7 @@ interface GalleryImage {
     date: string;
 }
 
-// Fetch the latest images
-const apiUrl = new URL('/api/facebook-images', Astro.url);
-const response = await fetch(apiUrl);
-let galleryImages: GalleryImage[] = [];
-
-if (response.ok) {
-    const data = await response.json();
-    if (data.success && data.images) {
-        // Flatten all images from different albums into a single array
-        const allImages = (Object.values(data.images as Record<string, FacebookImage[]>)
-            .flat() as FacebookImage[])
-            .sort((a, b) => 
-                new Date(b.created_time).getTime() - new Date(a.created_time).getTime()
-            )
-            .slice(0, 6); // Get only the 6 latest images
-
-        galleryImages = allImages.map((image: FacebookImage) => ({
-            src: image.source,
-            alt: image.caption || "Ministry Gallery Image",
-            category: image.album || "Ministry Events",
-            date: new Date(image.created_time).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            })
-        }));
-    }
-}
-
-// Fallback images if fetch fails or not enough images
+// Fallback images
 const fallbackImages: GalleryImage[] = [
     {
         src: "placeholder",
@@ -84,11 +55,6 @@ const fallbackImages: GalleryImage[] = [
         date: new Date().toLocaleDateString()
     }
 ];
-
-// Use fetched images or fallback if needed
-if (galleryImages.length < 6) {
-    galleryImages = [...galleryImages, ...fallbackImages.slice(galleryImages.length)].slice(0, 6);
-}
 ---
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,33 +68,11 @@ if (galleryImages.length < 6) {
         </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {galleryImages.map((image, index) => (
-            <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item">
-                {image.src === "placeholder" ? (
-                    <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                        <ImageIcon class="w-12 h-12 text-gray-400" />
-                    </div>
-                ) : (
-                    <img
-                        src={image.src}
-                        alt={image.alt}
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                        loading="lazy"
-                    />
-                )}
-                <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                        <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
-                            {image.category}
-                        </span>
-                        <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
-                            {image.alt}
-                        </h3>
-                        <p class="text-gray-100 text-sm">
-                            {image.date}
-                        </p>
-                    </div>
+    <div id="ministry-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {fallbackImages.map((image, index) => (
+            <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item skeleton-loader">
+                <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                    <ImageIcon class="w-12 h-12 text-gray-400" />
                 </div>
             </div>
         ))}
@@ -154,6 +98,17 @@ if (galleryImages.length < 6) {
         transform: translateY(0);
     }
 
+    .skeleton-loader {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
     /* Add transition delays for staggered effect */
     .gallery-item:nth-child(2) { transition-delay: 0.1s; }
     .gallery-item:nth-child(3) { transition-delay: 0.2s; }
@@ -172,8 +127,71 @@ if (galleryImages.length < 6) {
 </style>
 
 <script>
+    async function loadMinistryGallery() {
+        try {
+            const response = await fetch('/api/facebook-images');
+            if (!response.ok) throw new Error('Failed to fetch images');
+            
+            const data = await response.json();
+            if (!data.success || !data.images) throw new Error('Invalid response data');
+
+            // Flatten and sort images
+            const allImages = Object.values(data.images as Record<string, any[]>)
+                .flat()
+                .sort((a, b) => new Date(b.created_time).getTime() - new Date(a.created_time).getTime())
+                .slice(0, 6); // Get only the 6 latest images
+
+            const galleryGrid = document.getElementById('ministry-gallery-grid');
+            if (!galleryGrid) return;
+
+            // Clear existing content
+            galleryGrid.innerHTML = '';
+
+            // Add images to grid
+            allImages.forEach((image: any) => {
+                const date = new Date(image.created_time).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                galleryGrid.innerHTML += `
+                    <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item">
+                        <img
+                            src="${image.source}"
+                            alt="${image.caption || 'Ministry Gallery Image'}"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                            loading="lazy"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
+                                    ${image.album || 'Ministry Events'}
+                                </span>
+                                ${image.caption ? `
+                                    <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
+                                        ${image.caption}
+                                    </h3>
+                                ` : ''}
+                                <p class="text-gray-100 text-sm">
+                                    ${date}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Initialize animations
+            initializeGallery();
+
+        } catch (error) {
+            console.error('Error loading ministry gallery:', error);
+            // Keep fallback images if fetch fails
+        }
+    }
+
     function initializeGallery() {
-        // First, remove any existing visible classes
         document.querySelectorAll('.gallery-item').forEach(item => {
             item.classList.remove('visible');
         });
@@ -181,12 +199,14 @@ if (galleryImages.length < 6) {
         // Force a reflow
         document.body.offsetHeight;
 
-        // Then add visible class to trigger animation
         document.querySelectorAll('.gallery-item').forEach(item => {
             item.classList.add('visible');
         });
     }
 
     // Initialize on page load and after view transitions
-    document.addEventListener('astro:page-load', initializeGallery);
+    document.addEventListener('astro:page-load', () => {
+        initializeGallery();
+        loadMinistryGallery();
+    });
 </script> 

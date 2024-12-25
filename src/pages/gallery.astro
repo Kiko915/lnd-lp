@@ -91,6 +91,14 @@ function formatDate(dateString: string): string {
 
                     <!-- Gallery Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid"></div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-controls">
+                        <button id="loadMoreBtn" class="load-more-btn">
+                            <span class="btn-text">Load More</span>
+                            <div class="loader"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -255,6 +263,67 @@ function formatDate(dateString: string): string {
     #lightbox-caption.expanded svg {
         transform: rotate(180deg);
     }
+
+    .pagination-controls {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        padding: 1rem;
+    }
+
+    .load-more-btn {
+        position: relative;
+        background: linear-gradient(135deg, #1e40af, #1d4ed8);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 150px;
+        justify-content: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .load-more-btn:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .load-more-btn:active {
+        transform: translateY(0);
+    }
+
+    .load-more-btn:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .load-more-btn[data-loading="true"] .btn-text {
+        display: none;
+    }
+
+    .load-more-btn[data-loading="true"] .loader {
+        display: block;
+    }
+
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <script>
@@ -266,57 +335,90 @@ function formatDate(dateString: string): string {
         album?: string;
     }
 
-    async function loadGalleryImages() {
+    interface PaginationCursors {
+        before?: string;
+        after?: string;
+    }
+
+    interface GalleryResponse {
+        success: boolean;
+        images: Record<string, FacebookImage[]>;
+        paging?: {
+            cursors: PaginationCursors;
+            next?: string;
+        };
+        error?: string;
+    }
+
+    let currentCursor: string | null = null;
+    let hasMoreImages = true;
+    let isLoading = false;
+
+    async function loadGalleryImages(cursor: string | null = null) {
+        if (isLoading) return; // Prevent multiple simultaneous requests
+        
         const loadingState = document.getElementById('loading-state');
         const errorState = document.getElementById('error-state');
         const galleryContent = document.getElementById('gallery-content');
         const categoryFilters = document.getElementById('category-filters');
         const galleryGrid = document.getElementById('gallery-grid');
+        const loadMoreBtn = document.getElementById('loadMoreBtn') as HTMLButtonElement;
 
-        if (!loadingState || !errorState || !galleryContent || !categoryFilters || !galleryGrid) return;
+        if (!loadingState || !errorState || !galleryContent || !categoryFilters || !galleryGrid || !loadMoreBtn) return;
 
+        isLoading = true;
+        
         // Show loading state
-        loadingState.classList.remove('hidden');
-        errorState.classList.add('hidden');
-        galleryContent.classList.add('hidden');
+        if (!cursor) {
+            loadingState.classList.remove('hidden');
+            errorState.classList.add('hidden');
+            galleryContent.classList.add('hidden');
+        }
+        loadMoreBtn.setAttribute('data-loading', 'true');
+        loadMoreBtn.disabled = true;
 
         try {
-            const response = await fetch('/api/facebook-images');
+            const url = new URL('/api/facebook-images', window.location.origin);
+            if (cursor) {
+                url.searchParams.append('cursor', cursor);
+            }
+            
+            const response = await fetch(url);
             if (!response.ok) throw new Error('Failed to fetch images');
             
-            const data = await response.json();
-            console.log('API Response:', data); // Debug log
+            const data: GalleryResponse = await response.json();
+            if (!data.success) throw new Error(data.error || 'Invalid response data');
 
-            if (!data.success) throw new Error(data.error);
-
-            // Clear existing filters and grid
-            categoryFilters.innerHTML = `
-                <button 
-                    class="px-4 py-2 rounded-full bg-[#205488] text-white hover:bg-[#205488]/90 transition-all duration-300 active"
-                    data-category="all"
-                >
-                    All
-                </button>
-            `;
-
-            // Add category filters
-            const categories = Object.keys(data.images);
-            console.log('Categories:', categories); // Debug log
-
-            categories.forEach(category => {
-                categoryFilters.innerHTML += `
+            if (!cursor) {
+                // Clear existing filters and grid for initial load
+                categoryFilters.innerHTML = `
                     <button 
-                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-300"
-                        data-category="${category}"
+                        class="px-4 py-2 rounded-full bg-[#205488] text-white hover:bg-[#205488]/90 transition-all duration-300 active"
+                        data-category="all"
                     >
-                        ${category}
+                        All
                     </button>
                 `;
-            });
+
+                // Add category filters
+                const categories = Object.keys(data.images);
+                categories.forEach(category => {
+                    if (category === 'all') return;
+                    categoryFilters.innerHTML += `
+                        <button 
+                            class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-300"
+                            data-category="${category}"
+                        >
+                            ${category}
+                        </button>
+                    `;
+                });
+
+                galleryGrid.innerHTML = '';
+            }
 
             // Add images to grid
-            galleryGrid.innerHTML = '';
-            Object.entries(data.images as Record<string, FacebookImage[]>).forEach(([category, images]) => {
+            Object.entries(data.images).forEach(([category, images]) => {
                 images.forEach((image: FacebookImage) => {
                     const date = new Date(image.created_time).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -324,58 +426,75 @@ function formatDate(dateString: string): string {
                         day: 'numeric'
                     });
 
-                    galleryGrid.innerHTML += `
-                        <div 
-                            class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item bg-gray-100"
-                            data-category="${category}"
-                        >
-                            <div class="skeleton-loader absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 animate-pulse"></div>
-                            <img
-                                data-src="${image.source}"
-                                alt="${image.caption || 'Gallery Image'}"
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-0"
-                                loading="lazy"
-                            />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                    <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
-                                        ${category}
-                                    </span>
-                                    ${image.caption ? `
-                                        <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
-                                            ${image.caption}
-                                        </h3>
-                                    ` : ''}
-                                    <p class="text-gray-100 text-sm">
-                                        ${date}
-                                    </p>
-                                </div>
+                    const imageElement = document.createElement('div');
+                    imageElement.className = 'group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item';
+                    imageElement.setAttribute('data-category', category);
+                    
+                    imageElement.innerHTML = `
+                        <div class="skeleton-loader absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200"></div>
+                        <img
+                            src="${image.source}"
+                            alt="${image.caption || 'Gallery Image'}"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-0"
+                            loading="lazy"
+                            onload="this.classList.remove('opacity-0'); this.previousElementSibling.remove();"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
+                                    ${category}
+                                </span>
+                                ${image.caption ? `
+                                    <h3 class="text-white text-lg font-semibold mb-2 line-clamp-2 hover:line-clamp-none transition-all duration-300">
+                                        ${image.caption}
+                                    </h3>
+                                ` : ''}
+                                <p class="text-gray-100 text-sm">
+                                    ${date}
+                                </p>
                             </div>
                         </div>
                     `;
+                    
+                    galleryGrid.appendChild(imageElement);
                 });
             });
 
-            // Show gallery content
-            loadingState.classList.add('hidden');
-            galleryContent.classList.remove('hidden');
+            // Update pagination state
+            hasMoreImages = !!data.paging?.next;
+            currentCursor = data.paging?.cursors?.after || null;
+            
+            // Show/hide load more button based on whether there are more images
+            loadMoreBtn.style.display = hasMoreImages ? 'flex' : 'none';
 
-            // Initialize intersection observer for lazy loading
-            initializeLazyLoading();
+            // Show gallery content
+            if (!cursor) {
+                loadingState.classList.add('hidden');
+                galleryContent.classList.remove('hidden');
+            }
 
             // Initialize gallery items animation
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(item => {
-                item.classList.add('visible');
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.gallery-item:not(.visible)').forEach((item, index) => {
+                    setTimeout(() => item.classList.add('visible'), index * 100);
+                });
             });
 
-            // Initialize filter functionality
-            initializeFilters();
+            // Initialize filter functionality if this is the initial load
+            if (!cursor) {
+                initializeFilters();
+            }
 
         } catch (error) {
             console.error('Error loading gallery:', error);
-            loadingState.classList.add('hidden');
-            errorState.classList.remove('hidden');
+            if (!cursor) {
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+            }
+        } finally {
+            isLoading = false;
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.setAttribute('data-loading', 'false');
         }
     }
 
@@ -406,8 +525,24 @@ function formatDate(dateString: string): string {
         });
     }
 
-    // Load gallery images when the page loads
-    document.addEventListener('astro:page-load', loadGalleryImages);
+    function initializeLoadMore() {
+        const loadMoreBtn = document.getElementById('loadMoreBtn') as HTMLButtonElement;
+        if (!loadMoreBtn) return;
+
+        loadMoreBtn.addEventListener('click', () => {
+            if (currentCursor && hasMoreImages) {
+                loadGalleryImages(currentCursor);
+            }
+        });
+    }
+
+    // Initialize load more functionality after gallery images are loaded
+    document.addEventListener('astro:page-load', () => {
+        loadGalleryImages().then(() => {
+            initializeLightbox();
+            initializeLoadMore();
+        });
+    });
 
     // Lightbox functionality
     let currentImageIndex = 0;
@@ -556,11 +691,4 @@ function formatDate(dateString: string): string {
             imageObserver.observe(img);
         });
     }
-
-    // Initialize lightbox after gallery images are loaded
-    document.addEventListener('astro:page-load', () => {
-        loadGalleryImages().then(() => {
-            initializeLightbox();
-        });
-    });
 </script> 

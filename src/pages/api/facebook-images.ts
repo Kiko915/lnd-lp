@@ -13,11 +13,18 @@ interface FacebookImage {
 interface FacebookResponse {
     data: {
         id: string;
-        source: string;
+        full_picture?: string;
         created_time: string;
-        name?: string;
-        album?: {
-            name: string;
+        message?: string;
+        attachments?: {
+            data: Array<{
+                type: string;
+                media?: {
+                    image?: {
+                        src: string;
+                    };
+                };
+            }>;
         };
     }[];
     paging?: {
@@ -29,14 +36,18 @@ interface FacebookResponse {
     };
 }
 
-async function fetchFacebookImages(pageId: string, accessToken: string, apiVersion: string): Promise<FacebookImage[]> {
+async function fetchFacebookImages(pageId: string, accessToken: string, apiVersion: string, cursor?: string): Promise<{ images: FacebookImage[], paging?: { cursors: { before: string; after: string; }; next?: string; } }> {
     try {
         const url = `https://graph.facebook.com/${apiVersion}/${pageId}/feed`;
         const params = new URLSearchParams({
             access_token: accessToken,
             fields: 'id,full_picture,created_time,message,attachments{type,media,title,description}',
-            limit: '100'
+            limit: '20'
         });
+
+        if (cursor) {
+            params.append('after', cursor);
+        }
 
         const finalUrl = `${url}?${params}`;
         console.log('Fetching from URL:', finalUrl);
@@ -48,20 +59,24 @@ async function fetchFacebookImages(pageId: string, accessToken: string, apiVersi
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data: any = await response.json();
+        const data: FacebookResponse = await response.json();
         console.log('Facebook API Response:', data);
         
         const images = data.data
-            .filter((post: any) => post.full_picture || (post.attachments?.data[0]?.type === 'photo'))
-            .map((post: any) => ({
+            .filter(post => post.full_picture || (post.attachments?.data[0]?.type === 'photo'))
+            .map(post => ({
                 id: post.id,
-                source: post.full_picture || post.attachments?.data[0]?.media?.image?.src,
+                source: post.full_picture || post.attachments?.data[0]?.media?.image?.src || '',
                 created_time: post.created_time,
                 caption: post.message,
                 album: 'Timeline Photos'
-            }));
+            }))
+            .filter(image => image.source); // Ensure we only return images with a valid source
 
-        return images;
+        return {
+            images,
+            paging: data.paging
+        };
     } catch (error) {
         console.error('Error fetching Facebook images:', error);
         throw error;
@@ -85,7 +100,12 @@ export const GET: APIRoute = async ({ request }) => {
             });
         }
 
-        const images = await fetchFacebookImages(pageId, accessToken, apiVersion);
+        // Get cursor from URL params
+        const url = new URL(request.url);
+        const cursorParam = url.searchParams.get('cursor');
+        const cursor = cursorParam || undefined;
+
+        const { images, paging } = await fetchFacebookImages(pageId, accessToken, apiVersion, cursor);
 
         // Group images by album
         const groupedImages = images.reduce((acc, image) => {
@@ -99,7 +119,8 @@ export const GET: APIRoute = async ({ request }) => {
 
         return new Response(JSON.stringify({
             success: true,
-            images: groupedImages
+            images: groupedImages,
+            paging
         }), {
             status: 200,
             headers: {
