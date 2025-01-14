@@ -3,16 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
-import { Client as Appwrite, Databases, Query, Models } from 'node-appwrite';
+import { Client as Appwrite, Databases, Query, type Models } from 'node-appwrite';
 
 interface Event extends Models.Document {
     title: string;
     description: string;
-    eventDate: string;
+    date: string;
     location: string;
+    category: string;
     image: string;
-    registrationLink?: string;
-    featured: boolean;
+    registration_link?: string;
+    is_past_event: boolean;
+    contact_email: string;
+    social_media_links: string[];
 }
 
 // Initialize Appwrite
@@ -33,12 +36,15 @@ try {
     const isoDate = now.toISOString();
 
     // Fetch upcoming events
+    console.log('Database ID:', import.meta.env.PUBLIC_APPWRITE_DATABASE_ID);
+    console.log('Collection ID:', import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID);
+
     const upcomingEvents = await databases.listDocuments<Event>(
         import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
         import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID,
         [
-            Query.greaterThan('eventDate', isoDate),
-            Query.orderAsc('eventDate'),
+            Query.greaterThan('date', isoDate),
+            Query.orderAsc('date'),
             Query.limit(6)
         ]
     );
@@ -48,8 +54,8 @@ try {
         import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
         import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID,
         [
-            Query.lessThan('eventDate', isoDate),
-            Query.orderDesc('eventDate'),
+            Query.lessThan('date', isoDate),
+            Query.orderDesc('date'),
             Query.limit(3)
         ]
     );
@@ -106,10 +112,10 @@ const formatDate = (dateString: string) => {
                         <div class="mb-20">
                             <h2 class="text-3xl font-bold text-[#205488] mb-12">Upcoming Events</h2>
                             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {upcoming.map((event: any) => {
-                                    const date = formatDate(event.eventDate);
+                                {upcoming.map((event) => {
+                                    const date = formatDate(event.date);
                                     return (
-                                        <div class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                        <a href={`/events/${event.$id}`} class="block bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
                                             <div class="aspect-w-16 aspect-h-9 bg-gray-100">
                                                 <img 
                                                     src={event.image} 
@@ -140,10 +146,16 @@ const formatDate = (dateString: string) => {
                                                         </svg>
                                                         {event.location}
                                                     </div>
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#205488]" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.category}
+                                                    </div>
                                                 </div>
-                                                {event.registrationLink && (
+                                                {event.registration_link && (
                                                     <a 
-                                                        href={event.registrationLink}
+                                                        href={event.registration_link}
                                                         class="mt-6 inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors"
                                                     >
                                                         Register Now
@@ -153,7 +165,7 @@ const formatDate = (dateString: string) => {
                                                     </a>
                                                 )}
                                             </div>
-                                        </div>
+                                        </a>
                                     );
                                 })}
                             </div>
@@ -165,11 +177,11 @@ const formatDate = (dateString: string) => {
                         <div>
                             <h2 class="text-3xl font-bold text-[#205488] mb-12">Past Events</h2>
                             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {past.map((event: any) => {
-                                    const date = formatDate(event.eventDate);
+                                {past.map((event) => {
+                                    const date = formatDate(event.date);
                                     return (
-                                        <div class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
-                                            <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                                        <a href={`/events/${event.$id}`} class="block bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                            <div class="aspect-w-16 aspect-h-9 bg-gray-100 relative">
                                                 <div class="absolute inset-0 bg-black/50"></div>
                                                 <img 
                                                     src={event.image} 
@@ -200,16 +212,22 @@ const formatDate = (dateString: string) => {
                                                         </svg>
                                                         {event.location}
                                                     </div>
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.category}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     );
                                 })}
                             </div>
                         </div>
                     )}
 
-                    {/* Show message when no events are available */}
+                    <!-- Show message when no events are available -->
                     {upcoming.length === 0 && past.length === 0 && (
                         <div class="text-center py-20">
                             <h3 class="text-2xl font-bold text-[#205488] mb-4">No Events Available</h3>
@@ -290,4 +308,4 @@ const formatDate = (dateString: string) => {
         bottom: 0;
         left: 0;
     }
-</style> 
+</style>
