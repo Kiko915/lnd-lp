@@ -485,6 +485,12 @@ function formatDate(dateString: string): string {
                 initializeFilters();
             }
 
+            // Setup lightbox for new images
+            setupLightboxForNewImages();
+
+            // Initialize lightbox for newly loaded images
+            initializeLightbox();
+
         } catch (error) {
             console.error('Error loading gallery:', error);
             if (!cursor) {
@@ -558,23 +564,9 @@ function formatDate(dateString: string): string {
 
         if (!lightbox || !lightboxImage || !lightboxCaption || !closeButton || !prevButton || !nextButton) return;
 
-        // Update gallery images array
-        galleryImages = Array.from(document.querySelectorAll('.gallery-item'));
-
-        // Add click event to gallery items
-        galleryImages.forEach((item, index) => {
-            item.addEventListener('click', () => {
-                currentImageIndex = index;
-                showImage(index);
-                lightbox.classList.remove('hidden');
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
         // Close lightbox
         closeButton.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => {
+        lightbox.addEventListener('click', (e: MouseEvent) => {
             if (e.target === lightbox) {
                 closeLightbox();
             }
@@ -585,7 +577,7 @@ function formatDate(dateString: string): string {
         nextButton.addEventListener('click', showNextImage);
 
         // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
             if (!lightbox.classList.contains('hidden')) {
                 switch (e.key) {
                     case 'Escape':
@@ -602,11 +594,41 @@ function formatDate(dateString: string): string {
         });
 
         // Add caption expand functionality for mobile
-        if (lightboxCaption) {
-            lightboxCaption.addEventListener('click', (e) => {
-                // Only toggle on mobile devices
-                if (window.innerWidth < 768) {
-                    lightboxCaption.classList.toggle('expanded');
+        lightboxCaption.addEventListener('click', (e: MouseEvent) => {
+            // Only toggle on mobile devices
+            if (window.innerWidth < 768) {
+                lightboxCaption.classList.toggle('expanded');
+            }
+        });
+
+        setupLightboxForNewImages();
+    }
+
+    function setupLightboxForNewImages() {
+        const newImages = Array.from(document.querySelectorAll<HTMLElement>('.gallery-item:not([data-lightbox-initialized])'));
+        
+        newImages.forEach((item) => {
+            item.setAttribute('data-lightbox-initialized', 'true');
+        });
+
+        // Update gallery images array with new images
+        galleryImages = Array.from(document.querySelectorAll('.gallery-item'));
+
+        // Use event delegation for better performance
+        const galleryGrid = document.getElementById('gallery-grid');
+        if (galleryGrid) {
+            galleryGrid.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                const galleryItem = target.closest('.gallery-item');
+                if (galleryItem) {
+                    currentImageIndex = Array.from(galleryGrid.children).indexOf(galleryItem);
+                    showImage(currentImageIndex);
+                    const lightbox = document.getElementById('lightbox');
+                    if (lightbox) {
+                        lightbox.classList.remove('hidden');
+                        lightbox.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
                 }
             });
         }
@@ -619,15 +641,18 @@ function formatDate(dateString: string): string {
         
         if (!lightboxImage || !lightboxCaption || !item) return;
 
+        // Get the image element and its source
         const img = item.querySelector('img');
-        const caption = item.querySelector('h3');
-        const date = item.querySelector('p:last-child');
-
         if (img) {
-            lightboxImage.src = img.dataset.src || img.src;
+            lightboxImage.src = img.src;
             lightboxImage.alt = img.alt;
         }
 
+        // Get caption and date from the gallery item's inner content
+        const caption = item.querySelector('.text-white.text-lg');
+        const date = item.querySelector('.text-gray-100.text-sm');
+
+        // Update lightbox caption content
         const captionText = lightboxCaption.querySelector('p:first-child');
         const dateText = lightboxCaption.querySelector('p:last-child');
         
@@ -691,4 +716,4 @@ function formatDate(dateString: string): string {
             imageObserver.observe(img);
         });
     }
-</script> 
+</script>

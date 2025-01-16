@@ -25,8 +25,8 @@ export async function POST({ request }: { request: Request }) {
 
         // Save to Appwrite Database
         await databases.createDocument(
-            '6764fe95001fb3c5c54c',
-            '6764feb300379fa98acb',
+            '676e72e6003e713d7c4b',
+            '676e72f70007b25309de',
             'unique()',
             {
                 name,

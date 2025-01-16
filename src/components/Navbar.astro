@@ -48,7 +48,7 @@ const isActive = (href: string) => {
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-1">
+            <div class="hidden lg:flex items-center space-x-1">
                 {menuItems.map(item => (
                     <a 
                         href={item.href} 
@@ -67,7 +67,7 @@ const isActive = (href: string) => {
             <button 
                 type="button" 
                 id="menu-toggle"
-                class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-lg transition-colors md:hidden"
+                class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-lg transition-colors lg:hidden"
                 aria-expanded="false"
             >
                 <Menu class="h-6 w-6" />
@@ -76,7 +76,7 @@ const isActive = (href: string) => {
     </div>
 
     <!-- Mobile menu -->
-    <div class="mobile-menu fixed inset-0 w-full h-screen translate-x-full opacity-0 transition-all duration-300 invisible md:hidden">
+    <div class="mobile-menu fixed inset-0 w-full h-screen translate-x-full opacity-0 transition-all duration-300 invisible lg:hidden">
         <!-- Backdrop -->
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
         
@@ -381,4 +381,4 @@ const isActive = (href: string) => {
     // Initialize on page load and after view transitions
     document.addEventListener('astro:page-load', initializeNavbar);
 </script> 
-</script> 
+</script>

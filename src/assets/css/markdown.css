@@ -1,0 +1,118 @@
+/* Markdown Content Styling */
+.prose {
+    max-width: 65ch;
+    line-height: 1.6;
+}
+
+/* Code Blocks */
+.prose pre {
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.prose code {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.prose pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.prose code::before,
+.prose code::after {
+    content: '';
+}
+
+/* Headings */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+    color: #205488;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Links */
+.prose a {
+    color: #3270a6;
+    text-decoration: underline;
+}
+
+.prose a:hover {
+    color: #205488;
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+    padding-left: 1.5em;
+    margin: 1em 0;
+}
+
+.prose li {
+    margin: 0.5em 0;
+}
+
+/* Blockquotes */
+.prose blockquote {
+    border-left: 4px solid #205488;
+    padding-left: 1em;
+    color: #4a5568;
+    margin: 1.5em 0;
+}
+
+/* Tables */
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+}
+
+.prose th,
+.prose td {
+    padding: 0.75em;
+    border: 1px solid #e2e8f0;
+}
+
+.prose th {
+    background-color: #f8fafc;
+    font-weight: 600;
+}
+
+/* Images */
+.prose img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.prose img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Image captions */
+.prose figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}

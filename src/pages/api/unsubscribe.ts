@@ -11,7 +11,7 @@ client
 const databases = new Databases(client);
 
 const DATABASE_ID = import.meta.env.PUBLIC_APPWRITE_DATABASE_ID;
-const COLLECTION_ID = import.meta.env.PUBLIC_APPWRITE_COLLECTION_ID;
+const COLLECTION_ID = import.meta.env.PUBLIC_APPWRITE_NEWSLETTER_COLLECTION_ID;
 
 export const GET: APIRoute = async ({ url }) => {
     try {

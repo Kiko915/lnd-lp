@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-astro';
 
+
 const contactInfo = [
     {
         icon: Phone,
@@ -26,7 +27,7 @@ const contactInfo = [
     {
         icon: Clock,
         title: "Office Hours",
-        value: "Monday - Friday, 9:00 AM - 5:00 PM",
+        value: "Saturday - Sunday, 9:00 AM - 5:00 PM",
         link: null
     },
     {
@@ -38,7 +39,13 @@ const contactInfo = [
 ];
 ---
 
-<Layout title="Contact Us | Lingkod Ng Dambana">
+<Layout 
+  title="Contact Us | Lingkod Ng Dambana - Liliw, Laguna"
+  description="Get in touch with Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna. Contact us for inquiries, prayer requests, or to join our ministry."
+  image="https://lndliliw.org/images/lnd-publicity-logo.png"
+  canonical="https://lndliliw.org/contact"
+  type="website"
+>
     <main class="bg-gray-50">
         <!-- Hero Section -->
         <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
@@ -157,6 +164,20 @@ const contactInfo = [
                                         <span id="char-count">0</span>/1000 characters
                                     </div>
                                 </div>
+                                
+                                <div class="form-group">
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" id="terms" name="terms" required
+                                               class="mt-1 w-5 h-5 rounded border-gray-200 text-[#205488] focus:ring-[#205488]/50">
+                                        <label for="terms" class="text-gray-700">
+                                            I have read and agree to the 
+                                            <a href="/privacy-policy" class="text-[#205488] hover:text-yellow-500">Privacy Policy</a> 
+                                            and 
+                                            <a href="/terms" class="text-[#205488] hover:text-yellow-500">Terms & Conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <button type="submit" 
                                         class="w-full bg-[#205488] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#205488]/90 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#205488]/20">
                                     Send Message
@@ -326,6 +347,16 @@ const contactInfo = [
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
 
+            // Validate terms acceptance
+            const termsCheckbox = document.getElementById('terms') as HTMLInputElement;
+            if (!termsCheckbox.checked) {
+                await Toast.fire({
+                    icon: 'error',
+                    title: 'Please accept the Privacy Policy and Terms & Conditions'
+                });
+                return;
+            }
+
             try {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
@@ -370,4 +401,4 @@ const contactInfo = [
             }
         });
     }
-</script> 
+</script>

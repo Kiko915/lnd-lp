@@ -24,7 +24,7 @@ const mg = mailgun.client({
 });
 
 const DATABASE_ID = import.meta.env.PUBLIC_APPWRITE_DATABASE_ID;
-const COLLECTION_ID = import.meta.env.PUBLIC_APPWRITE_COLLECTION_ID;
+const COLLECTION_ID = import.meta.env.PUBLIC_APPWRITE_NEWSLETTER_COLLECTION_ID;
 
 async function sendWelcomeEmail(email: string) {
     try {
@@ -49,6 +49,23 @@ async function sendWelcomeEmail(email: string) {
         }
         throw error;
     }
+}
+
+export const GET: APIRoute = async () => {
+    return new Response(
+        JSON.stringify({
+            message: 'LND Newsletter API',
+            version: '1.0.0',
+            endpoints: {
+                POST: '/api/newsletter',
+                GET: '/api/newsletter'
+            }
+        }),
+        {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -158,4 +175,4 @@ export const POST: APIRoute = async ({ request }) => {
             }
         );
     }
-}; 
+};

@@ -1,0 +1,100 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  type?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+}
+
+const {
+  title = "Lingkod Ng Dambana | Liliw, Laguna",
+  description = "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship.",
+  image = "https://lndliliw.org/images/lnd-publicity-logo.png",
+  canonical = Astro.url.href,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  author
+} = Astro.props;
+---
+
+{/* Basic Meta Tags */}
+<meta name="description" content={description} />
+<meta name="keywords" content="Lingkod Ng Dambana, Liliw, Laguna, Catholic, Ministry, Worship, Music, SJBP" />
+
+{/* OpenGraph Tags */}
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Lingkod Ng Dambana | Liliw, Laguna" />
+<meta property="og:locale" content="en_PH" />
+
+{/* Twitter Card Tags */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+{/* Canonical URL */}
+<link rel="canonical" href={canonical} />
+
+{/* Structured Data */}
+<script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Lingkod Ng Dambana - Liliw, Laguna",
+  "url": "https://lndliliw.org",
+  "logo": "https://lndliliw.org/images/lnd-publicity-logo.png",
+  "description": description,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Liliw",
+    "addressRegion": "Laguna",
+    "addressCountry": "PH"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "info@lndliliw.org",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    "https://www.facebook.com/lndliliw",
+    "https://www.instagram.com/lndliliw",
+    "https://www.youtube.com/@lndliliw"
+  ]
+})}
+</script>
+
+{/* Article-specific structured data */}
+{Astro.props.type === 'article' && (
+  <script type="application/ld+json">
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    "image": image,
+    "author": {
+      "@type": "Person",
+      "name": author
+    },
+    "datePublished": publishedTime,
+    "dateModified": modifiedTime,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Lingkod Ng Dambana - Liliw, Laguna",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://lndliliw.org/images/lnd-publicity-logo.png"
+      }
+    }
+  })}
+  </script>
+)}

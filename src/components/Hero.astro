@@ -1,6 +1,6 @@
 ---
 import { ChevronLeft, ChevronRight } from 'lucide-astro';
-import { Image, type ImageMetadata } from 'astro:assets';
+import { Image } from 'astro:assets';
 import bg4 from '../assets/bg4.jpg';
 import bg5 from '../assets/bg5.jpg';
 import bg3 from '../assets/bg3.jpg';
@@ -22,7 +22,7 @@ const carouselItems: CarouselItem[] = [
     {
         image: bg3,
         title: "Serving the Altar,<br>Serving God",
-        description: "Join the Lingkod Ng Dambana Ministry and be part of our mission to serve the Church and community.",
+        description: "Join the Lingkod Ng Dambana SJBP Liliw Ministry and be part of our mission to serve the Church and community.",
         imageCredit: "© Praeministri SocCom",
         buttons: [
             { text: "Learn More", href: "/about", style: "primary" },
@@ -83,13 +83,13 @@ const carouselItems: CarouselItem[] = [
                 <!-- Content -->
                 <div class="relative h-full flex items-center justify-center">
                     <div class="text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-                        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight transition-all duration-700 delay-300 tracking-tight drop-shadow-lg text-shadow-lg uppercase"
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight transition-all duration-700 delay-300 tracking-tight drop-shadow-lg text-shadow-lg uppercase px-6"
                             set:html={item.title}>
                         </h1>
-                        <p class="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto transition-all duration-700 delay-500 font-light tracking-wide drop-shadow-md">
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-gray-100 max-w-3xl mx-auto transition-all duration-700 delay-500 font-light tracking-wide drop-shadow-md px-6">
                             {item.description}
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-700">
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center transition-all duration-700 delay-700 px-6">
                             {item.buttons.map(button => (
                                 <a href={button.href} 
                                    class={`${button.style === 'primary' ? 
@@ -115,17 +115,19 @@ const carouselItems: CarouselItem[] = [
             </div>
         ))}
 
-        <!-- Navigation Buttons -->
-        <button class="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-10 group"
-                id="prev-slide"
-                aria-label="Previous slide">
-            <ChevronLeft class="w-6 h-6 transition-transform group-hover:-translate-x-1" />
-        </button>
-        <button class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-10 group"
-                id="next-slide"
-                aria-label="Next slide">
-            <ChevronRight class="w-6 h-6 transition-transform group-hover:translate-x-1" />
-        </button>
+        <!-- Navigation Buttons - Visible only on mobile -->
+        <div class="absolute inset-x-0 bottom-8 flex justify-center gap-4 md:hidden">
+            <button class="absolute bottom-4 left-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-20 group"
+                    id="prev-slide"
+                    aria-label="Previous slide">
+                <ChevronLeft class="w-6 h-6 transition-transform group-hover:-translate-x-1" />
+            </button>
+            <button class="absolute bottom-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-20 group"
+                    id="next-slide"
+                    aria-label="Next slide">
+                <ChevronRight class="w-6 h-6 transition-transform group-hover:translate-x-1" />
+            </button>
+        </div>
     </div>
 </section>
 
@@ -278,4 +280,4 @@ const carouselItems: CarouselItem[] = [
 
     // Setup carousel on page load and after transitions
     document.addEventListener('astro:page-load', setupCarousel);
-</script> 
+</script>

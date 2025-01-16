@@ -4,28 +4,39 @@ import { ArrowUp } from 'lucide-astro';
 import Preloader from '../components/Preloader.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 
 interface Props {
 	title: string;
+	description?: string;
+	image?: string;
+	canonical?: string;
+	type?: string;
 }
 ---
 
 <!doctype html>
-<html lang="en" class="h-full scroll-smooth">
+<html lang="en-PH" class="h-full scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+		<meta name="robots" content="index, follow" />
 		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Lingkod Ng Dambana | Liliw, Laguna" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<title>{title || "Lingkod Ng Dambana | Liliw, Laguna"}</title>
+		<SEO 
+			title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
+			description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
+		/>
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="alternate" hreflang="en-PH" href={Astro.url.href} />
+		<link rel="alternate" hreflang="x-default" href={Astro.url.href} />
 		<ClientRouter />
 	</head>
 	<body class="h-full m-0 font-poppins antialiased bg-white text-slate-900">

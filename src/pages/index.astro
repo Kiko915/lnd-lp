@@ -1,45 +1,58 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import Features from '../components/Features.astro';
-import Footer from '../components/Footer.astro';
+import ImpactMetrics from '../components/ImpactMetrics.astro';
+import Testimonials from '../components/Testimonials.astro';
 import UpcomingEvents from '../components/UpcomingEvents.astro';
 import LatestNews from '../components/LatestNews.astro';
-import ImpactMetrics from '../components/ImpactMetrics.astro';
+import Welcome from '../components/Welcome.astro';
 import MinistryGallery from '../components/MinistryGallery.astro';
-import Testimonials from '../components/Testimonials.astro';
+
+const description = "Lingkod Ng Dambana is a Catholic music ministry in Liliw, Laguna dedicated to serving through worship. Join our community of faith and music.";
 import ContactCard from '../components/ContactCard.astro';
+
+// SEO Metadata
+const seoTitle = "Lingkod Ng Dambana - Home | SJBP Unit in Liliw, Laguna";
+const seoDescription = description;
+const seoImage = "https://lndliliw.org/images/lnd-publicity-logo.png";
+const seoUrl = "https://lndliliw.org";
 ---
 
-<Layout title="Lingkod Ng Dambana | Liliw, Laguna">
+<Layout 
+  title={seoTitle}
+  description={seoDescription}
+  image={seoImage}
+  canonical={seoUrl}
+  type="website"
+>
 	<main class="fade-in">
 		<Hero />
 		<Features />
 		
 		<!-- Upcoming Events Section -->
-		<section class="py-20 bg-gradient-to-b from-white to-gray-50" data-animate>
+		<section class="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50" data-animate>
 			<UpcomingEvents />
 		</section>
 
 		<!-- Latest News Section -->
-		<section class="py-20 bg-white" data-animate>
+		<section class="py-12 md:py-20 bg-white" data-animate>
 			<LatestNews />
 		</section>
 
 		<!-- Impact Metrics Section -->
-		<section class="py-20 bg-[#205488] relative overflow-hidden" data-animate>
+		<section class="py-12 md:py-20 bg-[#205488] relative overflow-hidden" data-animate>
 			<div class="absolute inset-0 opacity-5"></div>
 			<ImpactMetrics />
 		</section>
 
 		<!-- Testimonials Section -->
-		<section class="py-20 bg-white" data-animate>
+		<section class="py-12 md:py-20 bg-white" data-animate>
 			<Testimonials />
 		</section>
 
 		<!-- Ministry Gallery Section -->
-		<section class="py-20 bg-gray-50" data-animate>
+		<section class="py-12 md:py-20 bg-gray-50" data-animate>
 			<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 				<MinistryGallery />
 			</div>
@@ -67,7 +80,7 @@ import ContactCard from '../components/ContactCard.astro';
 	}
 
 	[data-animate] {
-		scroll-margin-top: 5rem;
+		scroll-margin-top: 2rem;
 		opacity: 0;
 		transform: translateY(20px);
 		transition: all 0.6s ease-out;
@@ -84,6 +97,18 @@ import ContactCard from '../components/ContactCard.astro';
 			opacity: 1;
 			transform: none;
 			transition: none;
+		}
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.container {
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
+
+		[data-animate] {
+			scroll-margin-top: 1rem;
 		}
 	}
 </style>
