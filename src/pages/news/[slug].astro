@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import type { Props as SEOProps } from '../../components/SEO.astro';
 import { getCollection, type CollectionEntry, render } from 'astro:content';
 import '../../assets/css/markdown.css';
-import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 
 export const prerender = true;
@@ -74,7 +74,14 @@ const relatedPosts = newsPosts
 
 
 
-<Layout title={`${newsItem.data.title} | Lingkod Ng Dambana`}>
+<Layout
+  title={`${newsItem.data.title} | Lingkod Ng Dambana`}
+  description={newsItem.data.excerpt}
+  image={new URL(newsItem.data.thumbnail, Astro.url.origin).href}
+  type="article"
+  publishedTime={newsItem.data.date}
+  author={newsItem.data.author?.name}
+>
     <main class="fade-in">
         <!-- Article Header -->
         <section class="relative min-h-[60vh] flex items-end bg-[#205488] overflow-hidden">
@@ -119,8 +126,8 @@ const relatedPosts = newsPosts
                                         </div>
                                     </div>
                                     
-                                    <div class="hidden sm:block absolute z-50 left-0 top-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                                        <div class="bg-white p-4 rounded-lg shadow-lg w-64">
+                                    <div class="hidden sm:block absolute z-20 left-0 top-20 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto">
+                                        <div class="bg-white p-4 rounded-lg shadow-xl w-64 border border-slate-100 transform transition-all duration-200 scale-95 group-hover:scale-100" style="margin-top: 1rem">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-12 h-12 rounded-full overflow-hidden">
                                                     <img 
@@ -237,7 +244,7 @@ const relatedPosts = newsPosts
                             </div>
                         )}
 
-                        <!-- Related Posts -->
+                    <!-- Related Posts -->
                     {relatedPosts.length > 0 && (
                         <div class="mt-20">
                             <h2 class="text-3xl font-bold text-[#205488] mb-8">Related News</h2>

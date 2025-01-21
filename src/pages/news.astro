@@ -35,8 +35,8 @@ const formatDate = (date: string | Date) => {
 <Layout 
   title="News & Updates | Lingkod Ng Dambana - Liliw, Laguna"
   description="Stay updated with the latest news, events, and announcements from Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna."
-  image="https://lndliliw.org/images/lnd-publicity-logo.png"
-  canonical="https://lndliliw.org/news"
+  canonical="https://lndliliw.online/news"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383265/6_t2j7hk.png'
   type="website"
 >
     <main class="fade-in">
@@ -93,7 +93,7 @@ const formatDate = (date: string | Date) => {
                                                 {item.data.excerpt}
                                             </p>
                                             <a href={`/news/${item.slug}`} class="inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors">
-                                                Read More
+                                                Read more about {item.data.title}
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                                                 </svg>
@@ -128,7 +128,7 @@ const formatDate = (date: string | Date) => {
                                                 {item.data.excerpt}
                                             </p>
                                             <a href={`/news/${item.slug}`} class="inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors">
-                                                Read More
+                                                Read more about {item.data.title}
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                                                 </svg>
@@ -239,53 +239,57 @@ const formatDate = (date: string | Date) => {
         const messageDiv = document.getElementById('form-message') as HTMLDivElement;
 
         if (form && messageDiv) {
-            form.addEventListener('submit', async (e: SubmitEvent) => {
-                e.preventDefault();
-                
-                const emailInput = document.getElementById('email') as HTMLInputElement;
-                const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-                
-                if (!emailInput || !submitButton) return;
+        form.addEventListener('submit', async (e: SubmitEvent) => {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('email') as HTMLInputElement;
+            const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+            
+            if (!emailInput || !submitButton) return;
 
-                const email = emailInput.value;
-                
-                // Disable button and show loading state
-                submitButton.disabled = true;
-                submitButton.innerHTML = 'Subscribing...';
-                messageDiv.textContent = '';
-                messageDiv.className = 'mt-4 text-sm';
+            const email = emailInput.value;
+            
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Subscribing...';
+            messageDiv.textContent = '';
+            messageDiv.className = 'mt-4 text-sm';
 
-                try {
-                    const response = await fetch('/api/newsletter', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email }),
-                    });
+            try {
+                console.log('Submitting email:', email); // Debug log
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
 
-                    const data = await response.json();
+                console.log('Response status:', response.status); // Debug log
+                const data = await response.json();
+                console.log('Response data:', data); // Debug log
 
-                    if (response.ok) {
-                        // Success message
-                        messageDiv.textContent = '✓ ' + data.message;
-                        messageDiv.className = 'mt-4 text-sm text-green-600';
-                        form.reset();
-                    } else {
-                        // Error message
-                        messageDiv.textContent = '✕ ' + data.message;
-                        messageDiv.className = 'mt-4 text-sm text-red-600';
-                    }
-                } catch (error) {
-                    // Network or other error
-                    messageDiv.textContent = '✕ Failed to subscribe. Please try again later.';
+                if (response.ok) {
+                    // Success message
+                    messageDiv.textContent = '✓ ' + data.message;
+                    messageDiv.className = 'mt-4 text-sm text-green-600';
+                    form.reset();
+                } else {
+                    // Error message
+                    messageDiv.textContent = '✕ ' + data.message;
                     messageDiv.className = 'mt-4 text-sm text-red-600';
-                } finally {
-                    // Reset button state
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Subscribe';
                 }
-            });
+            } catch (error) {
+                console.error('Subscription error:', error); // Debug log
+                // Network or other error
+                messageDiv.textContent = '✕ Failed to subscribe. Please try again later.';
+                messageDiv.className = 'mt-4 text-sm text-red-600';
+            } finally {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Subscribe';
+            }
+        });
         }
     });
 </script>

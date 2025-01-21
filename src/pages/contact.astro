@@ -15,8 +15,8 @@ const contactInfo = [
     {
         icon: Mail,
         title: "Email",
-        value: "lnd.liliw@gmail.com",
-        link: "mailto:lnd.liliw@gmail.com"
+        value: "contact.lndliliw@gmail.com",
+        link: "mailto:contact.lndliliw@gmail.com"
     },
     {
         icon: MapPin,
@@ -42,8 +42,8 @@ const contactInfo = [
 <Layout 
   title="Contact Us | Lingkod Ng Dambana - Liliw, Laguna"
   description="Get in touch with Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna. Contact us for inquiries, prayer requests, or to join our ministry."
-  image="https://lndliliw.org/images/lnd-publicity-logo.png"
-  canonical="https://lndliliw.org/contact"
+  canonical="https://lndliliw.online/contact"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383264/3_njv5ci.png'
   type="website"
 >
     <main class="bg-gray-50">
@@ -211,6 +211,7 @@ const contactInfo = [
                             style="border:0;" 
                             allowfullscreen="" 
                             loading="lazy" 
+                            title="Google Maps Location of St. John the Baptist Parish, Liliw, Laguna"
                             referrerpolicy="no-referrer-when-downgrade"
                             class="hover:opacity-95 transition-opacity duration-300">
                         </iframe>
@@ -300,6 +301,11 @@ const contactInfo = [
 <script>
     import Swal from 'sweetalert2';
     
+    // Declare PostHog type
+    declare const posthog: {
+      capture: (event: string, properties?: Record<string, unknown>) => void;
+    };
+    
     // Character counter
     const messageTextarea = document.getElementById('message') as HTMLTextAreaElement;
     const charCount = document.getElementById('char-count');
@@ -333,10 +339,41 @@ const contactInfo = [
         }
     });
 
-    // Form submission handling
+    // Track form interactions
     const form = document.getElementById('contact-form') as HTMLFormElement;
     
     if (form) {
+        // Track form field interactions
+        form.querySelectorAll('input, textarea').forEach(field => {
+            const inputField = field as HTMLInputElement | HTMLTextAreaElement;
+            const fieldName = inputField.getAttribute('name');
+            if (!fieldName) return;
+            
+            inputField.addEventListener('focus', () => {
+                try {
+                    posthog?.capture('$form_interaction', {
+                        field: fieldName,
+                        action: 'focus',
+                        form: 'contact'
+                    });
+                } catch (error) {
+                    console.error('PostHog tracking error:', error);
+                }
+            });
+            
+            inputField.addEventListener('blur', () => {
+                try {
+                    posthog?.capture('$form_interaction', {
+                        field: fieldName,
+                        action: 'blur',
+                        form: 'contact'
+                    });
+                } catch (error) {
+                    console.error('PostHog tracking error:', error);
+                }
+            });
+        });
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -350,6 +387,12 @@ const contactInfo = [
             // Validate terms acceptance
             const termsCheckbox = document.getElementById('terms') as HTMLInputElement;
             if (!termsCheckbox.checked) {
+                posthog.capture('$form_submission_attempt', {
+                    status: 'failed',
+                    reason: 'terms_not_accepted',
+                    form: 'contact'
+                });
+                
                 await Toast.fire({
                     icon: 'error',
                     title: 'Please accept the Privacy Policy and Terms & Conditions'
@@ -360,6 +403,12 @@ const contactInfo = [
             try {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
+                
+                // Track form submission attempt
+                posthog.capture('$form_submission_attempt', {
+                    status: 'started',
+                    form: 'contact'
+                });
 
                 const response = await fetch('/api/contact', {
                     method: 'POST',

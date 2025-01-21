@@ -5,15 +5,27 @@ import Preloader from '../components/Preloader.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
+import Posthog from '../components/posthog.astro';
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  type,
+  publishedTime,
+  modifiedTime,
+  author
+} = Astro.props;
 
-interface Props {
+export interface Props {
 	title: string;
 	description?: string;
 	image?: string;
 	canonical?: string;
 	type?: string;
+	publishedTime?: string;
+	modifiedTime?: string;
+	author?: string;
 }
 ---
 
@@ -30,16 +42,50 @@ interface Props {
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<SEO 
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<SEO
 			title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
 			description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
+			image={image}
+			type={type}
+			publishedTime={publishedTime}
+			modifiedTime={modifiedTime}
+			author={author}
 		/>
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" hreflang="en-PH" href={Astro.url.href} />
 		<link rel="alternate" hreflang="x-default" href={Astro.url.href} />
+		<Posthog />
 		<ClientRouter />
 	</head>
 	<body class="h-full m-0 font-poppins antialiased bg-white text-slate-900">
+		<script is:inline>
+			// Track page views
+			document.addEventListener('astro:page-load', () => {
+				window.posthog.capture('$pageview', {
+					url: window.location.pathname,
+					referrer: document.referrer
+				});
+			});
+
+			// Track errors
+			window.addEventListener('error', (event) => {
+				posthog.capture('$error', {
+					message: event.message,
+					filename: event.filename,
+					lineno: event.lineno,
+					colno: event.colno
+				});
+			});
+
+			// Track unhandled promise rejections
+			window.addEventListener('unhandledrejection', (event) => {
+				posthog.capture('$error', {
+					reason: event.reason?.toString(),
+					promise: event.promise
+				});
+			});
+		</script>
 		<Preloader />
 		<Navbar lightBg={true} />
 		<slot />
@@ -150,6 +196,8 @@ interface Props {
 </style>
 
 <script>
+	import AOS from 'aos';
+	
 	// Re-run scroll handler after view transitions
 	document.addEventListener('astro:page-load', () => {
 		const navbar = document.getElementById('navbar');
@@ -185,5 +233,14 @@ interface Props {
 
 		window.addEventListener('scroll', handleScroll);
 		handleScroll(); // Initial check
+	});
+
+	// Initialize AOS
+	AOS.init({
+		duration: 800,
+		easing: 'ease-in-out-quad',
+		once: true,
+		mirror: false,
+		offset: 120
 	});
 </script>

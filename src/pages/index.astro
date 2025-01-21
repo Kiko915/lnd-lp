@@ -9,57 +9,79 @@ import LatestNews from '../components/LatestNews.astro';
 import Welcome from '../components/Welcome.astro';
 import MinistryGallery from '../components/MinistryGallery.astro';
 
-const description = "Lingkod Ng Dambana is a Catholic music ministry in Liliw, Laguna dedicated to serving through worship. Join our community of faith and music.";
 import ContactCard from '../components/ContactCard.astro';
 
 // SEO Metadata
 const seoTitle = "Lingkod Ng Dambana - Home | SJBP Unit in Liliw, Laguna";
-const seoDescription = description;
-const seoImage = "https://lndliliw.org/images/lnd-publicity-logo.png";
-const seoUrl = "https://lndliliw.org";
+const seoDesc = "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through serving the altar.";
+const seoUrl = "https://lndliliw.online";
 ---
 
 <Layout 
   title={seoTitle}
-  description={seoDescription}
-  image={seoImage}
+  description={seoDesc}
   canonical={seoUrl}
   type="website"
 >
 	<main class="fade-in">
-		<Hero />
-		<Features />
+		<Hero data-aos="fade-up" />
+		<Features data-aos="fade-up" data-aos-delay="100" />
 		
 		<!-- Upcoming Events Section -->
-		<section class="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50" data-animate>
+		<section
+			class="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="200"
+		>
 			<UpcomingEvents />
 		</section>
 
 		<!-- Latest News Section -->
-		<section class="py-12 md:py-20 bg-white" data-animate>
+		<section
+			class="py-12 md:py-20 bg-white"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="300"
+		>
 			<LatestNews />
 		</section>
 
 		<!-- Impact Metrics Section -->
-		<section class="py-12 md:py-20 bg-[#205488] relative overflow-hidden" data-animate>
+		<section
+			class="py-12 md:py-20 bg-[#205488] relative overflow-hidden"
+			data-animate
+			data-aos="zoom-in"
+			data-aos-delay="400"
+		>
 			<div class="absolute inset-0 opacity-5"></div>
 			<ImpactMetrics />
 		</section>
 
 		<!-- Testimonials Section -->
-		<section class="py-12 md:py-20 bg-white" data-animate>
+		<section
+			class="py-12 md:py-20"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="500"
+		>
 			<Testimonials />
 		</section>
 
 		<!-- Ministry Gallery Section -->
-		<section class="py-12 md:py-20 bg-gray-50" data-animate>
+		<section
+			class="py-12 md:py-20 bg-gray-50"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="600"
+		>
 			<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 				<MinistryGallery />
 			</div>
 		</section>
 
 		<!-- Contact Card Section -->
-		<ContactCard />
+		<ContactCard data-aos="fade-up" data-aos-delay="700" />
 	</main>
 </Layout>
 
@@ -114,6 +136,8 @@ const seoUrl = "https://lndliliw.org";
 </style>
 
 <script>
+	import AOS from 'aos';
+	
 	function initializeObserver() {
 		const animatedElements = document.querySelectorAll('[data-animate]');
 		
@@ -138,10 +162,16 @@ const seoUrl = "https://lndliliw.org";
 	}
 
 	document.addEventListener('astro:page-load', () => {
+		// Initialize animations only if user doesn't prefer reduced motion
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			AOS.refresh();
+		}
+
 		const observer = initializeObserver();
 
 		return () => {
 			observer.disconnect();
+			AOS.refreshHard(); // Clean up AOS on page navigation
 		};
 	});
 </script>

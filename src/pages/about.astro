@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
 import emblemLogo from '../assets/lndliliw-emblem-primary-shadow.png';
+import { Church, Cross, BookOpen, Users, HandHeart } from 'lucide-astro';
 
 const description = "Lingkod Ng Dambana is a Catholic altar server ministry in St. John the Baptist Parish Liliw, Laguna dedicated to liturgical service and community building. Learn about our mission, history, leadership, and ministries.";
 ---
@@ -11,8 +12,8 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
 <Layout 
   title="About Us | Lingkod Ng Dambana - Liliw, Laguna"
   description="Learn about the mission, history, and leadership of Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna."
-  image="https://lndliliw.org/images/lnd-publicity-logo.png"
-  canonical="https://lndliliw.org/about"
+  canonical="https://lndliliw.online/about"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383263/2_nq4vda.png'
   type="website"
 >
     <main class="fade-in">
@@ -39,25 +40,63 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
             </div>
         </section>
 
-        <!-- Mission and Vision Section -->
+        <!-- Who We Are Section -->
         <section class="py-20 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-4xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <!-- Mission -->
-                        <div class="space-y-6">
-                            <h2 class="text-3xl font-bold text-[#205488]">Our Mission</h2>
+                <div class="max-w-6xl mx-auto">
+                    <!-- Mission Callout -->
+                    <div class="bg-[#205488] rounded-2xl p-8 md:p-12 mb-16 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 pattern-grid opacity-10"></div>
+                        <div class="relative z-10">
+                            <div class="text-center max-w-3xl mx-auto">
+                                <h3 class="text-2xl md:text-3xl font-bold mb-6">Our Mission</h3>
+                                <p class="text-lg md:text-xl leading-relaxed">
+                                    To provide reverent service at the Holy Mass, in union with Christ the true Priest, through His priest, guided by the Blessed Virgin Mary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Points Grid -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Christ-Centered -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <Church class="w-12 h-12" />
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Christ-Centered</h3>
                             <p class="text-slate-600 leading-relaxed">
-                                To serve God and the Church with dedication and inspire others to deepen their faith through liturgical service.
+                                Christ is the heart of our ministry, guiding our service and devotion in every liturgical celebration.
                             </p>
                         </div>
-                        <!-- Vision -->
-                        <div class="space-y-6">
-                            <h2 class="text-3xl font-bold text-[#205488]">Our Vision</h2>
+
+                        <!-- Youth Formation -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Youth Formation</h3>
                             <p class="text-slate-600 leading-relaxed">
-                                To nurture a generation of devoted and faith-filled individuals who contribute to the spiritual life of their community.
+                                We nurture young men to become exemplary Christians and future leaders in the Church.
                             </p>
                         </div>
+
+                        <!-- Diocesan Unity -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <Cross class="w-12 h-12" />
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Diocesan Unity</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                As part of the Diocese of San Pablo, we work to foster faith throughout Laguna province.
+                            </p>
+                        </div>
+                    </div>
+
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -154,19 +193,80 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
             </div>
         </section>
 
-        <!-- History Section -->
         <section class="py-20 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
-                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our History</h2>
+                    <h2 class="text-4xl font-bold text-[#205488] mb-16 text-center">Who We Are</h2>
                     <div class="space-y-8">
                         <p class="text-slate-600 leading-relaxed">
-                            Founded in [Year], LND has grown from a small group of altar servers into a thriving community committed to liturgical service and personal growth.
+                            The <strong>Lingkod Ng Dambana Ministry</strong> is a ministry composed of young men whose primary goal is to provide reverent service at the Holy Mass, in union with the Lord Jesus Christ, the true Priest and Offering, through His priest. Christ is the center of this ministry, and with the guidance of the Blessed Virgin Mary, the Mother and Model of every servant, the Lingkod Ng Dambana Ministry continues to shape each of its members to become exemplary Christians for the Church.
                         </p>
-                        <!-- Timeline will be added here -->
-                        <div class="grid gap-8 mt-12">
-                            <!-- Timeline items will be added here -->
+                        <p class="text-slate-600 leading-relaxed">
+                            As part of the Diocese of San Pablo, the ministry is united in fostering the growth of faith in the province of Laguna. This ministry highly values the contributions of the youth to the Church, as they will grow to be true Christian leaders in the future, embodying the spirit of love and service, according to the example of the Lord Jesus Christ.
+                        </p>
+
+                        <div class="grid gap-8">
+                            <!-- Word of God -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <BookOpen class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Word of God</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            We are committed to studying and living out the teachings of Scripture, allowing God's Word to guide our lives and ministry.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prayer and Liturgy -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <Church class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Prayer and Liturgy</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Through prayer and active participation in the liturgy, we deepen our relationship with Christ and serve as instruments of His grace.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Brotherhood -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <Users class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Brotherhood</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            We foster a strong sense of community and fraternity, supporting one another in our spiritual journey and personal growth.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Service -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <HandHeart class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Service</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Inspired by Christ's example, we dedicate ourselves to serving the Church and our community with humility and love.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -177,60 +277,33 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Core Values</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Faith -->
-                        <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-[#205488] mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-[#205488] mb-2">Faith</h3>
-                            <p class="text-slate-600">Deepening our relationship with God through service and prayer.</p>
+                    <div class="space-y-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Human Maturity</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                Its aim is to awaken in the consciousness of every member the abiding Presence of God in all their experiences and to become instruments of God's love for others through sincere service.
+                            </p>
                         </div>
 
-                        <!-- Service -->
-                        <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-[#205488] mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-[#205488] mb-2">Service</h3>
-                            <p class="text-slate-600">Dedicated service to God, the Church, and our community.</p>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Relationship with Christ</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                It also desires for members to develop a deep Christian holiness rooted in the Lord, always being in communion with Him, especially in the Church's Liturgy and the Holy Eucharist.
+                            </p>
                         </div>
 
-                        <!-- Commitment -->
-                        <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-[#205488] mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-[#205488] mb-2">Commitment</h3>
-                            <p class="text-slate-600">Unwavering dedication to our responsibilities and growth.</p>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Membership in the Church</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                The entire ministry encourages members to make their service fruitful for the good of the Christian community through meaningful liturgy in the parish, school, and other activities.
+                            </p>
                         </div>
 
-                        <!-- Brotherhood -->
-                        <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-[#205488] mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-[#205488] mb-2">Brotherhood</h3>
-                            <p class="text-slate-600">Supporting and uplifting each other in faith and service.</p>
-                        </div>
-
-                        <!-- Excellence -->
-                        <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                            <div class="text-[#205488] mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-[#205488] mb-2">Excellence</h3>
-                            <p class="text-slate-600">Striving for excellence in liturgical service and personal conduct.</p>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Commitment for the Kingdom</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                As witnesses of the Kingdom of the Lord, members are challenged to bear witness to the Lord they follow through deep prayer and communion with the Lord, who came not to be served but to serve.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -241,127 +314,12 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
         <section class="py-20 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-6xl mx-auto">
-                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our Leadership</h2>
-                    
-                    <!-- Organizational Chart -->
-                    <div class="org-chart">
-                        <!-- Spiritual Director -->
-                        <div class="level-1">
-                            <div class="org-box bg-[#205488] text-white p-6 rounded-xl shadow-lg mx-auto max-w-md">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-2xl font-bold">Rev. Fr. Noel C. Nuguit</h3>
-                                        <p class="text-white/80">Spiritual Director</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Executive Officers -->
-                        <div class="level-2 mt-20">
-                            <div class="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
-                                <!-- President -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-xl font-bold text-[#205488]">Francis Neil M. Mistica</h4>
-                                            <p class="text-slate-600">President</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Vice President -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-xl font-bold text-[#205488]">Sherwin S. Borgonia</h4>
-                                            <p class="text-slate-600">Vice President</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Other Officers -->
-                        <div class="level-3 mt-20">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                                <!-- Secretary -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex flex-col items-center text-center">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488] mb-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-lg font-bold text-[#205488]">Arvin P. Viri&ntilde;a</h4>
-                                            <p class="text-slate-600">Secretary</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Assistant Secretary -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex flex-col items-center text-center">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488] mb-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-lg font-bold text-[#205488]">Josh Mirovien Colona</h4>
-                                            <p class="text-slate-600">Assistant Secretary</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Treasurer -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex flex-col items-center text-center">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488] mb-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-lg font-bold text-[#205488]">Edcel Cairo M. Regondola</h4>
-                                            <p class="text-slate-600">Treasurer</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Auditor -->
-                                <div class="org-box bg-white p-6 rounded-xl shadow-md border-t-4 border-[#205488]">
-                                    <div class="flex flex-col items-center text-center">
-                                        <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488] mb-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-lg font-bold text-[#205488]">Luvin Reign M. Tunay</h4>
-                                            <p class="text-slate-600">Auditor</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our Leadership (Parish Unit)</h2>
+                    <img 
+                        src="/images/lnd-orgchart.png" 
+                        alt="LND Organizational Chart" 
+                        class="w-full rounded-lg shadow-lg"
+                    />
                 </div>
             </div>
         </section>
@@ -383,7 +341,7 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                     <img 
                                         src="/images/core-group-logo.webp" 
                                         alt="LND Core Group Logo" 
-                                        class="w-24 h-24 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
                                     />
                                 </div>
                                 <!-- Content Section -->
@@ -400,91 +358,49 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             <!-- President -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Francis Neil M. Mistica</p>
-                                                        <p class="text-sm text-slate-600 mt-1">President</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Francis Neil M. Mistica</p>
+                                                    <p class="text-sm text-slate-600 mt-1">President</p>
                                                 </div>
                                             </div>
 
                                             <!-- Vice President -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Vice President</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Vice President</p>
                                                 </div>
                                             </div>
 
                                             <!-- Secretary -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Arvin P. Viri&ntilde;a</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Secretary</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Arvin P. Viri&ntilde;a</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Secretary</p>
                                                 </div>
                                             </div>
 
                                             <!-- Assistant Secretary -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Josh Mirovien Colona</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Assistant Secretary</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Josh Mirovien Colona</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Secretary</p>
                                                 </div>
                                             </div>
 
                                             <!-- Treasurer -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Edcel Cairo M. Regondola</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Treasurer</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Edcel Cairo M. Regondola</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Treasurer</p>
                                                 </div>
                                             </div>
 
                                             <!-- Auditor -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Luvin Reign M. Tunay</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Auditor</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Luvin Reign M. Tunay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Auditor</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -500,9 +416,9 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                 <div class="relative bg-[#205488] p-8 flex items-center justify-center">
                                     <div class="absolute inset-0 pattern-grid opacity-10"></div>
                                     <img 
-                                        src="/images/formation-logo.png" 
+                                        src="/images/formators.png" 
                                         alt="Formation Committee Logo" 
-                                        class="w-24 h-24 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
                                     />
                                 </div>
                                 <!-- Content Section -->
@@ -510,7 +426,7 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                     <div class="mb-6">
                                         <h3 class="text-2xl font-bold text-[#205488] mb-3">Formation Committee</h3>
                                         <p class="text-slate-600 mb-4">
-                                            Dedicated to the spiritual and personal development of our members through training, workshops, and formation programs.
+                                            Dedicated to the spiritual and personal development of our aspirants through training, workshops, and formation programs.
                                         </p>
                                     </div>
                                     <!-- Members Grid -->
@@ -519,31 +435,60 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             <!-- Head -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Kurt Angelo Agapay</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Head</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Kurt Angelo B. Agapay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Administrator</p>
                                                 </div>
                                             </div>
 
                                             <!-- Assistant Head -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Josh Mirovien Colona</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Assistant Head</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Paul Mikko G. Molon</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Co-Administrator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Michael L. Arcellana</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Secretary</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Paul Mikee G. Molon</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Managing Formator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Nelzen D. Santileces</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Associate Formator</p>
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Lanz Eugene J. Colona</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Formator - Liturgy</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Zoren James P. Coroza</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Formator - Academic</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Yhael Rhenzley E. Fran</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Formator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Chianne Haven M. Veluz</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Formator</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -561,7 +506,7 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                     <img 
                                         src="/images/lnd-publicity-logo.png" 
                                         alt="LND Publicity Group Logo" 
-                                        class="w-24 h-24 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
                                     />
                                 </div>
                                 <!-- Content Section -->
@@ -578,31 +523,28 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             <!-- Head -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Head</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Head</p>
                                                 </div>
                                             </div>
-
                                             <!-- Assistant Head -->
                                             <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-16 h-16 rounded-full bg-[#205488]/10 flex items-center justify-center text-[#205488]">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <p class="font-semibold text-[#205488]">James Nelzen</p>
-                                                        <p class="text-sm text-slate-600 mt-1">Assistant Head</p>
-                                                    </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Arvin P. Viriña</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Editor</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Nelzen D. Santileces</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Graphic Designer</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Kurt Angelo B. Agapay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Copywriter</p>
                                                 </div>
                                             </div>
                                         </div>

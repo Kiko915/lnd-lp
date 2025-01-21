@@ -41,7 +41,7 @@ export async function POST({ request }: { request: Request }) {
             // Send email notification to admin
             await mg.messages.create(import.meta.env.MAILGUN_DOMAIN || '', {
                 from: `Lingkod ng Dambana Website <noreply@${import.meta.env.MAILGUN_DOMAIN}>`,
-                to: 'francismistica06@gmail.com',
+                to: 'contact.lndliliw@gmail.com',
                 subject: `New Contact Form Submission: ${subject}`,
                 text: `
 Name: ${name}
