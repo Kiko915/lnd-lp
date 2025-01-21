@@ -1,0 +1,386 @@
+---
+import { Image } from 'astro:assets';
+import { Menu, X } from 'lucide-astro';
+import logo from '../assets/lndliliw-emblem-primary-shadow.webp';
+
+const { lightBg = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+const forceLight = ['/privacy-policy', '/terms'].includes(currentPath);
+
+const menuItems = [
+    { href: "/", text: "Home" },
+    { href: "/about", text: "About Us" },
+    { href: "/events", text: "Events" },
+    { href: "/news", text: "News" },
+    { href: "/gallery", text: "Gallery" },
+    { href: "/contact", text: "Contact" },
+];
+
+// Function to check if a link is active
+const isActive = (href: string) => {
+    if (href === '/') {
+        return currentPath === href;
+    }
+    return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<nav class={`fixed w-full z-40 transition-all duration-300 ${forceLight || lightBg ? 'navbar-light' : 'navbar-transparent'}`} id="navbar" transition:persist>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="/" class="flex items-center space-x-3 group">
+                    <div class="relative w-12 h-12 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
+                        <Image 
+                            src={logo} 
+                            alt="LND Logo" 
+                            class={`w-full h-full object-contain`}
+                            width={48}
+                            height={48}
+                            loading="eager"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold transition-colors duration-300">LND Liliw</span>
+                        <span class="text-xs transition-colors duration-300">Lingkod Ng Dambana</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center space-x-1">
+                {menuItems.map(item => (
+                    <a 
+                        href={item.href} 
+                        class={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+                        aria-current={isActive(item.href) ? "page" : undefined}
+                    >
+                        {item.text}
+                    </a>
+                ))}
+                <a href="/join" class="ml-4 inline-flex items-center px-4 py-2 border-2 border-[#FDC83D] bg-[#FDC83D] text-[#205488] font-semibold rounded-lg transition-all duration-300 hover:bg-transparent hover:scale-105">
+                    Join Now
+                </a>
+            </div>
+
+            <!-- Mobile menu button -->
+<button 
+    type="button" 
+    id="menu-toggle"
+    class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-lg transition-colors lg:hidden"
+    aria-expanded="false"
+    aria-label="Toggle navigation menu"
+>
+                <Menu class="h-6 w-6" />
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu fixed inset-0 w-full h-screen translate-x-full opacity-0 transition-all duration-300 invisible lg:hidden">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+        
+        <!-- Menu panel -->
+        <div class="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-xl overflow-y-auto">
+            <div class="sticky top-0 h-20 flex items-center justify-end px-4 bg-white border-b">
+                <button 
+                    type="button"
+                    class="close-menu p-2 text-slate-600 hover:text-[#205488] hover:bg-slate-100/50 rounded-lg transition-colors"
+                >
+                    <X class="h-6 w-6" />
+                </button>
+            </div>
+            
+            <div class="px-4 py-6 space-y-2">
+                {menuItems.map((item, index) => (
+                    <a 
+                        href={item.href} 
+                        class="mobile-nav-link translate-x-8 opacity-0" 
+                        style={`transition-delay: ${index * 50}ms`}
+                    >
+                        {item.text}
+                    </a>
+                ))}
+                <div class="pt-4 translate-x-8 opacity-0" style="transition-delay: 350ms">
+                    <a href="/join" class="block w-full text-center px-4 py-3 bg-[#FDC83D] text-[#205488] font-semibold rounded-lg hover:bg-[#ffd666] transition-colors">
+                        Join Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* Light background styles */
+    .navbar-light {
+        @apply bg-white/95 backdrop-blur-sm shadow-md;
+    }
+    
+    .navbar-light .nav-link {
+        @apply text-slate-600 hover:text-[#205488] hover:bg-slate-50/50;
+    }
+
+    .navbar-light .nav-link.active {
+        @apply text-[#205488] bg-slate-50/50 after:w-full;
+    }
+
+    .navbar-light span {
+        @apply text-[#205488] first:text-[#205488] last:text-slate-500;
+    }
+
+    .navbar-light .mobile-menu-button {
+        @apply text-slate-600 hover:text-[#205488] hover:bg-slate-100/50;
+    }
+
+    /* Transparent background styles */
+    .navbar-transparent {
+        @apply bg-transparent;
+    }
+
+    .navbar-transparent .nav-link {
+        @apply text-white hover:text-white hover:bg-white/10;
+    }
+
+    .navbar-transparent .nav-link.active {
+        @apply text-white bg-white/10 after:w-full;
+    }
+
+    .navbar-transparent span {
+        @apply text-white;
+    }
+
+    .navbar-transparent .mobile-menu-button {
+        @apply text-white hover:text-white hover:bg-white/10;
+    }
+
+    .navbar-transparent.navbar-scrolled {
+        @apply bg-white/95 backdrop-blur-sm shadow-md;
+    }
+
+    .navbar-transparent.navbar-scrolled .nav-link {
+        @apply text-slate-600 hover:text-[#205488] hover:bg-slate-50/50;
+    }
+
+    .navbar-transparent.navbar-scrolled span {
+        @apply text-[#205488] first:text-[#205488] last:text-slate-500;
+    }
+
+    .navbar-transparent.navbar-scrolled .mobile-menu-button {
+        @apply text-slate-600 hover:text-[#205488] hover:bg-slate-100/50;
+    }
+
+    .navbar-transparent.navbar-scrolled img {
+        @apply brightness-100 invert-0;
+    }
+
+    /* Common styles */
+    .nav-link {
+        @apply px-4 py-2 font-medium rounded-lg transition-all duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[#FDC83D] after:transition-all after:duration-300 hover:after:w-full;
+    }
+
+    .mobile-nav-link {
+        @apply block px-4 py-3 text-slate-600 font-medium rounded-lg hover:text-[#205488] hover:bg-slate-50/50 transition-colors;
+    }
+
+    .mobile-nav-link.active {
+        @apply text-[#205488] bg-slate-50/50;
+    }
+
+    /* Active state */
+    .nav-link[aria-current="page"],
+    .mobile-nav-link[aria-current="page"] {
+        @apply text-[#205488] bg-slate-50/50;
+    }
+
+    .nav-link[aria-current="page"]::after {
+        @apply w-full;
+    }
+
+    /* Join Now button hover state */
+    .navbar-transparent .nav-link + a[href="/join"] {
+        @apply hover:text-[#205488];
+    }
+
+    .mobile-menu {
+        transition-property: transform, opacity, visibility;
+        transition-duration: 300ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+    }
+
+    .mobile-menu.open {
+        @apply translate-x-0 opacity-100 visible;
+    }
+
+    .mobile-menu.open .bg-black\/50 {
+        @apply opacity-100;
+    }
+
+    .mobile-menu.open .mobile-nav-link,
+    .mobile-menu.open .pt-4 {
+        @apply translate-x-0 opacity-100;
+    }
+
+    .mobile-nav-link,
+    .mobile-menu .pt-4 {
+        @apply block px-4 py-3 text-slate-600 font-medium rounded-lg hover:text-[#205488] hover:bg-slate-50/50;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+</style>
+
+<script>
+    interface NavbarElements {
+        navbar: HTMLElement | null;
+        menuToggle: HTMLElement | null;
+        closeButton: HTMLElement | null;
+        mobileMenu: HTMLElement | null;
+        backdrop: HTMLElement | null;
+        mobileLinks: NodeListOf<Element>;
+    }
+
+    function getNavbarElements(): NavbarElements {
+        return {
+            navbar: document.getElementById('navbar'),
+            menuToggle: document.getElementById('menu-toggle'),
+            closeButton: document.querySelector('.close-menu'),
+            mobileMenu: document.querySelector('.mobile-menu'),
+            backdrop: document.querySelector('.mobile-menu .bg-black\\/50'),
+            mobileLinks: document.querySelectorAll('.mobile-nav-link')
+        };
+    }
+
+    function initializeNavbar() {
+        const elements = getNavbarElements();
+
+        function toggleMenu() {
+            if (elements.mobileMenu) {
+                elements.mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('overflow-hidden');
+            }
+        }
+
+        function closeMenu() {
+            if (elements.mobileMenu) {
+                elements.mobileMenu.classList.remove('open');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        // Function to update active states
+        function updateActiveStates() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                const isActive = href === '/' 
+                    ? currentPath === href
+                    : currentPath === href || currentPath.startsWith(`${href}/`);
+                
+                if (isActive) {
+                    link.classList.add('active');
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                }
+            });
+        }
+
+        // Function to update navbar based on current path
+        function updateNavbarBackground() {
+            const currentPath = window.location.pathname;
+            const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
+            
+            elements.navbar?.classList.remove('navbar-light', 'navbar-transparent', 'navbar-scrolled');
+            
+            if (shouldBeLight) {
+                elements.navbar?.classList.add('navbar-light');
+            } else {
+                elements.navbar?.classList.add('navbar-transparent');
+                if (window.scrollY > 20) {
+                    elements.navbar?.classList.add('navbar-scrolled');
+                }
+            }
+        }
+
+        // Handle scroll events
+        function handleScroll() {
+            const currentPath = window.location.pathname;
+            const shouldBeLight = ['/privacy-policy', '/terms'].includes(currentPath);
+            
+            if (!shouldBeLight && elements.navbar) {
+                if (window.scrollY > 20) {
+                    elements.navbar.classList.add('navbar-scrolled');
+                } else {
+                    elements.navbar.classList.remove('navbar-scrolled');
+                }
+            }
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', handleScroll);
+
+        // Menu toggle button - Direct click handler
+        const menuToggleButton = document.getElementById('menu-toggle');
+        if (menuToggleButton) {
+            // Remove old event listeners by cloning
+            const newMenuToggle = menuToggleButton.cloneNode(true);
+            menuToggleButton.parentNode?.replaceChild(newMenuToggle, menuToggleButton);
+            
+            // Add new event listener
+            newMenuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleMenu();
+            });
+        }
+
+        // Close button
+        if (elements.closeButton) {
+            elements.closeButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeMenu();
+            });
+        }
+
+        // Backdrop
+        if (elements.backdrop) {
+            elements.backdrop.addEventListener('click', closeMenu);
+        }
+
+        // Mobile menu links
+        elements.mobileLinks.forEach(link => {
+            if (link instanceof HTMLElement) {
+                link.addEventListener('click', closeMenu);
+            }
+        });
+
+        // Escape key handler
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && elements.mobileMenu?.classList.contains('open')) {
+                closeMenu();
+            }
+        };
+        document.addEventListener('keydown', handleKeydown);
+
+        // Initial updates
+        updateActiveStates();
+        updateNavbarBackground();
+
+        // Navigation handler
+        const handleNavigation = () => {
+            updateActiveStates();
+            updateNavbarBackground();
+            closeMenu();
+        };
+        document.addEventListener('astro:after-swap', handleNavigation);
+    }
+
+    // Initialize on page load and after view transitions
+    document.addEventListener('astro:page-load', initializeNavbar);
+</script> 
+</script>

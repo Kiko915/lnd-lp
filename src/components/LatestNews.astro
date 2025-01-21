@@ -1,0 +1,119 @@
+---
+import { Calendar, Image as ImageIcon } from 'lucide-astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+// Fetch latest 3 news items from CMS
+const allNews = await getCollection('news');
+const news = allNews
+    .sort((a: CollectionEntry<'news'>, b: CollectionEntry<'news'>) => 
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 3);
+
+// Format date helper
+const formatDate = (date: string | Date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
+---
+
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-[#205488] mb-4">
+            Latest LND News
+        </h2>
+        <div class="w-20 h-1 bg-yellow-400 mx-auto mb-4 rounded-full"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            Stay updated with the latest happenings in our ministry and parish community.
+        </p>
+    </div>
+
+    <div class={`grid ${news.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-8`}>
+        {news.map((item: CollectionEntry<'news'>) => (
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 group hover:shadow-xl">
+                <a href={`/news/${item.slug}`} class="block h-full">
+                    <div class="relative h-56">
+                        {item.data.thumbnail ? (
+                            <div class="relative h-full overflow-hidden">
+                                <div class="absolute inset-0">
+                                    <img 
+                                        src={item.data.thumbnail} 
+                                        alt={item.data.title}
+                                        class="w-[110%] h-[110%] object-cover transform group-hover:scale-[1.15] transition-transform duration-500"
+                                    />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#205488] to-[#1a446f]">
+                                <ImageIcon class="w-12 h-12 text-white/50" />
+                            </div>
+                        )}
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[#205488] text-sm font-semibold rounded-full shadow-sm">
+                                {item.data.categories}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col h-[calc(100%-14rem)]">
+                        <div class="flex items-center text-gray-500 text-sm mb-3">
+                            <Calendar class="w-4 h-4 mr-2" />
+                            {formatDate(item.data.date)}
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#205488] transition-colors duration-300">
+                            {item.data.title}
+                        </h3>
+                        <p class="text-gray-600 line-clamp-3 mb-4 flex-grow">
+                            {item.data.excerpt}
+                        </p>
+                        <div class="mt-auto">
+                            <div class="inline-flex items-center px-4 py-2 bg-[#205488]/5 text-[#205488] font-semibold rounded-full transition-all duration-300 group-hover:bg-[#205488] group-hover:text-white">
+                                Read More
+                                <span class="ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        ))}
+    </div>
+
+    {news.length === 0 && (
+        <div class="flex flex-col items-center justify-center py-20">
+            <img 
+                src="/images/no-news-icon.png" 
+                alt="No news available"
+                class="w-32 h-32 mb-6"
+            />
+            <p class="text-gray-600 text-lg max-w-md text-center">
+                There are currently no news updates available. Please check back later!
+            </p>
+        </div>
+    )}
+
+    <div class="text-center mt-12">
+        <a href="/news" class="inline-flex items-center px-6 py-3 rounded-full border-2 border-[#205488] text-[#205488] hover:bg-[#205488] hover:text-white transition-all duration-300 group">
+            View All News
+            <span class="ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

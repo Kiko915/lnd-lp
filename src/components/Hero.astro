@@ -1,0 +1,283 @@
+---
+import { ChevronLeft, ChevronRight } from 'lucide-astro';
+import { Image } from 'astro:assets';
+import bg4 from '../assets/bg4.jpg';
+import bg5 from '../assets/bg5.jpg';
+import bg3 from '../assets/bg3.jpg';
+
+type CarouselItem = {
+    image: string | ImageMetadata;
+    title: string;
+    description: string;
+    imageCredit?: string;
+    buttons: Array<{
+        text: string;
+        href: string;
+        style: 'primary' | 'secondary';
+    }>;
+};
+
+// Define carousel items - this could be moved to a CMS or data file later
+const carouselItems: CarouselItem[] = [
+    {
+        image: bg3,
+        title: "Serving the Altar,<br>Serving God",
+        description: "Join the Lingkod Ng Dambana SJBP Liliw Ministry and be part of our mission to serve the Church and community.",
+        imageCredit: "© Praeministri SocCom",
+        buttons: [
+            { text: "Learn More", href: "/about", style: "primary" },
+            { text: "Join Our Ministry", href: "/join", style: "secondary" }
+        ]
+    },
+    {
+        image: bg5,
+        title: "United in Service,<br>Strong in Faith",
+        description: "Discover the joy of serving God through our vibrant community of altar servers.",
+        imageCredit: "© Praeministri SocCom",
+        buttons: [
+            { text: "View Events", href: "/events", style: "primary" },
+            { text: "Contact Us", href: "/contact", style: "secondary" }
+        ]
+    },
+    {
+        image: bg4,
+        title: "Growing in Faith,<br>Serving with Love",
+        description: "Experience spiritual growth while serving the Church through our altar serving ministry.",
+        imageCredit: "© Praeministri SocCom",
+        buttons: [
+            { text: "Our Gallery", href: "/gallery", style: "primary" },
+        ]
+    }
+];
+---
+
+<section class="relative min-h-screen overflow-hidden">
+    <!-- Carousel Container -->
+    <div id="hero-carousel" class="relative h-screen">
+        {carouselItems.map((item, index) => (
+            <div class={`carousel-slide absolute inset-0 transition-all duration-700 ${index === 0 ? 'active' : ''}`}
+                 data-index={index}>
+                <!-- Background Image with Overlay -->
+                <div class="absolute inset-0">
+                    {typeof item.image === 'string' ? (
+                        <img 
+                            src={item.image} 
+                            alt="Hero Image" 
+                            class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
+                        />
+                    ) : (
+                        <Image 
+                            src={item.image} 
+                            alt="Hero Image"
+                            class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
+                            width={1920}
+                            height={1080}
+                            quality={80}
+                        />
+                    )}
+                    <div class="absolute inset-0 bg-[#205488]/60 mix-blend-multiply"></div>
+                    <div class="vignette absolute inset-0"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="relative h-full flex items-center justify-center">
+                    <div class="text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight transition-all duration-700 delay-300 tracking-tight drop-shadow-lg text-shadow-lg uppercase px-6"
+                            set:html={item.title}>
+                        </h1>
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-gray-100 max-w-3xl mx-auto transition-all duration-700 delay-500 font-light tracking-wide drop-shadow-md px-6">
+                            {item.description}
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center transition-all duration-700 delay-700 px-6">
+                            {item.buttons.map(button => (
+                                <a href={button.href} 
+                                   class={`${button.style === 'primary' ? 
+                                   'bg-gradient-to-r from-yellow-400 to-yellow-500 text-[#205488] hover:from-[#205488] hover:to-[#205488] hover:text-yellow-400 border-2 border-yellow-400' : 
+                                   'bg-transparent text-yellow-400 border-2 border-yellow-400 hover:bg-yellow-400 hover:text-[#205488]'}
+                                   px-6 py-3 rounded-full font-medium tracking-wider transition-all duration-300 transform hover:scale-105 
+                                   flex items-center justify-center min-w-[160px] shadow-lg hover:shadow-xl
+                                   backdrop-blur-sm`}>
+                                    {button.text}
+                                    {button.style === 'primary' && 
+                                        <span class="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                    }
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                    {item.imageCredit && (
+                        <div class="absolute bottom-4 right-4 text-xs text-white/70 bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                            {item.imageCredit}
+                        </div>
+                    )}
+                </div>
+            </div>
+        ))}
+
+        <!-- Navigation Buttons - Visible only on mobile -->
+        <div class="absolute inset-x-0 bottom-8 flex justify-center gap-4 md:hidden">
+            <button class="absolute bottom-4 left-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-20 group"
+                    id="prev-slide"
+                    aria-label="Previous slide">
+                <ChevronLeft class="w-6 h-6 transition-transform group-hover:-translate-x-1" />
+            </button>
+            <button class="absolute bottom-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-20 group"
+                    id="next-slide"
+                    aria-label="Next slide">
+                <ChevronRight class="w-6 h-6 transition-transform group-hover:translate-x-1" />
+            </button>
+        </div>
+    </div>
+</section>
+
+<style>
+    .carousel-slide {
+        @apply opacity-0 invisible;
+    }
+    
+    .carousel-slide.active {
+        @apply opacity-100 visible;
+    }
+
+    .carousel-slide.active img {
+        @apply scale-100;
+    }
+
+    .carousel-slide.active h1 {
+        @apply opacity-100 translate-y-0;
+    }
+
+    .carousel-slide.active p {
+        @apply opacity-100 translate-y-0;
+    }
+
+    .carousel-slide.active div {
+        @apply opacity-100 translate-y-0;
+    }
+
+    .carousel-slide h1,
+    .carousel-slide p,
+    .carousel-slide div {
+        @apply opacity-0 translate-y-8;
+    }
+
+    .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+                     0 0 40px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250, 204, 21, 0.9) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-rendering: optimizeLegibility;
+    }
+
+    p {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        line-height: 1.6;
+    }
+
+    .vignette {
+        background: radial-gradient(
+            circle,
+            transparent 40%,
+            rgba(0, 0, 0, 0.4) 100%
+        );
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    /* Remove any existing btn-primary or btn-secondary styles if they exist */
+
+    /* Add new button hover animation */
+    a:hover span {
+        transform: translateX(5px);
+    }
+
+    /* Add subtle pulse animation for primary buttons */
+    @keyframes subtle-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+    }
+
+    a[href]:active {
+        transform: scale(0.98);
+    }
+</style>
+
+<script>
+    function setupCarousel() {
+        const carousel = document.getElementById('hero-carousel');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevButton = document.getElementById('prev-slide');
+        const nextButton = document.getElementById('next-slide');
+        let currentSlide = 0;
+        let isAnimating = false;
+        let autoAdvanceInterval: NodeJS.Timeout | null = null;
+
+        function updateSlide(newIndex: number) {
+            if (isAnimating || newIndex === currentSlide) return;
+            isAnimating = true;
+
+            // Remove active class from current slide
+            slides[currentSlide]?.classList.remove('active');
+
+            // Add active class to new slide
+            slides[newIndex]?.classList.add('active');
+
+            currentSlide = newIndex;
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 700);
+        }
+
+        function nextSlide() {
+            const newIndex = (currentSlide + 1) % slides.length;
+            updateSlide(newIndex);
+        }
+
+        function prevSlide() {
+            const newIndex = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlide(newIndex);
+        }
+
+        function startAutoAdvance() {
+            if (!autoAdvanceInterval) {
+                autoAdvanceInterval = setInterval(nextSlide, 6000);
+            }
+        }
+
+        function stopAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearInterval(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+        }
+
+        // Initialize first slide
+        slides[0].classList.add('active');
+
+        // Event listeners
+        prevButton?.addEventListener('click', prevSlide);
+        nextButton?.addEventListener('click', nextSlide);
+
+        // Auto-advance handling
+        carousel?.addEventListener('mouseenter', stopAutoAdvance);
+        carousel?.addEventListener('mouseleave', startAutoAdvance);
+
+        // Start auto-advance initially
+        startAutoAdvance();
+
+        // Clean up on page unload
+        return () => {
+            stopAutoAdvance();
+        };
+    }
+
+    // Setup carousel on page load and after transitions
+    document.addEventListener('astro:page-load', setupCarousel);
+</script>

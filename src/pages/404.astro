@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/notfound.svg';
+import { ArrowLeft } from 'lucide-astro';
+---
+
+<Layout title="404 - Page Not Found | Lingkod Ng Dambana">
+    <Navbar lightBg={true} />
+    <main class="min-h-screen pt-20 bg-white slide-in">
+        <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center space-y-6">
+                <!-- Logo/Illustration -->
+                <div class="w-28 h-28 mx-auto relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#205488]/10 to-[#FDC83D]/10 rounded-full blur-2xl"></div>
+                    <Image 
+                        src={logo} 
+                        alt="LND Logo" 
+                        class="w-full h-full object-contain logo-float"
+                        width={240}
+                        height={240}
+                    />
+                </div>
+
+                <!-- Error Message -->
+                <div class="space-y-4">
+                    <h1 class="text-2xl font-bold text-[#205488]">Page Doesn't Exist</h1>
+                    <p class="text-slate-600">
+                        The page you're looking for might have been removed, had its name changed, or is temporarily unavailable.
+                    </p>
+                </div>
+
+                <!-- Action Button -->
+                <div>
+                    <a 
+                        href="/" 
+                        class="inline-flex items-center px-6 py-2.5 bg-[#205488] text-white font-medium rounded-lg hover:bg-[#1a4570] transition-colors duration-300"
+                    >
+                        <ArrowLeft class="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                        Go Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .logo-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>

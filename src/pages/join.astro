@@ -1,0 +1,377 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+
+// Check if applications are being accepted
+const ACCEPTING_APPLICATIONS = import.meta.env.PUBLIC_ACCEPTING_APPLICATIONS === 'true';
+
+// List of ministries
+const ministries = [
+    { id: 'altar-servers', name: 'Altar Servers' },
+    { id: 'lectors', name: 'Lectors and Commentators' },
+    { id: 'music', name: 'Music Ministry' },
+    { id: 'collectors', name: 'Collectors' },
+    { id: 'hospitality', name: 'Hospitality Ministry' }
+];
+---
+
+<Layout 
+  title="Join Us | Lingkod Ng Dambana - Liliw, Laguna"
+  description="Become part of Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna. Learn about our membership process and requirements."
+  canonical="https://lndliliw.online/join"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383265/7_q8cxy2.png'
+  type="website"
+>
+    <main class="fade-in">
+        <!-- Hero Section -->
+        <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#205488]/50 via-[#205488]/30 to-[#205488]"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-4xl mx-auto">
+                    <span class="inline-block text-yellow-400 text-lg md:text-xl font-medium mb-4 animate-fade-in tracking-wide">
+                        Become a Member
+                    </span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 animate-fade-in leading-tight">
+                        Join Our <span class="text-yellow-400">Ministry</span>
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto animate-fade-in-up leading-relaxed">
+                        Take the first step in your journey of faith and service. Join our community of dedicated servants.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Form Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto">
+                    {ACCEPTING_APPLICATIONS ? (
+                        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                            <h2 class="text-3xl font-bold text-[#205488] mb-8 text-center">Application Form</h2>
+                            
+                            <form id="application-form" class="space-y-8">
+                                <!-- Personal Information -->
+                                <div class="space-y-6">
+                                    <h3 class="text-xl font-semibold text-[#205488]">Personal Information</h3>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                            <input 
+                                                type="text" 
+                                                id="firstName" 
+                                                name="firstName" 
+                                                required
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                            <input 
+                                                type="text" 
+                                                id="lastName" 
+                                                name="lastName" 
+                                                required
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                            <input 
+                                                type="email" 
+                                                id="email" 
+                                                name="email" 
+                                                required
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                            <input 
+                                                type="tel" 
+                                                id="phone" 
+                                                name="phone" 
+                                                required
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="birthdate" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                                            <input 
+                                                type="date" 
+                                                id="birthdate" 
+                                                name="birthdate" 
+                                                required
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                            <select 
+                                                id="gender" 
+                                                name="gender"
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                            >
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Prefer not to say</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                                        <textarea 
+                                            id="address" 
+                                            name="address" 
+                                            rows="3" 
+                                            required
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                        ></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Ministry Selection -->
+                                <div class="space-y-6">
+                                    <h3 class="text-xl font-semibold text-[#205488]">Ministry Selection</h3>
+                                    
+                                    <div>
+                                        <label for="ministry" class="block text-sm font-medium text-gray-700 mb-1">Preferred Ministry *</label>
+                                        <select 
+                                            id="ministry" 
+                                            name="ministry" 
+                                            required
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                        >
+                                            <option value="">Select a Ministry</option>
+                                            {ministries.map(ministry => (
+                                                <option value={ministry.id}>{ministry.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="experience" class="block text-sm font-medium text-gray-700 mb-1">Previous Experience</label>
+                                        <textarea 
+                                            id="experience" 
+                                            name="experience" 
+                                            rows="4"
+                                            placeholder="Tell us about any relevant experience or skills you have..."
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                        ></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="motivation" class="block text-sm font-medium text-gray-700 mb-1">Why do you want to join?</label>
+                                        <textarea 
+                                            id="motivation" 
+                                            name="motivation" 
+                                            rows="4"
+                                            placeholder="Share your motivation for joining our ministry..."
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                        ></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6">
+                                    <button 
+                                        type="submit"
+                                        class="w-full px-6 py-3 bg-[#205488] text-white font-medium rounded-lg hover:bg-[#3270a6] transition-colors"
+                                    >
+                                        Submit Application
+                                    </button>
+                                    <div id="form-message" class="mt-4 text-sm text-center"></div>
+                                </div>
+                            </form>
+                        </div>
+                    ) : (
+                        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 text-center">
+                            <div class="text-[#205488] mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h2 class="text-3xl font-bold text-[#205488] mb-4">Applications Currently Closed</h2>
+                            <p class="text-slate-600 mb-6">We are not accepting new applications at this time. Please check back later or contact us for more information.</p>
+                            <div class="space-y-4">
+                                <p class="text-slate-600">
+                                    You can:
+                                </p>
+                                <ul class="text-slate-600 space-y-2">
+                                    <li>• Subscribe to our newsletter to be notified when applications open</li>
+                                    <li>• Follow us on social media for updates</li>
+                                    <li>• Contact us for more information about our ministry</li>
+                                </ul>
+                            </div>
+                            <div class="mt-8">
+                                <a 
+                                    href="/contact" 
+                                    class="inline-flex items-center px-6 py-3 bg-[#205488] text-white font-medium rounded-lg hover:bg-[#3270a6] transition-colors"
+                                >
+                                    Contact Us
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirements Section -->
+        <section class="py-20 bg-gray-50 relative">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-[#205488] mb-8">Requirements & Next Steps</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm">
+                            <div class="text-[#205488] mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-[#205488] mb-2">Submit Application</h3>
+                            <p class="text-slate-600">Fill out the application form with your details.</p>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm">
+                            <div class="text-[#205488] mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-[#205488] mb-2">Interview</h3>
+                            <p class="text-slate-600">We'll schedule an interview to discuss your application and answer questions.</p>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm">
+                            <div class="text-[#205488] mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-[#205488] mb-2">Formation</h3>
+                            <p class="text-slate-600">Complete the required formation program to become a member of the ministry.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .pattern-grid {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
+
+    .logo-pattern {
+        background-image: url('../assets/logo-pattern.png');
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('application-form') as HTMLFormElement;
+        const messageDiv = document.getElementById('form-message') as HTMLDivElement;
+
+        if (form && messageDiv) {
+            form.addEventListener('submit', async (e: SubmitEvent) => {
+                e.preventDefault();
+                
+                const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                
+                // Disable button and show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Submitting...';
+                messageDiv.textContent = '';
+                messageDiv.className = 'mt-4 text-sm text-center';
+
+                try {
+                    // Get form data
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    const response = await fetch('/api/applications', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Success message
+                        messageDiv.textContent = '✓ ' + result.message;
+                        messageDiv.className = 'mt-4 text-sm text-green-600 text-center';
+                        form.reset();
+
+                        // Scroll to message
+                        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        // Error message
+                        messageDiv.textContent = '✕ ' + result.message;
+                        messageDiv.className = 'mt-4 text-sm text-red-600 text-center';
+                    }
+                } catch (error) {
+                    // Network or other error
+                    messageDiv.textContent = '✕ Failed to submit application. Please try again later.';
+                    messageDiv.className = 'mt-4 text-sm text-red-600 text-center';
+                } finally {
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Submit Application';
+                }
+            });
+        }
+    });
+</script>

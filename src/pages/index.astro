@@ -1,13 +1,177 @@
 ---
-import InDevelopment from '../components/InDevelopment.astro';
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import ImpactMetrics from '../components/ImpactMetrics.astro';
+import Testimonials from '../components/Testimonials.astro';
+import UpcomingEvents from '../components/UpcomingEvents.astro';
+import LatestNews from '../components/LatestNews.astro';
+import Welcome from '../components/Welcome.astro';
+import MinistryGallery from '../components/MinistryGallery.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ContactCard from '../components/ContactCard.astro';
+
+// SEO Metadata
+const seoTitle = "Lingkod Ng Dambana - Home | SJBP Unit in Liliw, Laguna";
+const seoDesc = "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through serving the altar.";
+const seoUrl = "https://lndliliw.online";
 ---
 
-<Layout title="Lingkod Ng Dambana | Liliw, Laguna">
-	<main class="min-h-screen">
-		<InDevelopment />
+<Layout 
+  title={seoTitle}
+  description={seoDesc}
+  canonical={seoUrl}
+  type="website"
+>
+	<main class="fade-in">
+		<Hero data-aos="fade-up" />
+		<Features data-aos="fade-up" data-aos-delay="100" />
+		
+		<!-- Upcoming Events Section -->
+		<section
+			class="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="200"
+		>
+			<UpcomingEvents />
+		</section>
+
+		<!-- Latest News Section -->
+		<section
+			class="py-12 md:py-20 bg-white"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="300"
+		>
+			<LatestNews />
+		</section>
+
+		<!-- Impact Metrics Section -->
+		<section
+			class="py-12 md:py-20 bg-[#205488] relative overflow-hidden"
+			data-animate
+			data-aos="zoom-in"
+			data-aos-delay="400"
+		>
+			<div class="absolute inset-0 opacity-5"></div>
+			<ImpactMetrics />
+		</section>
+
+		<!-- Testimonials Section -->
+		<section
+			class="py-12 md:py-20"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="500"
+		>
+			<Testimonials />
+		</section>
+
+		<!-- Ministry Gallery Section -->
+		<section
+			class="py-12 md:py-20 bg-gray-50"
+			data-animate
+			data-aos="fade-up"
+			data-aos-delay="600"
+		>
+			<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+				<MinistryGallery />
+			</div>
+		</section>
+
+		<!-- Contact Card Section -->
+		<ContactCard data-aos="fade-up" data-aos-delay="700" />
 	</main>
 </Layout>
+
+<style>
+	.fade-in {
+		animation: fadeIn 0.8s ease-out;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	[data-animate] {
+		scroll-margin-top: 2rem;
+		opacity: 0;
+		transform: translateY(20px);
+		transition: all 0.6s ease-out;
+	}
+
+	[data-animate].visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	/* Make sections visible by default if user prefers reduced motion */
+	@media (prefers-reduced-motion: reduce) {
+		[data-animate] {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.container {
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
+
+		[data-animate] {
+			scroll-margin-top: 1rem;
+		}
+	}
+</style>
+
+<script>
+	import AOS from 'aos';
+	
+	function initializeObserver() {
+		const animatedElements = document.querySelectorAll('[data-animate]');
+		
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('visible');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, {
+			threshold: 0.1,
+			rootMargin: '50px'
+		});
+
+		animatedElements.forEach(element => {
+			element.classList.remove('visible');
+			observer.observe(element);
+		});
+
+		return observer;
+	}
+
+	document.addEventListener('astro:page-load', () => {
+		// Initialize animations only if user doesn't prefer reduced motion
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			AOS.refresh();
+		}
+
+		const observer = initializeObserver();
+
+		return () => {
+			observer.disconnect();
+			AOS.refreshHard(); // Clean up AOS on page navigation
+		};
+	});
+</script>

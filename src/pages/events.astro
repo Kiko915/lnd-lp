@@ -1,0 +1,317 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import { Client as Appwrite, Databases, Query, type Models } from 'node-appwrite';
+
+interface Event extends Models.Document {
+    title: string;
+    description: string;
+    date: string;
+    location: string;
+    category: string;
+    image: string;
+    registration_link?: string;
+    is_past_event: boolean;
+    contact_email: string;
+    social_media_links: string[];
+}
+
+// Initialize Appwrite
+const client = new Appwrite();
+client
+    .setEndpoint(import.meta.env.PUBLIC_APPWRITE_ENDPOINT)
+    .setProject(import.meta.env.PUBLIC_APPWRITE_PROJECT_ID)
+    .setKey(import.meta.env.PUBLIC_APPWRITE_API_KEY);
+
+const databases = new Databases(client);
+
+// Fetch events data
+const upcoming: Event[] = [];
+const past: Event[] = [];
+
+try {
+    const now = new Date();
+    const isoDate = now.toISOString();
+
+    // Fetch upcoming events
+    console.log('Database ID:', import.meta.env.PUBLIC_APPWRITE_DATABASE_ID);
+    console.log('Collection ID:', import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID);
+
+    const upcomingEvents = await databases.listDocuments<Event>(
+        import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
+        import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID,
+        [
+            Query.greaterThan('date', isoDate),
+            Query.orderAsc('date'),
+            Query.limit(6)
+        ]
+    );
+
+    // Fetch past events
+    const pastEvents = await databases.listDocuments<Event>(
+        import.meta.env.PUBLIC_APPWRITE_DATABASE_ID,
+        import.meta.env.PUBLIC_APPWRITE_EVENTS_COLLECTION_ID,
+        [
+            Query.lessThan('date', isoDate),
+            Query.orderDesc('date'),
+            Query.limit(3)
+        ]
+    );
+
+    upcoming.push(...upcomingEvents.documents);
+    past.push(...pastEvents.documents);
+} catch (error) {
+    console.error('Error fetching events:', error);
+}
+
+// Helper function to format date
+const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+        day: date.toLocaleDateString('en-US', { day: 'numeric' }),
+        month: date.toLocaleDateString('en-US', { month: 'short' }),
+        year: date.toLocaleDateString('en-US', { year: 'numeric' }),
+        time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    };
+};
+---
+
+<Layout 
+  title="Events & Activities | Lingkod Ng Dambana - Liliw, Laguna"
+  description="Discover upcoming events, activities, and liturgical celebrations organized by Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna."
+  canonical="https://lndliliw.online/events"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383264/4_ptjbvs.png'
+  type="website"
+>
+    <main class="fade-in">
+        <!-- Hero Section -->
+        <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#205488]/50 via-[#205488]/30 to-[#205488]"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-4xl mx-auto">
+                    <span class="inline-block text-yellow-400 text-lg md:text-xl font-medium mb-4 animate-fade-in tracking-wide">
+                        Join Us
+                    </span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 animate-fade-in leading-tight">
+                        Events & <span class="text-yellow-400">Activities</span>
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto animate-fade-in-up leading-relaxed">
+                        Discover and participate in our upcoming events and activities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Grid Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Upcoming Events -->
+                    {upcoming.length > 0 && (
+                        <div class="mb-20">
+                            <h2 class="text-3xl font-bold text-[#205488] mb-12">Upcoming Events</h2>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {upcoming.map((event) => {
+                                    const date = formatDate(event.date);
+                                    return (
+                                        <a href={`/events/${event.$id}`} class="block bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                            <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                                                <img 
+                                                    src={event.image} 
+                                                    alt={event.title} 
+                                                    class="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div class="p-6">
+                                                <div class="flex items-start gap-4 mb-4">
+                                                    <div class="text-center bg-[#205488] text-white px-4 py-2 rounded-lg">
+                                                        <div class="text-2xl font-bold">{date.day}</div>
+                                                        <div class="text-sm uppercase">{date.month}</div>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-xl font-bold text-[#205488] group-hover:text-[#3270a6] transition-colors">
+                                                            {event.title}
+                                                        </h3>
+                                                        <p class="text-slate-500 text-sm mt-1">{date.time}</p>
+                                                    </div>
+                                                </div>
+                                                <p class="text-slate-600 mb-4">
+                                                    {event.description}
+                                                </p>
+                                                <div class="flex items-center gap-4 text-sm text-slate-600">
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#205488]" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.location}
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#205488]" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.category}
+                                                    </div>
+                                                </div>
+                                                {event.registration_link && (
+                                                    <a 
+                                                        href={event.registration_link}
+                                                        class="mt-6 inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors"
+                                                    >
+                                                        Register Now
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    <!-- Past Events -->
+                    {past.length > 0 && (
+                        <div>
+                            <h2 class="text-3xl font-bold text-[#205488] mb-12">Past Events</h2>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {past.map((event) => {
+                                    const date = formatDate(event.date);
+                                    return (
+                                        <a href={`/events/${event.$id}`} class="block bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                            <div class="aspect-w-16 aspect-h-9 bg-gray-100 relative">
+                                                <div class="absolute inset-0 bg-black/50"></div>
+                                                <img 
+                                                    src={event.image} 
+                                                    alt={event.title} 
+                                                    class="w-full h-full object-cover opacity-75"
+                                                />
+                                            </div>
+                                            <div class="p-6">
+                                                <div class="flex items-start gap-4 mb-4">
+                                                    <div class="text-center bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+                                                        <div class="text-2xl font-bold">{date.day}</div>
+                                                        <div class="text-sm uppercase">{date.month}</div>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-xl font-bold text-gray-700">
+                                                            {event.title}
+                                                        </h3>
+                                                        <p class="text-slate-500 text-sm mt-1">{date.time}</p>
+                                                    </div>
+                                                </div>
+                                                <p class="text-slate-600 mb-4">
+                                                    {event.description}
+                                                </p>
+                                                <div class="flex items-center gap-4 text-sm text-slate-600">
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.location}
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        {event.category}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    <!-- Show message when no events are available -->
+                    {upcoming.length === 0 && past.length === 0 && (
+                        <div class="text-center py-20">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">No Events Available</h3>
+                            <p class="text-slate-600">Check back later for upcoming events and activities.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Integration Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-[#205488] mb-4">Stay Updated with Our Events</h2>
+                    <p class="text-slate-600 mb-8">Subscribe to our calendar to never miss an event.</p>
+                    <a 
+                        href="#" 
+                        class="inline-flex items-center px-6 py-3 bg-[#205488] text-white font-medium rounded-lg hover:bg-[#3270a6] transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                        </svg>
+                        Add to Calendar
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .pattern-grid {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
+
+    .logo-pattern {
+        background-image: url('../assets/logo-pattern.png');
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .aspect-w-16 {
+        position: relative;
+        padding-bottom: 56.25%;
+    }
+
+    .aspect-w-16 > * {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>

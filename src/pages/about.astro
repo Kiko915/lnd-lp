@@ -1,0 +1,680 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import emblemLogo from '../assets/lndliliw-emblem-primary-shadow.png';
+import { Church, Cross, BookOpen, Users, HandHeart } from 'lucide-astro';
+
+const description = "Lingkod Ng Dambana is a Catholic altar server ministry in St. John the Baptist Parish Liliw, Laguna dedicated to liturgical service and community building. Learn about our mission, history, leadership, and ministries.";
+---
+
+<Layout 
+  title="About Us | Lingkod Ng Dambana - Liliw, Laguna"
+  description="Learn about the mission, history, and leadership of Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna."
+  canonical="https://lndliliw.online/about"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383263/2_nq4vda.png'
+  type="website"
+>
+    <main class="fade-in">
+        <!-- Hero Section -->
+        <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#205488]/50 via-[#205488]/30 to-[#205488]"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-4xl mx-auto">
+                    <span class="inline-block text-yellow-400 text-lg md:text-xl font-medium mb-4 animate-fade-in tracking-wide">
+                        Our Story
+                    </span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 animate-fade-in leading-tight">
+                        About <span class="text-yellow-400">Us</span>
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto animate-fade-in-up leading-relaxed">
+                        Discover our journey of faith, service, and dedication to the Church.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Who We Are Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Mission Callout -->
+                    <div class="bg-[#205488] rounded-2xl p-8 md:p-12 mb-16 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 pattern-grid opacity-10"></div>
+                        <div class="relative z-10">
+                            <div class="text-center max-w-3xl mx-auto">
+                                <h3 class="text-2xl md:text-3xl font-bold mb-6">Our Mission</h3>
+                                <p class="text-lg md:text-xl leading-relaxed">
+                                    To provide reverent service at the Holy Mass, in union with Christ the true Priest, through His priest, guided by the Blessed Virgin Mary.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Points Grid -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Christ-Centered -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <Church class="w-12 h-12" />
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Christ-Centered</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                Christ is the heart of our ministry, guiding our service and devotion in every liturgical celebration.
+                            </p>
+                        </div>
+
+                        <!-- Youth Formation -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Youth Formation</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                We nurture young men to become exemplary Christians and future leaders in the Church.
+                            </p>
+                        </div>
+
+                        <!-- Diocesan Unity -->
+                        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                            <div class="text-[#205488] mb-6">
+                                <Cross class="w-12 h-12" />
+                            </div>
+                            <h3 class="text-xl font-bold text-[#205488] mb-4">Diocesan Unity</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                As part of the Diocese of San Pablo, we work to foster faith throughout Laguna province.
+                            </p>
+                        </div>
+                    </div>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emblem Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our Emblem</h2>
+                    
+                    <!-- Emblem Image -->
+                    <div class="relative group mb-12">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#205488]/10 to-[#FDC83D]/10 rounded-3xl blur-2xl transition-all duration-300 group-hover:blur-3xl"></div>
+                        <div class="relative max-w-lg mx-auto">
+                            <Image 
+                                src={emblemLogo} 
+                                alt="LND Emblem" 
+                                class="w-full mx-auto drop-shadow-2xl transition-all duration-500 hover:scale-105"
+                                width={512}
+                                height={512}
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Emblem Description -->
+                    <div class="space-y-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4 text-center">Coat of Arms of Lingkod Ng Dambana</h3>
+                            <p class="text-slate-600 leading-relaxed mb-8 text-center">
+                                The coat of arms represents the mission, devotion, and heritage of the Lingkod Ng Dambana of St. John the Baptist Parish, Liliw, Laguna. Each element has been carefully chosen to reflect the ministry's patron saints, devotions, and values.
+                            </p>
+
+                            <!-- The Shield Description -->
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold text-[#205488] mb-4 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    The Shield
+                                </h4>
+                                <p class="text-slate-600 mb-4 text-center">The shield is quartered, signifying the unity and diversity of the ministry's purpose and mission.</p>
+                            </div>
+
+                            <!-- Quadrants Description -->
+                            <div class="space-y-8">
+                                <!-- Top Left Quadrant -->
+                                <div class="bg-slate-50 p-6 rounded-xl">
+                                    <h5 class="text-lg font-semibold text-[#205488] mb-3 text-center">St. John the Baptist Parish and Mount Banahaw</h5>
+                                    <p class="text-slate-600 text-center">The image of the parish church, set against the backdrop of Mount Banahaw, represents the sacredness of the parish and its geographical identity in Liliw, Laguna. This quadrant ties the ministry to its parish community and the natural beauty of its surroundings.</p>
+                                </div>
+
+                                <!-- Top Right Quadrant -->
+                                <div class="bg-slate-50 p-6 rounded-xl">
+                                    <h5 class="text-lg font-semibold text-[#205488] mb-3 text-center">The Eucharist and Candles</h5>
+                                    <p class="text-slate-600 text-center">The Eucharist, radiating with light, symbolizes the core of Catholic faith – the Body and Blood of Christ. The two candles flanking the Eucharist represent the ministry's commitment to serving as light-bearers. This quadrant emphasizes the ministry's focus on the Eucharistic celebration and devotion to Christ's presence.</p>
+                                </div>
+
+                                <!-- Bottom Left Quadrant -->
+                                <div class="bg-slate-50 p-6 rounded-xl">
+                                    <h5 class="text-lg font-semibold text-[#205488] mb-3 text-center">St. Tarcisius and the Palm Branch</h5>
+                                    <p class="text-slate-600 text-center">The palm branch, accompanied by a radiant Chi-Rho (the monogram for Christ), represents St. Tarcisius, the patron saint of altar servers. St. Tarcisius is honored for his unwavering devotion to the Eucharist, even unto death.</p>
+                                </div>
+
+                                <!-- Bottom Right Quadrant -->
+                                <div class="bg-slate-50 p-6 rounded-xl">
+                                    <h5 class="text-lg font-semibold text-[#205488] mb-3 text-center">Marian Devotion to Our Lady of Fatima</h5>
+                                    <p class="text-slate-600 text-center">The letter "M" crowned with twelve stars signifies the ministry's devotion to the Blessed Virgin Mary, particularly under the title of Our Lady of Fatima. This quadrant reflects the ministry's deep connection to the Mother of God and its commitment to spreading her message of peace and prayer.</p>
+                                </div>
+                            </div>
+
+                            <!-- The Scroll and Motto -->
+                            <div class="bg-slate-50 p-6 rounded-xl mt-8">
+                                <h4 class="text-xl font-semibold text-[#205488] mb-4 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    The Scroll and Motto
+                                </h4>
+                                <div class="space-y-4 text-center">
+                                    <div>
+                                        <h6 class="font-medium text-[#205488] mb-1">Position</h6>
+                                        <p class="text-slate-600">Above the shield, a scroll in white and red bears the name of the ministry: Lingkod Ng Dambana, St. John the Baptist Parish, Liliw, Laguna.</p>
+                                    </div>
+                                    <div>
+                                        <h6 class="font-medium text-[#205488] mb-1">Motto</h6>
+                                        <p class="text-slate-600">The scroll below the shield contains the ministry's guiding principle, <span class="italic">"Fidelitas Deo"</span> (Faithfulness to God), encapsulating its commitment to unwavering service and devotion.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl font-bold text-[#205488] mb-16 text-center">Who We Are</h2>
+                    <div class="space-y-8">
+                        <p class="text-slate-600 leading-relaxed">
+                            The <strong>Lingkod Ng Dambana Ministry</strong> is a ministry composed of young men whose primary goal is to provide reverent service at the Holy Mass, in union with the Lord Jesus Christ, the true Priest and Offering, through His priest. Christ is the center of this ministry, and with the guidance of the Blessed Virgin Mary, the Mother and Model of every servant, the Lingkod Ng Dambana Ministry continues to shape each of its members to become exemplary Christians for the Church.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed">
+                            As part of the Diocese of San Pablo, the ministry is united in fostering the growth of faith in the province of Laguna. This ministry highly values the contributions of the youth to the Church, as they will grow to be true Christian leaders in the future, embodying the spirit of love and service, according to the example of the Lord Jesus Christ.
+                        </p>
+
+                        <div class="grid gap-8">
+                            <!-- Word of God -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <BookOpen class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Word of God</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            We are committed to studying and living out the teachings of Scripture, allowing God's Word to guide our lives and ministry.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prayer and Liturgy -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <Church class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Prayer and Liturgy</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Through prayer and active participation in the liturgy, we deepen our relationship with Christ and serve as instruments of His grace.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Brotherhood -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <Users class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Brotherhood</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            We foster a strong sense of community and fraternity, supporting one another in our spiritual journey and personal growth.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Service -->
+                            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-12 h-12 bg-[#205488]/10 rounded-lg flex items-center justify-center">
+                                        <HandHeart class="w-6 h-6 text-[#205488]" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-[#205488] mb-2">Service</h3>
+                                        <p class="text-slate-600 leading-relaxed">
+                                            Inspired by Christ's example, we dedicate ourselves to serving the Church and our community with humility and love.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Values Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Core Values</h2>
+                    <div class="space-y-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Human Maturity</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                Its aim is to awaken in the consciousness of every member the abiding Presence of God in all their experiences and to become instruments of God's love for others through sincere service.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Relationship with Christ</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                It also desires for members to develop a deep Christian holiness rooted in the Lord, always being in communion with Him, especially in the Church's Liturgy and the Holy Eucharist.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Membership in the Church</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                The entire ministry encourages members to make their service fruitful for the good of the Christian community through meaningful liturgy in the parish, school, and other activities.
+                            </p>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-2xl shadow-sm">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">Commitment for the Kingdom</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                As witnesses of the Kingdom of the Lord, members are challenged to bear witness to the Lord they follow through deep prayer and communion with the Lord, who came not to be served but to serve.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leadership Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our Leadership (Parish Unit)</h2>
+                    <img 
+                        src="/images/lnd-orgchart.png" 
+                        alt="LND Organizational Chart" 
+                        class="w-full rounded-lg shadow-lg"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <!-- Ministries and Activities Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-4xl font-bold text-[#205488] mb-4 text-center">Ministries & Groups</h2>
+                    <p class="text-slate-600 text-center mb-12 max-w-2xl mx-auto">Our ministry is organized into specialized groups, each contributing their unique talents to serve the Ministry.</p>
+                    
+                    <div class="grid gap-8">
+                        <!-- LND Core Group -->
+                        <div class="bg-white rounded-2xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                            <div class="grid md:grid-cols-[300px,1fr] h-full">
+                                <!-- Logo/Image Section -->
+                                <div class="relative bg-[#205488] p-8 flex items-center justify-center">
+                                    <div class="absolute inset-0 pattern-grid opacity-10"></div>
+                                    <img 
+                                        src="/images/core-group-logo.webp" 
+                                        alt="LND Core Group Logo" 
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                </div>
+                                <!-- Content Section -->
+                                <div class="p-8">
+                                    <div class="mb-6">
+                                        <h3 class="text-2xl font-bold text-[#205488] mb-3">LND Core Group</h3>
+                                        <p class="text-slate-600 mb-4">
+                                            The central leadership team responsible for overseeing all ministry activities and ensuring alignment with our mission and values.
+                                        </p>
+                                    </div>
+                                    <!-- Members Grid -->
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-[#205488] mb-6">Core Members</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <!-- President -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Francis Neil M. Mistica</p>
+                                                    <p class="text-sm text-slate-600 mt-1">President</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Vice President -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Vice President</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Secretary -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Arvin P. Viri&ntilde;a</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Secretary</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Assistant Secretary -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Josh Mirovien Colona</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Secretary</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Treasurer -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Edcel Cairo M. Regondola</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Treasurer</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Auditor -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Luvin Reign M. Tunay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Auditor</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LND Formation Committee -->
+                        <div class="bg-white rounded-2xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                            <div class="grid md:grid-cols-[300px,1fr] h-full">
+                                <!-- Logo/Image Section -->
+                                <div class="relative bg-[#205488] p-8 flex items-center justify-center">
+                                    <div class="absolute inset-0 pattern-grid opacity-10"></div>
+                                    <img 
+                                        src="/images/formators.png" 
+                                        alt="Formation Committee Logo" 
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                </div>
+                                <!-- Content Section -->
+                                <div class="p-8">
+                                    <div class="mb-6">
+                                        <h3 class="text-2xl font-bold text-[#205488] mb-3">Formation Committee</h3>
+                                        <p class="text-slate-600 mb-4">
+                                            Dedicated to the spiritual and personal development of our aspirants through training, workshops, and formation programs.
+                                        </p>
+                                    </div>
+                                    <!-- Members Grid -->
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-[#205488] mb-6">Committee Members</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <!-- Head -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Kurt Angelo B. Agapay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Administrator</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Assistant Head -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Paul Mikko G. Molon</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Co-Administrator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Michael L. Arcellana</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Secretary</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Paul Mikee G. Molon</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Managing Formator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Nelzen D. Santileces</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Associate Formator</p>
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Lanz Eugene J. Colona</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Formator - Liturgy</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Zoren James P. Coroza</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Formator - Academic</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Yhael Rhenzley E. Fran</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Formator</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Chianne Haven M. Veluz</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Assistant Formator</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LND Publicity Group -->
+                        <div class="bg-white rounded-2xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                            <div class="grid md:grid-cols-[300px,1fr] h-full">
+                                <!-- Logo/Image Section -->
+                                <div class="relative bg-[#205488] p-8 flex items-center justify-center">
+                                    <div class="absolute inset-0 pattern-grid opacity-10"></div>
+                                    <img 
+                                        src="/images/lnd-publicity-logo.png" 
+                                        alt="LND Publicity Group Logo" 
+                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                </div>
+                                <!-- Content Section -->
+                                <div class="p-8">
+                                    <div class="mb-6">
+                                        <h3 class="text-2xl font-bold text-[#205488] mb-3">Publicity Group</h3>
+                                        <p class="text-slate-600 mb-4">
+                                            Manages our ministry's communications, social media presence, and documentation of events and activities.
+                                        </p>
+                                    </div>
+                                    <!-- Members Grid -->
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-[#205488] mb-6">Team Members</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <!-- Head -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Sherwin S. Borgonia</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Head</p>
+                                                </div>
+                                            </div>
+                                            <!-- Assistant Head -->
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Arvin P. Viriña</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Editor</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">James Nelzen D. Santileces</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Graphic Designer</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                                                <div>
+                                                    <p class="font-semibold text-[#205488]">Kurt Angelo B. Agapay</p>
+                                                    <p class="text-sm text-slate-600 mt-1">Copywriter</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .pattern-grid {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
+
+    .logo-pattern {
+        background-image: url('../assets/logo-pattern.png');
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .emblem-hotspot:hover span {
+        opacity: 1;
+    }
+
+    .element-card.active {
+        @apply ring-2 ring-[#205488] shadow-lg;
+        transform: translateY(-2px);
+    }
+
+    .emblem-hotspot.active {
+        @apply bg-white/40 scale-110;
+    }
+
+    .org-chart {
+        position: relative;
+    }
+
+    .org-chart::before {
+        content: '';
+        position: absolute;
+        top: 180px;
+        left: 50%;
+        width: 2px;
+        height: 40px;
+        background-color: #205488;
+        transform: translateX(-50%);
+    }
+
+    .level-2 {
+        position: relative;
+    }
+
+    .level-2::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background-color: #205488;
+    }
+
+    .level-2::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background-color: #205488;
+    }
+
+    .level-3 {
+        position: relative;
+    }
+
+    .level-3::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        left: 12.5%;
+        width: 75%;
+        height: 2px;
+        background-color: #205488;
+    }
+
+    .org-box {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .org-box:hover {
+        transform: translateY(-5px);
+    }
+
+    @media (max-width: 768px) {
+        .org-chart::before,
+        .level-2::before,
+        .level-2::after,
+        .level-3::before {
+            display: none;
+        }
+    }
+</style>

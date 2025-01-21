@@ -1,0 +1,295 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+// Fetch news data from Decap CMS
+const allNews = await getCollection('news');
+
+// Get featured news (limit to 2)
+const featured = allNews
+    .filter((post: CollectionEntry<'news'>) => post.data.featured)
+    .sort((a: CollectionEntry<'news'>, b: CollectionEntry<'news'>) => 
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 2);
+
+// Get latest news (excluding featured, limit to 3)
+const latest = allNews
+    .filter((post: CollectionEntry<'news'>) => !post.data.featured)
+    .sort((a: CollectionEntry<'news'>, b: CollectionEntry<'news'>) => 
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 3);
+
+// Format date helper
+const formatDate = (date: string | Date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
+---
+
+<Layout 
+  title="News & Updates | Lingkod Ng Dambana - Liliw, Laguna"
+  description="Stay updated with the latest news, events, and announcements from Lingkod Ng Dambana, a Catholic altar server ministry in St. John the Baptist Parish, Liliw, Laguna."
+  canonical="https://lndliliw.online/news"
+  image='https://res.cloudinary.com/da3b5g9ad/image/upload/v1737383265/6_t2j7hk.png'
+  type="website"
+>
+    <main class="fade-in">
+        <!-- Hero Section -->
+        <section class="relative min-h-[70vh] flex items-center justify-center bg-[#205488]">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 pattern-grid opacity-5"></div>
+                <div class="absolute inset-0 logo-pattern opacity-[0.09] bg-repeat"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#205488]/50 via-[#205488]/30 to-[#205488]"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-4xl mx-auto">
+                    <span class="inline-block text-yellow-400 text-lg md:text-xl font-medium mb-4 animate-fade-in tracking-wide">
+                        Stay Updated
+                    </span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 animate-fade-in leading-tight">
+                        News & <span class="text-yellow-400">Updates</span>
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto animate-fade-in-up leading-relaxed">
+                        Keep up with the latest news, events, and announcements from our ministry.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Grid Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Featured News -->
+                    {featured.length > 0 && (
+                        <div class="mb-16">
+                            <h2 class="text-3xl font-bold text-[#205488] mb-12">Featured News</h2>
+                            <div class="grid lg:grid-cols-2 gap-8">
+                                {featured.map((item: CollectionEntry<'news'>) => (
+                                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                        <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                                            <img 
+                                                src={item.data.thumbnail} 
+                                                alt={item.data.title} 
+                                                class="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        <div class="p-8">
+                                            <div class="flex items-center gap-4 mb-4">
+                                                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">Featured</span>
+                                                <span class="text-slate-500 text-sm">{formatDate(item.data.date)}</span>
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-[#205488] mb-4 group-hover:text-[#3270a6] transition-colors">
+                                                {item.data.title}
+                                            </h3>
+                                            <p class="text-slate-600 mb-6">
+                                                {item.data.excerpt}
+                                            </p>
+                                            <a href={`/news/${item.slug}`} class="inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors">
+                                                Read more about {item.data.title}
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <!-- Latest News -->
+                    {latest.length > 0 && (
+                        <div>
+                            <h2 class="text-3xl font-bold text-[#205488] mb-12">Latest News</h2>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {latest.map((item: CollectionEntry<'news'>) => (
+                                    <div class="bg-white rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+                                        <div class="aspect-w-16 aspect-h-9 bg-gray-100">
+                                            <img 
+                                                src={item.data.thumbnail} 
+                                                alt={item.data.title} 
+                                                class="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        <div class="p-6">
+                                            <span class="text-slate-500 text-sm">{formatDate(item.data.date)}</span>
+                                            <h3 class="text-xl font-bold text-[#205488] mt-2 mb-3 group-hover:text-[#3270a6] transition-colors">
+                                                {item.data.title}
+                                            </h3>
+                                            <p class="text-slate-600 mb-4">
+                                                {item.data.excerpt}
+                                            </p>
+                                            <a href={`/news/${item.slug}`} class="inline-flex items-center text-[#205488] font-medium hover:text-[#3270a6] transition-colors">
+                                                Read more about {item.data.title}
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Show message when no news is available */}
+                    {featured.length === 0 && latest.length === 0 && (
+                        <div class="text-center py-20">
+                            <h3 class="text-2xl font-bold text-[#205488] mb-4">No News Available</h3>
+                            <p class="text-slate-600">Check back later for updates and announcements.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-[#205488] mb-4">Stay Connected</h2>
+                    <p class="text-slate-600 mb-8">Subscribe to our newsletter to receive the latest updates and announcements.</p>
+                    <form id="newsletter-form" class="max-w-md mx-auto">
+                        <div class="flex gap-4">
+                            <input 
+                                type="email" 
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email" 
+                                class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#205488] focus:border-transparent"
+                                required
+                            />
+                            <button 
+                                type="submit" 
+                                class="px-6 py-3 bg-[#205488] text-white font-medium rounded-lg hover:bg-[#3270a6] transition-colors"
+                            >
+                                Subscribe
+                            </button>
+                        </div>
+                        <div id="form-message" class="mt-4 text-sm"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .pattern-grid {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
+
+    .logo-pattern {
+        background-image: url('../assets/logo-pattern.png');
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .aspect-w-16 {
+        position: relative;
+        padding-bottom: 56.25%;
+    }
+
+    .aspect-w-16 > * {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('newsletter-form') as HTMLFormElement;
+        const messageDiv = document.getElementById('form-message') as HTMLDivElement;
+
+        if (form && messageDiv) {
+        form.addEventListener('submit', async (e: SubmitEvent) => {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('email') as HTMLInputElement;
+            const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+            
+            if (!emailInput || !submitButton) return;
+
+            const email = emailInput.value;
+            
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Subscribing...';
+            messageDiv.textContent = '';
+            messageDiv.className = 'mt-4 text-sm';
+
+            try {
+                console.log('Submitting email:', email); // Debug log
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                console.log('Response status:', response.status); // Debug log
+                const data = await response.json();
+                console.log('Response data:', data); // Debug log
+
+                if (response.ok) {
+                    // Success message
+                    messageDiv.textContent = '✓ ' + data.message;
+                    messageDiv.className = 'mt-4 text-sm text-green-600';
+                    form.reset();
+                } else {
+                    // Error message
+                    messageDiv.textContent = '✕ ' + data.message;
+                    messageDiv.className = 'mt-4 text-sm text-red-600';
+                }
+            } catch (error) {
+                console.error('Subscription error:', error); // Debug log
+                // Network or other error
+                messageDiv.textContent = '✕ Failed to subscribe. Please try again later.';
+                messageDiv.className = 'mt-4 text-sm text-red-600';
+            } finally {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Subscribe';
+            }
+        });
+        }
+    });
+</script>
