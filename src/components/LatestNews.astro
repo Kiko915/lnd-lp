@@ -31,7 +31,7 @@ const formatDate = (date: string | Date) => {
         </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class={`grid ${news.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-8`}>
         {news.map((item: CollectionEntry<'news'>) => (
             <article class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-all duration-300 group hover:shadow-xl">
                 <a href={`/news/${item.slug}`} class="block h-full">
