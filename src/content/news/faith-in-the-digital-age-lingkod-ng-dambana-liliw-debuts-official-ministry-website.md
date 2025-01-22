@@ -4,7 +4,7 @@ title: "Faith in the Digital Age: Lingkod ng Dambana Liliw Debuts
   Official   Ministry Website"
 slug: genesis
 date: 2025-01-22T17:46:00.000Z
-thumbnail: /images/we-are-live-.png
+thumbnail: /images/we-are-live-1-.png
 excerpt: In a groundbreaking step to blend faith with technology, Lingkod ng
   Dambana SJBP Liliw Unit has launched its official website, LNDLILIW.ONLINE, on
   January 22, 2025. Designed to empower altar servers and strengthen their
