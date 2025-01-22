@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import { Client as Appwrite, Databases, type Models, Query } from 'node-appwrite';
 
-export const prerender = true
+export const prerender = false
 
 interface Event extends Models.Document {
     title: string;
@@ -79,17 +79,44 @@ if (!event) {
 }
 
 // Helper function to format date
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+const formatDate = (dateString: string | undefined) => {
+    if (!dateString) {
+        return {
+            day: 'Invalid',
+            month: 'Date',
+            year: '',
+            time: ''
+        };
+    }
+    
+    // Handle ISO date strings and potential Appwrite timestamp formats
+    const date = new Date(dateString.includes('T') ? dateString : `${dateString}T00:00:00Z`);
+    
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+        return {
+            day: 'Invalid',
+            month: 'Date',
+            year: '',
+            time: ''
+        };
+    }
+
     return {
-        day: date.toLocaleDateString('en-US', { day: 'numeric' }),
-        month: date.toLocaleDateString('en-US', { month: 'short' }),
-        year: date.toLocaleDateString('en-US', { year: 'numeric' }),
-        time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        day: date.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'Asia/Manila' }),
+        month: date.toLocaleDateString('en-US', { month: 'short', timeZone: 'Asia/Manila' }),
+        year: date.toLocaleDateString('en-US', { year: 'numeric', timeZone: 'Asia/Manila' }),
+        time: date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'Asia/Manila'
+        })
     };
 };
 
 const date = formatDate(event.date);
+
+console.log('Event:', event);
 ---
 
 <Layout title={`${event.title} | Lingkod Ng Dambana`}>
@@ -153,11 +180,11 @@ const date = formatDate(event.date);
                 <div class="max-w-4xl mx-auto">
                     <div class="grid md:grid-cols-2 gap-12">
                         <!-- Event Image -->
-                        <div class="aspect-w-16 aspect-h-9 bg-gray-100 rounded-xl overflow-hidden">
+                        <div class="w-full h-0 pb-[100%] relative bg-gray-100 rounded-xl overflow-hidden">
                             <img 
                                 src={event.image} 
                                 alt={event.title} 
-                                class="w-full h-full object-cover"
+                                class="absolute inset-0 w-full h-full object-cover"
                             />
                         </div>
 
