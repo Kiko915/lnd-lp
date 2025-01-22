@@ -4,7 +4,7 @@ import { ArrowUp } from 'lucide-astro';
 import Preloader from '../components/Preloader.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import SEO from '../components/SEO.astro';
+import { SEO } from 'astro-seo';
 import Posthog from '../components/posthog.astro';
 
 const {
@@ -43,14 +43,37 @@ export interface Props {
 		<meta name="generator" content={Astro.generator} />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<SEO
+		<SEO 
 			title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
 			description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
-			image={image}
-			type={type}
-			publishedTime={publishedTime}
-			modifiedTime={modifiedTime}
-			author={author}
+			openGraph={{
+				basic: {
+					title: title || "Lingkod Ng Dambana | Liliw, Laguna",
+					type: type || "website",
+					image: image || "https://res.cloudinary.com/da3b5g9ad/image/upload/v1737374169/default-og_zwwgv2.png",
+					url: Astro.url.href
+				},
+				optional: {
+					description: description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship.",
+					siteName: "Lingkod Ng Dambana | Liliw, Laguna",
+					locale: "en_PH"
+				}
+			}}
+			twitter={{
+				card: "summary_large_image",
+				site: "@lndliliw",
+				title: title || "Lingkod Ng Dambana | Liliw, Laguna",
+				description: description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship.",
+				image: image || "https://res.cloudinary.com/da3b5g9ad/image/upload/v1737374169/default-og_zwwgv2.png",
+				imageAlt: title || "Lingkod Ng Dambana | Liliw, Laguna"
+			}}
+			extend={{
+				link: [
+					{ rel: "canonical", href: Astro.url.href },
+					{ rel: "alternate", hreflang: "en-PH", href: Astro.url.href },
+					{ rel: "alternate", hreflang: "x-default", href: Astro.url.href }
+				]
+			}}
 		/>
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" hreflang="en-PH" href={Astro.url.href} />
