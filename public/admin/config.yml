@@ -6,6 +6,7 @@ publish_mode: editorial_workflow
 media_folder: "public/images" # Location where files will be stored in the repo
 public_folder: "/images" # The src attribute for uploaded media
 site_url: "https://lndliliw.online" # URL to the site
+logo_url: "https://res.cloudinary.com/da3b5g9ad/image/upload/v1737552492/LND_CMS_lhro0s.png"
 
 collections:
   - name: "authors"
@@ -30,7 +31,7 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug must be lowercase with hyphens"], required: true }
       - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Featured Image", name: "thumbnail", widget: "image", required: true }
+      - { label: "Featured Image", name: "thumbnail", widget: "image", required: true, hint: "For best results, use an image with a 16:9 aspect ratio" }
       - { label: "Excerpt", name: "excerpt", widget: "text", required: true }
       - { label: "Body", name: "body", widget: "markdown", required: true }
       - { label: "Author", name: "author", widget: "relation", collection: "authors", search_fields: ["name"], value_field: "name", display_fields: ["name"] }
