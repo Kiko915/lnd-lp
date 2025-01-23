@@ -60,19 +60,21 @@ const carouselItems: CarouselItem[] = [
                 <!-- Background Image with Overlay -->
                 <div class="absolute inset-0">
                     {typeof item.image === 'string' ? (
-                        <img 
-                            src={item.image} 
-                            alt="Hero Image" 
+                        <img
+                            src={item.image}
+                            alt="Hero Image"
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
+                            loading="eager"
                         />
                     ) : (
-                        <Image 
-                            src={item.image} 
+                        <Image
+                            src={item.image}
                             alt="Hero Image"
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
                             width={1920}
                             height={1080}
                             quality={80}
+                            loading="eager"
                         />
                     )}
                     <div class="absolute inset-0 bg-[#205488]/60 mix-blend-multiply"></div>
