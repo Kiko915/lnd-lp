@@ -17,4 +17,17 @@ export default defineConfig({
   ],
   output: 'server',
   adapter: netlify(),
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        quality: 80,
+        formats: ['webp', 'avif'],
+        cache: true,
+        cacheDir: './node_modules/.sharp-cache'
+      }
+    },
+    domains: ['lndliliw.online'],
+    remotePatterns: [{ protocol: "https" }]
+  }
 });
