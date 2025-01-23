@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import emblemImage from '../assets/lndliliw-emblem-primary-shadow.png';
+import emblemImage from '../assets/lndliliw-emblem-primary-shadow.webp';
 ---
 
 <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-white transition-opacity duration-300">
@@ -11,6 +11,8 @@ import emblemImage from '../assets/lndliliw-emblem-primary-shadow.png';
       width={120}
       height={120}
       class="animate-pulse"
+      fetchpriority="high"
+      loading="eager"
     />
     <div class="absolute inset-0 animate-spin-slow">
       <div class="h-2 w-2 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 bg-primary rounded-full"></div>

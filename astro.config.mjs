@@ -16,5 +16,14 @@ export default defineConfig({
     }),  
   ],
   output: 'server',
-  adapter: netlify()
+  adapter: netlify(),
+  vite: {
+    server: {
+      headers: {
+        '/assets/**': [
+          'Cache-Control: public, max-age=31536000, immutable'
+        ]
+      }
+    }
+  }
 });
