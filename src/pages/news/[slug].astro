@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import type { Props as SEOProps } from '../../components/SEO.astro';
 import { getCollection, type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import '../../assets/css/markdown.css';
 import 'sweetalert2/dist/sweetalert2.css';
 
@@ -123,10 +124,13 @@ const relatedPosts = newsPosts
                                 <div class="group relative">
                                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                                         <div class="w-14 h-14 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-[#FDC83D]/30 hover:border-[#FDC83D]/50 transition-all duration-300">
-                                            <img 
-                                                src={newsItem.data.author.avatar} 
+                                            <Image
+                                                src={newsItem.data.author.avatar}
                                                 alt={newsItem.data.author.name}
+                                                width={48}
+                                                height={48}
                                                 class="w-full h-full object-cover"
+                                                loading="eager"
                                             />
                                         </div>
                                         <div class="text-sm">
@@ -139,10 +143,13 @@ const relatedPosts = newsPosts
                                         <div class="bg-white p-4 rounded-lg shadow-xl w-64 border border-slate-100 transform transition-all duration-200 scale-95 group-hover:scale-100" style="margin-top: 1rem">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-12 h-12 rounded-full overflow-hidden">
-                                                    <img 
-                                                        src={newsItem.data.author.avatar} 
+                                                    <Image
+                                                        src={newsItem.data.author.avatar}
                                                         alt={newsItem.data.author.name}
+                                                        width={48}
+                                                        height={48}
                                                         class="w-full h-full object-cover"
+                                                        loading="eager"
                                                     />
                                                 </div>
                                                 <div>
@@ -171,9 +178,11 @@ const relatedPosts = newsPosts
                 <div class="max-w-4xl mx-auto">
                     <div>
                         <div class="aspect-w-16 aspect-h-9 mb-8 rounded-none sm:rounded-xl overflow-hidden max-h-[var(--image-max-height)]">
-                            <img
+                            <Image
                                 src={newsItem.data.thumbnail}
                                 alt={newsItem.data.title}
+                                width={1200}
+                                height={675}
                                 class="w-full h-full object-contain"
                                 style="aspect-ratio: 16/9; object-position: center"
                             />
@@ -266,9 +275,11 @@ const relatedPosts = newsPosts
                                 {relatedPosts.map((post: NewsPost) => (
                                     <a href={`/news/${post.slug}`} class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
                                         <div class="aspect-w-16 aspect-h-9 bg-gray-100">
-                                            <img 
-                                                src={post.data.thumbnail} 
-                                                alt={post.data.title} 
+                                            <Image
+                                                src={post.data.thumbnail}
+                                                alt={post.data.title}
+                                                width={800}
+                                                height={450}
                                                 class="w-full h-full object-cover"
                                             />
                                         </div>

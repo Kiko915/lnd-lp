@@ -1,5 +1,6 @@
 ---
 import { Calendar, MapPin, Clock, Image as ImageIcon } from 'lucide-astro';
+import { Image } from 'astro:assets';
 import { Client as Appwrite, Databases, Query, type Models } from 'node-appwrite';
 
 interface Event extends Models.Document {
@@ -99,10 +100,12 @@ const formatTime = (dateString: string): string => {
                             <ImageIcon class="w-12 h-12 text-gray-300" />
                         </div>
                     ) : (
-                        <img 
-                            src={event.image} 
+                        <Image
+                            src={event.image}
                             alt={event.title}
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                            width={800}
+                            height={400}
                         />
                     )}
                     <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -159,10 +162,12 @@ const formatTime = (dateString: string): string => {
 
     {events.length === 0 && (
         <div class="flex flex-col items-center justify-center py-20">
-            <img 
-                src="/images/no-events-icon.png" 
+            <Image
+                src="/images/no-events-icon.png"
                 alt="No events available"
                 class="w-32 h-32 mb-6"
+                width={128}
+                height={128}
             />
             <p class="text-gray-600 text-lg max-w-md text-center">
                 There are currently no upcoming events. Please check back later!

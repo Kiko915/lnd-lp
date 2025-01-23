@@ -6,10 +6,14 @@ import { Image } from 'astro:assets';
 import emblemLogo from '../assets/lndliliw-emblem-primary-shadow.webp';
 import { Church, Cross, BookOpen, Users, HandHeart } from 'lucide-astro';
 
-// Preload critical image
-<link rel="preload" href={emblemLogo.src} as="image" />
-
 const description = "Lingkod Ng Dambana is a Catholic altar server ministry in St. John the Baptist Parish Liliw, Laguna dedicated to liturgical service and community building. Learn about our mission, history, leadership, and ministries.";
+
+// Preload critical assets
+const preloadDirectives = {
+  preloads: [
+    { href: emblemLogo.src, as: 'image' }
+  ]
+};
 ---
 
 <Layout 
@@ -318,10 +322,12 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-6xl mx-auto">
                     <h2 class="text-4xl font-bold text-[#205488] mb-12 text-center">Our Leadership (Parish Unit)</h2>
-                    <img 
-                        src="/images/lnd-orgchart.png" 
-                        alt="LND Organizational Chart" 
+                    <Image
+                        src="/images/lnd-orgchart.png"
+                        alt="LND Organizational Chart"
                         class="w-full rounded-lg shadow-lg"
+                        width={1920}
+                        height={1080}
                     />
                 </div>
             </div>
@@ -341,11 +347,13 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                 <!-- Logo/Image Section -->
                                 <div class="relative bg-[#205488] p-8 flex items-center justify-center">
                                     <div class="absolute inset-0 pattern-grid opacity-10"></div>
-                                    <img 
-                                        src="/images/core-group-logo.webp" 
-                                        alt="LND Core Group Logo" 
-                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
-                                    />
+                                    <Image
+                                       src="/images/core-group-logo.webp"
+                                       alt="LND Core Group Logo"
+                                       class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                       width={144}
+                                       height={144}
+                                   />
                                 </div>
                                 <!-- Content Section -->
                                 <div class="p-8">
@@ -418,11 +426,13 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                 <!-- Logo/Image Section -->
                                 <div class="relative bg-[#205488] p-8 flex items-center justify-center">
                                     <div class="absolute inset-0 pattern-grid opacity-10"></div>
-                                    <img 
-                                        src="/images/formators.png" 
-                                        alt="Formation Committee Logo" 
-                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
-                                    />
+                                    <Image
+                                       src="/images/formators.png"
+                                       alt="Formation Committee Logo"
+                                       class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                       width={144}
+                                       height={144}
+                                   />
                                 </div>
                                 <!-- Content Section -->
                                 <div class="p-8">
@@ -506,11 +516,13 @@ const description = "Lingkod Ng Dambana is a Catholic altar server ministry in S
                                 <!-- Logo/Image Section -->
                                 <div class="relative bg-[#205488] p-8 flex items-center justify-center">
                                     <div class="absolute inset-0 pattern-grid opacity-10"></div>
-                                    <img 
-                                        src="/images/lnd-publicity-logo.png" 
-                                        alt="LND Publicity Group Logo" 
-                                        class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
-                                    />
+                                    <Image
+                                       src="/images/lnd-publicity-logo.png"
+                                       alt="LND Publicity Group Logo"
+                                       class="w-36 h-36 object-contain relative z-10 transition-transform duration-300 group-hover:scale-110"
+                                       width={144}
+                                       height={144}
+                                   />
                                 </div>
                                 <!-- Content Section -->
                                 <div class="p-8">

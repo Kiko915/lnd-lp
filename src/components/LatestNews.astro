@@ -1,5 +1,6 @@
 ---
 import { Calendar, Image as ImageIcon } from 'lucide-astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
@@ -39,10 +40,12 @@ const formatDate = (date: string | Date) => {
                         {item.data.thumbnail ? (
                             <div class="relative h-full overflow-hidden">
                                 <div class="absolute inset-0">
-                                    <img 
-                                        src={item.data.thumbnail} 
+                                    <Image
+                                        src={item.data.thumbnail}
                                         alt={item.data.title}
                                         class="w-[110%] h-[110%] object-cover transform group-hover:scale-[1.15] transition-transform duration-500"
+                                        width={800}
+                                        height={400}
                                     />
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 </div>
@@ -83,10 +86,12 @@ const formatDate = (date: string | Date) => {
 
     {news.length === 0 && (
         <div class="flex flex-col items-center justify-center py-20">
-            <img 
-                src="/images/no-news-icon.png" 
+            <Image
+                src="/images/no-news-icon.png"
                 alt="No news available"
                 class="w-32 h-32 mb-6"
+                width={128}
+                height={128}
             />
             <p class="text-gray-600 text-lg max-w-md text-center">
                 There are currently no news updates available. Please check back later!

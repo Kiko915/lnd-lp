@@ -27,7 +27,6 @@ collections:
     create: true # Allow users to create new documents in this collection
     delete: true # Allow users to delete documents in this collection
     fields: # The fields for each document, usually in frontmatter
-      - { label: "Layout", name: "layout", widget: "hidden", default: "news" }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug must be lowercase with hyphens"], required: true }
       - { label: "Publish Date", name: "date", widget: "datetime" }
