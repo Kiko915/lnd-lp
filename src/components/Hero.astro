@@ -60,21 +60,27 @@ const carouselItems: CarouselItem[] = [
                 <!-- Background Image with Overlay -->
                 <div class="absolute inset-0">
                     {typeof item.image === 'string' ? (
-                        <img
-                            src={item.image}
-                            alt="Hero Image"
+                        <img 
+                            src={item.image} 
+                            alt="Hero Image" 
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
                             loading="eager"
+                            fetchpriority="high"
+                            width="1280"
+                            height="720"
                         />
                     ) : (
-                        <Image
-                            src={item.image}
+                        <Image 
+                            src={item.image} 
                             alt="Hero Image"
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
-                            width={1920}
-                            height={1080}
-                            quality={80}
+                            width={1280}
+                            height={720}
+                            densities={[1, 1.5, 2]}
+                            quality={75}
                             loading="eager"
+                            fetchpriority="high"
+                            format="webp"
                         />
                     )}
                     <div class="absolute inset-0 bg-[#205488]/60 mix-blend-multiply"></div>
@@ -192,24 +198,6 @@ const carouselItems: CarouselItem[] = [
         );
         pointer-events: none;
         z-index: 1;
-    }
-
-    /* Remove any existing btn-primary or btn-secondary styles if they exist */
-
-    /* Add new button hover animation */
-    a:hover span {
-        transform: translateX(5px);
-    }
-
-    /* Add subtle pulse animation for primary buttons */
-    @keyframes subtle-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); }
-        70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
-    }
-
-    a[href]:active {
-        transform: scale(0.98);
     }
 </style>
 
