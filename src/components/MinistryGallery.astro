@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { Image as ImageIcon } from 'lucide-astro';
 
 interface FacebookImage {
@@ -19,37 +20,37 @@ interface GalleryImage {
 // Fallback images
 const fallbackImages: GalleryImage[] = [
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Liturgical+Service",
         alt: "Altar Servers during Mass",
         category: "Liturgical Service",
         date: new Date().toLocaleDateString()
     },
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Community+Service",
         alt: "Community Outreach Program",
         category: "Community Service",
         date: new Date().toLocaleDateString()
     },
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Formation",
         alt: "Formation Session",
         category: "Formation",
         date: new Date().toLocaleDateString()
     },
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Events",
         alt: "Parish Procession",
         category: "Events",
         date: new Date().toLocaleDateString()
     },
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Liturgical+Service",
         alt: "Easter Sunday Mass",
         category: "Liturgical Service",
         date: new Date().toLocaleDateString()
     },
     {
-        src: "placeholder",
+        src: "https://placehold.co/800x600/205488/FFF?text=Fellowship",
         alt: "Ministry Gathering",
         category: "Fellowship",
         date: new Date().toLocaleDateString()
@@ -70,9 +71,23 @@ const fallbackImages: GalleryImage[] = [
 
     <div id="ministry-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {fallbackImages.map((image, index) => (
-            <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item skeleton-loader">
-                <div class="w-full h-full flex items-center justify-center bg-gray-100">
-                    <ImageIcon class="w-12 h-12 text-gray-400" />
+            <div class="group relative overflow-hidden rounded-xl aspect-[4/3] gallery-item">
+                <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={800}
+                    height={600}
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <span class="inline-block px-3 py-1 bg-yellow-400 text-[#205488] text-sm font-medium rounded-full mb-2">
+                            {image.category}
+                        </span>
+                        <p class="text-gray-100 text-sm">
+                            {image.date}
+                        </p>
+                    </div>
                 </div>
             </div>
         ))}
@@ -148,7 +163,7 @@ const fallbackImages: GalleryImage[] = [
             galleryGrid.innerHTML = '';
 
             // Add images to grid
-            allImages.forEach((image: any) => {
+            allImages.forEach((image: any, index: number) => {
                 const date = new Date(image.created_time).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -160,8 +175,13 @@ const fallbackImages: GalleryImage[] = [
                         <img
                             src="${image.source}"
                             alt="${image.caption || 'Ministry Gallery Image'}"
-                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                            width="800"
+                            height="600"
                             loading="lazy"
+                            decoding="async"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                            fetchpriority="${index < 2 ? 'high' : 'low'}"
+                            sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-[#205488]/90 via-[#205488]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
