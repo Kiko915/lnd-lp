@@ -3,8 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
-import emblemLogo from '../assets/lndliliw-emblem-primary-shadow.png';
+import emblemLogo from '../assets/lndliliw-emblem-primary-shadow.webp';
 import { Church, Cross, BookOpen, Users, HandHeart } from 'lucide-astro';
+
+// Preload critical image
+<link rel="preload" href={emblemLogo.src} as="image" />
 
 const description = "Lingkod Ng Dambana is a Catholic altar server ministry in St. John the Baptist Parish Liliw, Laguna dedicated to liturgical service and community building. Learn about our mission, history, leadership, and ministries.";
 ---
