@@ -73,7 +73,13 @@ const formatDate = (dateString: string) => {
         day: date.toLocaleDateString('en-US', { day: 'numeric' }),
         month: date.toLocaleDateString('en-US', { month: 'short' }),
         year: date.toLocaleDateString('en-US', { year: 'numeric' }),
-        time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        time: (() => {
+            const [hours, minutes] = dateString.split('T')[1].substring(0, 5).split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${minutes} ${ampm}`;
+        })()
     };
 };
 ---
