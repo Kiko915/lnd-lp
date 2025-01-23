@@ -11,3 +11,27 @@
   host = "us.i.posthog.com"
   status = 200
   force = true
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/.netlify/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.images]
+  compress = true
+
+# Resource hints to preload critical assets
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Link = '''
+    </assets/lndliliw-emblem-primary-shadow.webp>; rel=preload; as=image
+    '''

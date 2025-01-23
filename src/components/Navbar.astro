@@ -32,13 +32,14 @@ const isActive = (href: string) => {
             <div class="flex-shrink-0">
                 <a href="/" class="flex items-center space-x-3 group">
                     <div class="relative w-12 h-12 overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
-                        <Image 
-                            src={logo} 
-                            alt="LND Logo" 
+                        <Image
+                            src={logo}
+                            alt="LND Logo"
                             class={`w-full h-full object-contain`}
-                            width={48}
-                            height={48}
+                            width={96}
+                            height={96}
                             loading="eager"
+                            fetchpriority="high"
                         />
                     </div>
                     <div class="flex flex-col">
