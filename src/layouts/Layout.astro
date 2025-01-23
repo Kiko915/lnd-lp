@@ -43,10 +43,23 @@ export interface Props {
 		<meta name="generator" content={Astro.generator} />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<SEO 
-			title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
-			description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
-			openGraph={{
+		<SEO
+		title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
+		description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
+		noindex={false}
+		nofollow={false}
+		extend={{
+		  meta: [
+		    { name: 'keywords', content: 'Lingkod Ng Dambana, Catholic Ministry, Church Music, Liturgical Music, Liliw Laguna, SJBP, Worship Ministry, Catholic Worship, Catholic Service, Altar Server' },
+		    { name: 'author', content: 'Lingkod Ng Dambana' }
+		  ],
+		  link: [
+		    { rel: "canonical", href: Astro.url.href },
+		    { rel: "alternate", hreflang: "en-PH", href: Astro.url.href },
+		    { rel: "alternate", hreflang: "x-default", href: Astro.url.href }
+		  ]
+		}}
+		openGraph={{
 				basic: {
 					title: title || "Lingkod Ng Dambana | Liliw, Laguna",
 					type: type || "website",
