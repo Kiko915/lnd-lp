@@ -36,3 +36,5 @@
     </assets/lndliliw-emblem-primary-shadow.webp>; rel=preload; as=image;,
     </_astro/bg3.DdYJxU-o.jpg>; rel=preload; as=image; importance=high;
     '''
+    Content-Security-Policy = "frame-ancestors 'none'"
+    X-Frame-Options = "DENY"
