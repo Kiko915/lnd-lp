@@ -60,24 +60,23 @@ const carouselItems: CarouselItem[] = [
                 <!-- Background Image with Overlay -->
                 <div class="absolute inset-0">
                     {typeof item.image === 'string' ? (
-                        <img 
-                            src={item.image} 
-                            alt="Hero Image" 
+                        <img
+                            src={item.image}
+                            srcset={`${item.image} 400w, ${item.image} 800w, ${item.image} 1200w`}
+                            sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+                            alt="Hero Image"
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
                             loading="eager"
                             fetchpriority="high"
-                            width="1280"
-                            height="720"
                         />
                     ) : (
-                        <Image 
-                            src={item.image} 
+                        <Image
+                            src={item.image}
                             alt="Hero Image"
                             class="w-full h-full object-cover transform scale-105 transition-transform duration-[2000ms]"
-                            width={1280}
-                            height={720}
-                            densities={[1, 1.5, 2]}
-                            quality={75}
+                            widths={[400, 800, 1200]}
+                            sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+                            quality={60}
                             loading="eager"
                             fetchpriority="high"
                             format="webp"

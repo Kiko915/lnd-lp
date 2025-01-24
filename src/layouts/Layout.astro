@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { SEO } from 'astro-seo';
 import Posthog from '../components/posthog.astro';
+import LoadingBar from '../components/LoadingBar.astro';
 
 const {
   title,
@@ -41,8 +42,38 @@ export interface Props {
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript>
+		  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" type="text/css">
+		</noscript>
+		
+		<!-- Preload critical font files -->
+		<link rel="preload" as="font" href="https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2" type="font/woff2" crossorigin>
+		<link rel="preload" as="font" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2" type="font/woff2" crossorigin>
+		
+		<!-- Load AOS CSS asynchronously -->
+		<link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript>
+		  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" type="text/css">
+		</noscript>
+		
+		<!-- Critical CSS -->
+		<style>
+		  /* Critical styles for above-the-fold content */
+		  .font-poppins {
+		    font-family: 'Poppins', system-ui, sans-serif;
+		  }
+		  .antialiased {
+		    -webkit-font-smoothing: antialiased;
+		    -moz-osx-font-smoothing: grayscale;
+		  }
+		  .bg-white {
+		    background-color: #ffffff;
+		  }
+		  .text-slate-900 {
+		    color: #0f172a;
+		  }
+		</style>
 		<SEO
 		title={title || "Lingkod Ng Dambana | Liliw, Laguna"}
 		description={description || "Official website of Lingkod Ng Dambana - SJBP Unit in Liliw, Laguna. Join us in serving the Lord through music and worship."}
@@ -95,7 +126,8 @@ export interface Props {
 		<ClientRouter />
 	</head>
 	<body class="h-full m-0 font-poppins antialiased bg-white text-slate-900">
-		<script is:inline>
+	<LoadingBar />
+	<script is:inline>
 			// Track page views
 			document.addEventListener('astro:page-load', () => {
 				window.posthog.capture('$pageview', {
